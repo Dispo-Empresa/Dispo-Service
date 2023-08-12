@@ -44,6 +44,7 @@ namespace Dispo.Service.Services
                 AccountId = loggedAccount.Id,
                 UserName = loggedAccount.User != null ? loggedAccount.User.FirstName : string.Empty,
                 Role = loggedAccount.Role.Key,
+                CurrentWarehouseId = loggedAccount.User != null && loggedAccount.User.CurrentWarehouseId.HasValue ? loggedAccount.User.CurrentWarehouseId.Value : -1,
             };
         }
 

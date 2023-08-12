@@ -15,5 +15,10 @@
         public User User { get; set; }
         public Warehouse Warehouse { get; set; }
         public Supplier Supplier { get; set; }
+
+        public override string ToString()
+        {
+            return $"R. {District}, {City}-{UF}, {CEP}, {Country}";
+        }
     }
 }

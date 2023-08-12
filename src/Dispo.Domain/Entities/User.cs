@@ -10,9 +10,13 @@
         public DateTime BirthDate { get; set; }
         public long CompanyId { get; set; }
         public long AdressId { get; set; }
+        public long? CurrentWarehouseId { get; set; }
 
+
+        public Warehouse? CurrentWarehouse { get; set; }
         public Account Account { get; set; }
         public Company Company { get; set; }
         public Address Adress { get; set; }
+        public IList<UserWarehouse> UserWarehouses { get; set; } = new List<UserWarehouse>();
     }
 }

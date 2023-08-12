@@ -5,5 +5,6 @@ namespace Dispo.Service.Services.Interfaces
     public interface IUserResolverService
     {
         Task<User?> GetLoggedUser();
+        long? GetLoggedUserId();
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Dispo.Domain.Entities;
 using Dispo.Infrastructure.Context;
 using Dispo.Infrastructure.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
 namespace Dispo.Infrastructure.Repositories
@@ -20,5 +21,11 @@ namespace Dispo.Infrastructure.Repositories
         public bool ExistsByCpfCnpj(string cpfCnpj)
             => _dispoContext.Users
                             .Any(ExpExistsByCpfCnpj(cpfCnpj));
+
+        public User? GetWithWarehousesById(long id)
+        {
+            return _dispoContext.Users.Include(i => i.UserWarehouses)
+                                      .FirstOrDefault(w => w.Id == id);
+        }
     }
 }

@@ -5,5 +5,6 @@ namespace Dispo.Infrastructure.Repositories.Interfaces
     public interface IUserRepository : IBaseRepository<User>
     {
         bool ExistsByCpfCnpj(string cpfCnpj);
+        User? GetWithWarehousesById(long id);
     }
 }

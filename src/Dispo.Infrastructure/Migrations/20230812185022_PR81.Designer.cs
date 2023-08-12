@@ -4,6 +4,7 @@ using Dispo.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Dispo.Infrastructure.Migrations
 {
     [DbContext(typeof(DispoContext))]
-    partial class DispoContextModelSnapshot : ModelSnapshot
+    [Migration("20230812185022_PR81")]
+    partial class PR81
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,7 +54,7 @@ namespace Dispo.Infrastructure.Migrations
                     b.Property<long>("RoleId")
                         .HasColumnType("BIGINT");
 
-                    b.Property<long?>("UserId")
+                    b.Property<long>("UserId")
                         .HasColumnType("BIGINT");
 
                     b.HasKey("Id");
@@ -59,8 +62,7 @@ namespace Dispo.Infrastructure.Migrations
                     b.HasIndex("RoleId");
 
                     b.HasIndex("UserId")
-                        .IsUnique()
-                        .HasFilter("[UserId] IS NOT NULL");
+                        .IsUnique();
 
                     b.ToTable("Accounts", (string)null);
                 });
@@ -342,6 +344,12 @@ namespace Dispo.Infrastructure.Migrations
                         .HasColumnType("SMALLINT")
                         .HasColumnName("Category");
 
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("VARCHAR(50)")
+                        .HasColumnName("Code");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(220)
@@ -358,7 +366,7 @@ namespace Dispo.Infrastructure.Migrations
                         .HasColumnType("VARCHAR(150)")
                         .HasColumnName("Name");
 
-                    b.Property<long?>("ProductDimensionId")
+                    b.Property<long>("ProductDimensionId")
                         .HasColumnType("BIGINT");
 
                     b.Property<decimal>("PurchasePrice")
@@ -379,8 +387,7 @@ namespace Dispo.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ProductDimensionId")
-                        .IsUnique()
-                        .HasFilter("[ProductDimensionId] IS NOT NULL");
+                        .IsUnique();
 
                     b.ToTable("Products", (string)null);
                 });
@@ -531,41 +538,19 @@ namespace Dispo.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
-                    b.Property<string>("Key")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("VARCHAR(50)")
-                        .HasColumnName("Key");
-
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("VARCHAR(50)")
                         .HasColumnName("Name");
 
+                    b.Property<short>("Type")
+                        .HasMaxLength(120)
+                        .HasColumnType("SMALLINT")
+                        .HasColumnName("Type");
+
                     b.HasKey("Id");
 
                     b.ToTable("Roles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 5L,
-                            Key = "manager",
-                            Name = "Gerente"
-                        },
-                        new
-                        {
-                            Id = 6L,
-                            Key = "purchasingManager",
-                            Name = "Gerente de compras"
-                        },
-                        new
-                        {
-                            Id = 7L,
-                            Key = "warehouseOperator",
-                            Name = "Operador de depósito"
-                        });
                 });
 
             modelBuilder.Entity("Dispo.Domain.Entities.Shipping", b =>
@@ -770,29 +755,6 @@ namespace Dispo.Infrastructure.Migrations
                     b.HasIndex("CompanyId");
 
                     b.ToTable("Warehouses", (string)null);
-                });
-
-            modelBuilder.Entity("Dispo.Domain.Entities.WarehouseAccount", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<long>("AccountId")
-                        .HasColumnType("BIGINT");
-
-                    b.Property<long>("WarehouseId")
-                        .HasColumnType("BIGINT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AccountId");
-
-                    b.HasIndex("WarehouseId");
-
-                    b.ToTable("WarehouseAccount");
                 });
 
             modelBuilder.Entity("Dispo.Domain.Entities.Account", b =>
@@ -1042,30 +1004,9 @@ namespace Dispo.Infrastructure.Migrations
                     b.Navigation("Company");
                 });
 
-            modelBuilder.Entity("Dispo.Domain.Entities.WarehouseAccount", b =>
-                {
-                    b.HasOne("Dispo.Domain.Entities.Account", "Account")
-                        .WithMany("WarehouseAccounts")
-                        .HasForeignKey("AccountId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Dispo.Domain.Entities.Warehouse", "Warehouse")
-                        .WithMany("WarehouseAccounts")
-                        .HasForeignKey("WarehouseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Account");
-
-                    b.Navigation("Warehouse");
-                });
-
             modelBuilder.Entity("Dispo.Domain.Entities.Account", b =>
                 {
                     b.Navigation("Movements");
-
-                    b.Navigation("WarehouseAccounts");
                 });
 
             modelBuilder.Entity("Dispo.Domain.Entities.Address", b =>
@@ -1159,8 +1100,6 @@ namespace Dispo.Infrastructure.Migrations
                     b.Navigation("Movements");
 
                     b.Navigation("PurchaseOrders");
-
-                    b.Navigation("WarehouseAccounts");
 
                     b.Navigation("UserWarehouses");
                 });

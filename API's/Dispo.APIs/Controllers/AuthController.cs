@@ -31,7 +31,7 @@ namespace Dispo.API.Controllers
             try
             {
                 var userAccountModelCretated = _accountService.AuthenticateByEmailAndPassword(signInRequestDto.Email, signInRequestDto.Password);
-                var generatedToken = _tokenGenerator.GenerateJwtToken(userAccountModelCretated.AccountId);
+                var generatedToken = _tokenGenerator.GenerateJwtToken(userAccountModelCretated.AccountId, userAccountModelCretated.CurrentWarehouseId);
 
                 return Ok(new ResponseModelBuilder().WithMessage("User exists!")
                                                     .WithSuccess(true)

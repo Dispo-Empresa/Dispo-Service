@@ -15,7 +15,7 @@ namespace Dispo.Infrastructure.Context
         { }
 
         public DbSet<Account> Accounts { get; set; }
-        public DbSet<Address> Adresses { get; set; }
+        public DbSet<Address> Addresses { get; set; }
         public DbSet<Batch> Batches { get; set; }
         public DbSet<BatchMovement> BatchMovements { get; set; }
         public DbSet<Company> Companies { get; set; }
@@ -32,6 +32,7 @@ namespace Dispo.Infrastructure.Context
         public DbSet<Supplier> Suppliers { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Warehouse> Warehouses { get; set; }
+        public DbSet<UserWarehouse> UserWarehouses { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -53,6 +54,7 @@ namespace Dispo.Infrastructure.Context
             modelBuilder.ApplyConfiguration(new SupplierMapping());
             modelBuilder.ApplyConfiguration(new UserMapping());
             modelBuilder.ApplyConfiguration(new WarehouseMapping());
+            modelBuilder.ApplyConfiguration(new UserWarehouseMapping());
 
             CreateRoles(modelBuilder);
 

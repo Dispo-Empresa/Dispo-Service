@@ -21,7 +21,7 @@ namespace Dispo.Service.Token
             _accountRepository = accountRepository;
         }
 
-        public TokenInfoDto GenerateJwtToken(long id)
+        public TokenInfoDto GenerateJwtToken(long id, long currentWarehouseId)
         {
             var accountId = id.ToString();
             var userName = _accountRepository.GetUserNameByAccountId(id);
@@ -32,7 +32,8 @@ namespace Dispo.Service.Token
             {
                 new Claim(CustomClaimTypes.AccountId, accountId),
                 new Claim(ClaimTypes.Name, userName),
-                new Claim(ClaimTypes.Role, accountRole)
+                new Claim(ClaimTypes.Role, accountRole),
+                new Claim("CurrentWarehouseId", currentWarehouseId.ToString()),
             };
 
             var tokenDescriptor = new SecurityTokenDescriptor
