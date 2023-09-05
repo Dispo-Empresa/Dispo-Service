@@ -48,32 +48,14 @@ namespace Dispo.APIs.Controllers
         /// Realiza a movimentação de entrada em lote.
         /// </summary>
         [HttpPost]
-        [Route("move/input")]
-        public async Task<IActionResult> BatchInputMovement([FromBody] BatchInputMovementDto batchInputMovementDto)
+        [Route("move/batch")]
+        public async Task<IActionResult> BatchInputMovement([FromBody] BatchMovimentationDto batchMovimentationDto)
         {
             try
             {
-                return Ok(new ResponseModelBuilder().WithMessage("Movimentação de produto realizada com sucesso.")
-                                                    .WithSuccess(true)
-                                                    .Build());
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new ResponseModelBuilder().WithMessage(ex.Message)
-                                                            .WithSuccess(false)
-                                                            .Build());
-            }
-        }
+                batchMovimentationDto.SetMovementType();
+                await _movementService.MoveBatchAsync(batchMovimentationDto);
 
-        /// <summary>
-        /// Realiza a movimentação de saída em lote.
-        /// </summary>
-        [HttpPost]
-        [Route("move/output")]
-        public async Task<IActionResult> BatchOutputMovement([FromBody] BatchOutputMovementDto batchOutputMovementDto)
-        {
-            try
-            {
                 return Ok(new ResponseModelBuilder().WithMessage("Movimentação de produto realizada com sucesso.")
                                                     .WithSuccess(true)
                                                     .Build());
