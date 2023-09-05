@@ -1,4 +1,5 @@
-﻿using Dispo.Domain.DTOs.RequestDTOs;
+﻿using Dispo.Domain.DTOs;
+using Dispo.Domain.DTOs.RequestDTOs;
 using Dispo.Domain.Entities;
 using Dispo.Domain.Exceptions;
 using Dispo.Infrastructure.Repositories.Interfaces;
@@ -12,12 +13,14 @@ namespace Dispo.Service.Services
     {
         private readonly IMovementRepository _movementRepository;
         private readonly IProductService _productService;
+        private readonly IInputBatchMovementService _inputBatchMovementService;
         private readonly ILogger<MovementService> _logger;
 
-        public MovementService(IMovementRepository movementRepository, IProductService productService, ILogger<MovementService> logger)
+        public MovementService(IMovementRepository movementRepository, IProductService productService, IInputBatchMovementService inputBatchMovementService, ILogger<MovementService> logger)
         {
             _movementRepository = movementRepository;
             _productService = productService;
+            _inputBatchMovementService = inputBatchMovementService;
             _logger = logger;
         }
 
@@ -98,6 +101,17 @@ namespace Dispo.Service.Services
             //    _logger.LogError("Quantidade não pode ser atualizada.");
             //    throw new UnhandledException("Quantidade não pode ser atualizada.");
             //}
+        }
+
+        public Task MoveBatchAsync(BatchMovimentationDto batchMovimentationDto)
+        {
+            switch (batchMovimentationDto.MovementType)
+            {
+                case Domain.Enums.eMovementType.Input:
+                case Domain.Enums.eMovementType.Output:
+                default:
+                    throw new UnhandledException("Quantidade não pode ser atualizada.");
+            }
         }
     }
 }
