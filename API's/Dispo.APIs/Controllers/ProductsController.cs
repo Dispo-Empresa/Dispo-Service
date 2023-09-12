@@ -53,18 +53,23 @@ namespace Dispo.API.Controllers
         }
 
         [HttpGet]
-        [Route("get-names-with-code")]
+        [Route("get-names")]
         public IActionResult GetProductNamesWithCode()
         {
             try
             {
-                var productNamesWithCodes = _productService.GetProductNamesWithCode();
+                var productNames = _productRepository.GetAllProductNames();
 
-                return Ok(productNamesWithCodes);
+                return Ok(new ResponseModelBuilder().WithSuccess(true)
+                                                    .WithData(productNames)
+                                                    .WithAlert(AlertType.Success)
+                                                    .Build());
+
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                return BadRequest(new ResponseModelBuilder().WithMessage("Products not found: " + ex.Message)
+                                                            .Build());
             }
         }
 
@@ -101,6 +106,30 @@ namespace Dispo.API.Controllers
             catch (Exception ex)
             {
                 throw;
+            }
+        }
+
+        // -------------------
+
+
+        [HttpGet]
+        [Route("getPurchaseOrders")]
+        public IActionResult GetPurchaseOrders()
+        {
+            try
+            {
+                var purchaseOrderInfo = _productRepository.GetPurchaseOrderInfoDto();
+
+                return Ok(new ResponseModelBuilder().WithSuccess(true)
+                                                    .WithData(purchaseOrderInfo)
+                                                    .WithAlert(AlertType.Success)
+                                                    .Build());
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ResponseModelBuilder().WithMessage("Products not found: " + ex.Message)
+                                                            .Build());
             }
         }
     }
