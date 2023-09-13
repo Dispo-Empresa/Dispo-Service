@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Dispo.Commom;
-using Dispo.Domain.DTOs;
 using Dispo.Domain.DTOs.Request;
 using Dispo.Domain.Entities;
 using Dispo.Domain.Exceptions;
@@ -47,11 +46,6 @@ namespace Dispo.Service.Services
             }
 
             return productCreatedId;
-        }
-
-        public IEnumerable<ProductNameWithCode> GetProductNamesWithCode()
-        {
-            return _productRepository.GetAllProductNamesWithCode();
         }
 
         public string BuildProductSKUCode(string productName, string productType)

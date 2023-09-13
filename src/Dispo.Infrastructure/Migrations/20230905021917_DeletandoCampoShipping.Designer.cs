@@ -4,6 +4,7 @@ using Dispo.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Dispo.Infrastructure.Migrations
 {
     [DbContext(typeof(DispoContext))]
-    partial class DispoContextModelSnapshot : ModelSnapshot
+    [Migration("20230905021917_DeletandoCampoShipping")]
+    partial class DeletandoCampoShipping
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -281,11 +284,18 @@ namespace Dispo.Infrastructure.Migrations
                     b.Property<long>("WarehouseId")
                         .HasColumnType("BIGINT");
 
+                    b.Property<long?>("WarehouseId1")
+                        .HasColumnType("BIGINT");
+
                     b.HasKey("Id");
 
                     b.HasIndex("AccountId");
 
                     b.HasIndex("WarehouseId");
+
+                    b.HasIndex("WarehouseId1")
+                        .IsUnique()
+                        .HasFilter("[WarehouseId1] IS NOT NULL");
 
                     b.ToTable("Movements", (string)null);
                 });
@@ -552,19 +562,19 @@ namespace Dispo.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 1L,
+                            Id = 5L,
                             Key = "manager",
                             Name = "Gerente"
                         },
                         new
                         {
-                            Id = 2L,
+                            Id = 6L,
                             Key = "purchasingManager",
                             Name = "Gerente de compras"
                         },
                         new
                         {
-                            Id = 3L,
+                            Id = 7L,
                             Key = "warehouseOperator",
                             Name = "Operador de depósito"
                         });
@@ -865,6 +875,10 @@ namespace Dispo.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Dispo.Domain.Entities.Warehouse", null)
+                        .WithOne("Movement")
+                        .HasForeignKey("Dispo.Domain.Entities.Movement", "WarehouseId1");
+
                     b.Navigation("Account");
 
                     b.Navigation("Warehouse");
@@ -1117,6 +1131,9 @@ namespace Dispo.Infrastructure.Migrations
 
             modelBuilder.Entity("Dispo.Domain.Entities.Warehouse", b =>
                 {
+                    b.Navigation("Movement")
+                        .IsRequired();
+
                     b.Navigation("Movements");
 
                     b.Navigation("PurchaseOrders");
