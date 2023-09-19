@@ -103,5 +103,25 @@ namespace Dispo.API.Controllers
                 throw;
             }
         }
+
+        [HttpGet]
+        [Route("get-with-active-pursche-orders")]
+        public IActionResult GetWithActivePurschaseOrder()
+        {
+            var products = _productService.GetWithActivePurschaseOrder();
+            return Ok(new ResponseModelBuilder().WithSuccess(true)
+                                                .WithData(products)
+                                                .Build());
+        }
+
+        [HttpGet]
+        [Route("get-with-saleprice")]
+        public IActionResult GetWithSalePrice()
+        {
+            var products = _productService.GetWithSalePrice();
+            return Ok(new ResponseModelBuilder().WithSuccess(true)
+                                                .WithData(products)
+                                                .Build());
+        }
     }
 }

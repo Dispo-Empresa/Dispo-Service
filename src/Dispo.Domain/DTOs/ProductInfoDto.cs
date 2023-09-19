@@ -1,6 +1,6 @@
 ﻿namespace Dispo.Domain.DTO_s
 {
-    public class ProductInfoDatatableDto
+    public class ProductInfoDto
     {
         public long Id { get; set; }
         public string Name { get; set; }

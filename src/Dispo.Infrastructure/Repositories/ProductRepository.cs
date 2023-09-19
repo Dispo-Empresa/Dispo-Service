@@ -5,6 +5,7 @@ using Dispo.Domain.DTOs;
 using Dispo.Domain.Entities;
 using Dispo.Infrastructure.Context;
 using Dispo.Infrastructure.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace Dispo.Infrastructure.Repositories
 {
@@ -34,9 +35,9 @@ namespace Dispo.Infrastructure.Repositories
                             .SingleOrDefault()
                             .ToLong();
 
-        public IEnumerable<ProductInfoDatatableDto> GetProductInfoDto()
+        public IEnumerable<ProductInfoDto> GetProductInfoDto()
             => _dispoContext.Products
-                            .Select(s => new ProductInfoDatatableDto()
+                            .Select(s => new ProductInfoDto()
                             {
                                 Id = s.Id,
                                 Name = s.Name,
@@ -46,5 +47,26 @@ namespace Dispo.Infrastructure.Repositories
                                 UnitOfMeasurement = EnumExtension.ConvertToString(s.UnitOfMeasurement),
                             })
                             .ToList();
+
+        public List<ProductInfoDto> GetWithActivePurschaseOrder()
+        {
+            return _dispoContext.Products
+                                .Include(i => i.Orders).ThenInclude(i => i.PurchaseOrder)
+                                .Where(w => w.Orders != null && w.Orders.Any(w => w.PurchaseOrderId > 0))
+                                .Select(s => new ProductInfoDto
+                                {
+                                    Id = s.Id,
+                                    Name = s.Name
+                                }).ToList();
+        }
+
+        public List<ProductInfoDto> GetWithSalePrice()
+        {
+            return _dispoContext.Products.Select(s => new ProductInfoDto
+            {
+                Id = s.Id,
+                SalePrice = s.SalePrice.ConverterParaReal()
+            }).ToList();
+        }
     }
 }

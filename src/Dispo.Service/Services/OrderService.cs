@@ -16,5 +16,10 @@ namespace Dispo.Service.Services
         {
             return await _orderRepository.GetWithProductsAsync();
         }
+
+        public async Task<List<OrdersWithProductDto>> GetWithProductsByProductIdAsync(long productId)
+        {
+            return await _orderRepository.GetWithProductsByProductIdAsync(productId);
+        }
     }
 }

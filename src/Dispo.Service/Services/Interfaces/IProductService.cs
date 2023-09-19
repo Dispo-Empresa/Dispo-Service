@@ -1,4 +1,5 @@
-﻿using Dispo.Domain.DTOs;
+﻿using Dispo.Domain.DTO_s;
+using Dispo.Domain.DTOs;
 using Dispo.Domain.DTOs.Request;
 
 namespace Dispo.Service.Services.Interfaces
@@ -12,5 +13,9 @@ namespace Dispo.Service.Services.Interfaces
         string BuildProductSKUCode(string productName, string productType);
 
         Task<bool> ExistsByIdAsync(long productId);
+
+        List<ProductInfoDto> GetWithActivePurschaseOrder();
+
+        List<ProductInfoDto> GetWithSalePrice();
     }
 }

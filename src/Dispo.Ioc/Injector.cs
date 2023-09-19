@@ -38,6 +38,8 @@ namespace Dispo.IoC
             serviceColletion.AddScoped<IWarehouseRepository, WarehouseRepository>();
             serviceColletion.AddScoped<IAddressRepository, AddressRepository>();
             serviceColletion.AddScoped<IOrderRepository, OrderRepository>();
+            serviceColletion.AddScoped<IBatchMovementRepository, BatchMovementRepository>();
+            serviceColletion.AddScoped<IBatchRepository, BatchRepository>();
         }
 
         private static void InjectServices(IServiceCollection serviceColletion)
@@ -57,6 +59,8 @@ namespace Dispo.IoC
             serviceColletion.AddScoped<IWarehouseService, WarehouseService>();
             serviceColletion.AddScoped<IInputBatchMovementService, InputBatchMovementService>();
             serviceColletion.AddScoped<IOrderService, OrderService>();
+            serviceColletion.AddScoped<IBatchMovementService, BatchMovementService>();
+            serviceColletion.AddScoped<IBatchService, BatchService>();
         }
 
         private static void InjectGenerics(IServiceCollection serviceColletion)
