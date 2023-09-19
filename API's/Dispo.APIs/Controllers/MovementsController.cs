@@ -53,7 +53,6 @@ namespace Dispo.APIs.Controllers
         {
             try
             {
-                batchMovimentationDto.SetMovementType();
                 await _movementService.MoveBatchAsync(batchMovimentationDto);
 
                 return Ok(new ResponseModelBuilder().WithMessage("Movimentação de produto realizada com sucesso.")

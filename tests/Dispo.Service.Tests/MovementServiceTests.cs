@@ -24,7 +24,7 @@ namespace Dispo.Service.Tests
             _productServiceMock = new Mock<IProductService>();
             _loggerMock = new Mock<ILogger<MovementService>>();
 
-            _sut = new MovementService(_movementRepositoryMock.Object, _productServiceMock.Object, null, _loggerMock.Object);
+            _sut = new MovementService(_movementRepositoryMock.Object, _productServiceMock.Object, null, null, null, null, _loggerMock.Object);
         }
 
         [Test]

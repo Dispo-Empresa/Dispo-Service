@@ -109,9 +109,6 @@ namespace Dispo.API.Controllers
             }
         }
 
-        // -------------------
-
-
         [HttpGet]
         [Route("getPurchaseOrders")]
         public IActionResult GetPurchaseOrders()
@@ -131,6 +128,26 @@ namespace Dispo.API.Controllers
                 return BadRequest(new ResponseModelBuilder().WithMessage("Products not found: " + ex.Message)
                                                             .Build());
             }
+        }
+
+        [HttpGet]
+        [Route("get-with-active-pursche-orders")]
+        public IActionResult GetWithActivePurschaseOrder()
+        {
+            var products = _productService.GetWithActivePurschaseOrder();
+            return Ok(new ResponseModelBuilder().WithSuccess(true)
+                                                .WithData(products)
+                                                .Build());
+        }
+
+        [HttpGet]
+        [Route("get-with-saleprice")]
+        public IActionResult GetWithSalePrice()
+        {
+            var products = _productService.GetWithSalePrice();
+            return Ok(new ResponseModelBuilder().WithSuccess(true)
+                                                .WithData(products)
+                                                .Build());
         }
     }
 }

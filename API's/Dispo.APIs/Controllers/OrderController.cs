@@ -1,5 +1,4 @@
 ﻿using Dispo.Service.Services.Interfaces;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Dispo.APIs.Controllers
@@ -17,9 +16,17 @@ namespace Dispo.APIs.Controllers
 
         [HttpGet]
         [Route("get-with-products")]
-        public async Task<IActionResult> GetWithProducts()
+        public async Task<IActionResult> GetWithProductsAsync()
         {
             var orders = await _orderService.GetWithProductsAsync();
+            return Ok(orders);
+        }
+
+        [HttpGet]
+        [Route("get-with-products/{productId}")]
+        public async Task<IActionResult> GetWithProductsByProductIdAsync(long productId)
+        {
+            var orders = await _orderService.GetWithProductsByProductIdAsync(productId);
             return Ok(orders);
         }
     }

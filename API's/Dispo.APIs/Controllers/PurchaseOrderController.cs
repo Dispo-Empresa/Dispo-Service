@@ -9,9 +9,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Dispo.APIs.Controllers
 {
-    [Route("/api/v1/purchaseorder")]
+    [Route("/api/v1/purschase-orders")]
     [ApiController]
-    public class PurchaseOrderController : ControllerBase
+    [Authorize]
+    public class PurschaseOrderController : ControllerBase
     {
         private readonly IPurchaseOrderRepository _purchaseOrderRepository;
         private readonly IPurchaseOrderService _purchaseOrderService;
@@ -45,8 +46,18 @@ namespace Dispo.APIs.Controllers
                 return BadRequest(new ResponseModelBuilder().WithMessage($"Erro inesperado:  {ex.Message}")
                                                             .WithSuccess(false)
                                                             .WithAlert(AlertType.Error)
-                                                            .Build());
+                                                .Build());
             }
+        }
+
+        [HttpGet]
+        [Route("get-by-product/{productId}")]
+        public IActionResult GetByProcuctId(long productId)
+        {
+            var purschaseOrders = _purschaseOrderService.GetByProcuctId(productId);
+            return Ok(new ResponseModelBuilder().WithSuccess(true)
+                                                .WithData(purschaseOrders)
+                                                .Build());
         }
     }
 }

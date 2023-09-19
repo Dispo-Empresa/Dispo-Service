@@ -1,4 +1,6 @@
-﻿namespace Dispo.Domain.Entities
+﻿using Dispo.Domain.Enums;
+
+namespace Dispo.Domain.Entities
 {
     public class Batch : Base
     {
@@ -13,5 +15,18 @@
         public Product Product { get; set; }
         public Order Order { get; set; }
         public IList<BatchMovement> BatchMovements { get; set; }
+
+        public void IncreaseOrDecreaseQuantityByMovementType(eMovementType movementType, int quantity, DateTime? expirationDate = null)
+        {
+            if (movementType is eMovementType.Input)
+            {
+                QuantityPerBatch += quantity;
+                ExpirationDate = expirationDate.GetValueOrDefault(DateTime.UtcNow);
+                return;
+            }
+
+            QuantityPerBatch -= quantity;
+            ExpirationDate = expirationDate.GetValueOrDefault(DateTime.UtcNow);
+        }
     }
 }

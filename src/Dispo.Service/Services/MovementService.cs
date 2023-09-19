@@ -14,13 +14,19 @@ namespace Dispo.Service.Services
         private readonly IMovementRepository _movementRepository;
         private readonly IProductService _productService;
         private readonly IInputBatchMovementService _inputBatchMovementService;
+        private readonly IBatchMovementService _batchMovementService;
+        private readonly IBatchService _batchService;
+        private readonly IAccountResolverService _accountResolverService;
         private readonly ILogger<MovementService> _logger;
 
-        public MovementService(IMovementRepository movementRepository, IProductService productService, IInputBatchMovementService inputBatchMovementService, ILogger<MovementService> logger)
+        public MovementService(IMovementRepository movementRepository, IProductService productService, IInputBatchMovementService inputBatchMovementService, IBatchMovementService batchMovementService, IBatchService batchService, IAccountResolverService accountResolverService, ILogger<MovementService> logger)
         {
             _movementRepository = movementRepository;
             _productService = productService;
             _inputBatchMovementService = inputBatchMovementService;
+            _batchMovementService = batchMovementService;
+            _batchService = batchService;
+            _accountResolverService = accountResolverService;
             _logger = logger;
         }
 
@@ -103,15 +109,9 @@ namespace Dispo.Service.Services
             //}
         }
 
-        public Task MoveBatchAsync(BatchMovimentationDto batchMovimentationDto)
+        public async Task MoveBatchAsync(BatchMovimentationDto batchMovimentationDto)
         {
-            switch (batchMovimentationDto.MovementType)
-            {
-                case Domain.Enums.eMovementType.Input:
-                case Domain.Enums.eMovementType.Output:
-                default:
-                    throw new UnhandledException("Quantidade não pode ser atualizada.");
-            }
+            await _inputBatchMovementService.MoveAsync(batchMovimentationDto);
         }
     }
 }

@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using Dispo.Commom;
+using Dispo.Domain.DTO_s;
+using Dispo.Domain.DTOs;
 using Dispo.Domain.DTOs.Request;
 using Dispo.Domain.Entities;
 using Dispo.Domain.Exceptions;
@@ -70,6 +72,16 @@ namespace Dispo.Service.Services
         public async Task<bool> ExistsByIdAsync(long productId)
         {
             return await _productRepository.ExistsByIdAsync(productId);
+        }
+
+        public List<ProductInfoDto> GetWithActivePurschaseOrder()
+        {
+            return _productRepository.GetWithActivePurschaseOrder();
+        }
+
+        public List<ProductInfoDto> GetWithSalePrice()
+        {
+            return _productRepository.GetWithSalePrice();
         }
 
         #endregion Public Methods
