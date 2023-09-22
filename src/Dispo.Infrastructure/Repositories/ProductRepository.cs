@@ -5,6 +5,7 @@ using Dispo.Domain.DTOs;
 using Dispo.Domain.Entities;
 using Dispo.Infrastructure.Context;
 using Dispo.Infrastructure.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace Dispo.Infrastructure.Repositories
 {
@@ -17,7 +18,7 @@ namespace Dispo.Infrastructure.Repositories
             _dispoContext = dispoContext;
         }
 
-        public IEnumerable<ProductNameWithCode> GetAllProductNamesWithCode()
+        public IEnumerable<ProductNameWithCode> GetAllProductNames()
             => _dispoContext.Products
                             .Select(s => new ProductNameWithCode
                             {
@@ -46,5 +47,19 @@ namespace Dispo.Infrastructure.Repositories
                                 UnitOfMeasurement = EnumExtension.ConvertToString(s.UnitOfMeasurement),
                             })
                             .ToList();
+
+        // ------------------
+
+        public IEnumerable<PurchaseOrderInfoDto> GetPurchaseOrderInfoDto()
+            => _dispoContext.Orders.Include(x => x.PurchaseOrder).ThenInclude(x => x.Supplier)
+                                   .Select(s => new PurchaseOrderInfoDto()
+                                   {
+                                       IdOrder = s.Id,
+                                       PurchaseOrderNumber = s.PurchaseOrder.Number,
+                                       PurchaseOrderDate = s.PurchaseOrder.CreationDate,
+                                       PurchaseOrderSupplierName = s.PurchaseOrder.Supplier.Name,
+                                       OrderQuantity = s.Quantity
+                                   })
+                                   .ToList();
     }
 }

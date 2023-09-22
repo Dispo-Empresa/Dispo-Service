@@ -7,8 +7,6 @@ namespace Dispo.Service.Services.Interfaces
     {
         long CreateProduct(ProductRequestDto productModel);
 
-        IEnumerable<ProductNameWithCode> GetProductNamesWithCode();
-
         string BuildProductSKUCode(string productName, string productType);
 
         Task<bool> ExistsByIdAsync(long productId);
