@@ -72,12 +72,13 @@ namespace Dispo.Infrastructure.Repositories
                                 }).ToList();
         }
 
-        public List<ProductInfoDto> GetWithSalePrice()
+        public List<ProductExitMovementDto> GetWithSalePrice()
         {
-            return _dispoContext.Products.Select(s => new ProductInfoDto
+            return _dispoContext.Products.Select(s => new ProductExitMovementDto
             {
                 Id = s.Id,
-                SalePrice = s.SalePrice.ConverterParaReal()
+                Name = s.Name,
+                SalePrice = s.SalePrice
             }).ToList();
         }
     }

@@ -79,11 +79,6 @@ namespace Dispo.Service.Services
             return _productRepository.GetWithActivePurschaseOrder();
         }
 
-        public List<ProductInfoDto> GetWithSalePrice()
-        {
-            return _productRepository.GetWithSalePrice();
-        }
-
         #endregion Public Methods
     }
 }

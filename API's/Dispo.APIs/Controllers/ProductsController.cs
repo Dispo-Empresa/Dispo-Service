@@ -1,6 +1,7 @@
 ﻿using Dispo.API.ResponseBuilder;
 using Dispo.APIs.ResponseBuilder;
 using Dispo.Domain.DTOs.Request;
+using Dispo.Domain.Entities;
 using Dispo.Domain.Exceptions;
 using Dispo.Infrastructure.Repositories.Interfaces;
 using Dispo.Service.Services.Interfaces;
@@ -144,7 +145,7 @@ namespace Dispo.API.Controllers
         [Route("get-with-saleprice")]
         public IActionResult GetWithSalePrice()
         {
-            var products = _productService.GetWithSalePrice();
+            var products = _productRepository.GetWithSalePrice();
             return Ok(new ResponseModelBuilder().WithSuccess(true)
                                                 .WithData(products)
                                                 .Build());
