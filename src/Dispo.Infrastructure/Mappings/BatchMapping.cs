@@ -43,15 +43,10 @@ namespace Dispo.Infrastructure.Mappings
                    .HasColumnName("ExpirationDate")
                    .HasColumnType("datetime2");
 
-            builder.HasOne(a => a.Product)
-                   .WithOne(b => b.Batch)
-                   .HasForeignKey<Batch>(c => c.ProductId)
-                   .OnDelete(DeleteBehavior.Restrict);
-
             builder.HasOne(a => a.Order)
                    .WithMany(b => b.Batches)
                    .HasForeignKey(c => c.OrderId)
-                   .OnDelete(DeleteBehavior.Cascade);
+                   .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

@@ -22,12 +22,14 @@ namespace Dispo.Infrastructure.Repositories
 
         public List<BatchDetailsDto> GetWithQuantityByProduct(long productId)
         {
-            return _context.Batches.Where(w => w.ProductId == productId)
+            return _context.Batches.Include(x => x.Order)
+                                   .Where(w => w.Order.ProductId == productId)
                                    .Select(s => new BatchDetailsDto
                                    {
-                                       Id = s.ProductId,
+                                       Id = s.Id,
                                        Key = s.Key,
-                                       Quantity = s.ProductQuantity
+                                       Quantity = s.ProductQuantity,
+                                       ExpirationDate = s.ExpirationDate
                                    }).ToList();
         }
     }

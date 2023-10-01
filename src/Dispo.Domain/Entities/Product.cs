@@ -15,7 +15,6 @@ namespace Dispo.Domain.Entities
         public long? ProductDimensionId { get; set; }
 
         public ProductDimension ProductDimension { get; set; }
-        public Batch Batch { get; set; }
         public IList<ProductManufacturer> ProductManufacturers { get; set; }
         public IList<Order> Orders { get; set; }
     }

@@ -8,11 +8,11 @@ namespace Dispo.API.Controllers
     [Route("/api/v1/batches")]
     [ApiController]
     [Authorize]
-    public class BatchController : ControllerBase
+    public class BatchesController : ControllerBase
     {
         private readonly IBatchService _batchService;
 
-        public BatchController(IBatchService batchService)
+        public BatchesController(IBatchService batchService)
         {
             _batchService = batchService;
         }

@@ -55,11 +55,6 @@ namespace Dispo.Infrastructure.Mappings
                    .WithMany(a => a.PurchaseOrders)
                    .HasForeignKey(c => c.SupplierId)
                    .OnDelete(DeleteBehavior.Cascade);
-
-            builder.HasOne(a => a.Shipping)
-                   .WithOne(b => b.PurchaseOrder)
-                   .HasForeignKey<PurchaseOrder>(c => c.ShippingId)
-                   .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }
