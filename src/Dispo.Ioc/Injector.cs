@@ -37,6 +37,9 @@ namespace Dispo.IoC
             serviceColletion.AddScoped<ISupplierRepository, SupplierRepository>();
             serviceColletion.AddScoped<IWarehouseRepository, WarehouseRepository>();
             serviceColletion.AddScoped<IAddressRepository, AddressRepository>();
+            serviceColletion.AddScoped<IPurchaseOrderAttachmentRepository, PurchaseOrderAttachmentRepository>();
+            serviceColletion.AddScoped<IPurchaseOrderRepository, PurchaseOrderRepository>();
+            serviceColletion.AddScoped<IOrderRepository, OrderRepository>();
         }
 
         private static void InjectServices(IServiceCollection serviceColletion)
@@ -54,6 +57,8 @@ namespace Dispo.IoC
             serviceColletion.AddScoped<ISupplierService, SupplierService>();
             serviceColletion.AddScoped<IAddressService, AddressService>();
             serviceColletion.AddScoped<IWarehouseService, WarehouseService>();
+            serviceColletion.AddScoped<IPurchaseOrderAttachmentService, PurchaseOrderAttachmentService>();
+            serviceColletion.AddScoped<IPurchaseOrderService, PurchaseOrderService>();
         }
 
         private static void InjectGenerics(IServiceCollection serviceColletion)
