@@ -8,7 +8,7 @@ namespace Dispo.Domain.Entities
         public string Number { get; set; }
         public DateTime CreationDate { get; set; }
         public ePaymentMethod PaymentMethod { get; set; }
-        public long WarehouseId { get; set; }
+        public long? WarehouseId { get; set; }
         public eNotificationType NotificationType { get; set; }
         public ePurchaseOrderStatus Status { get; private set; }
         public long SupplierId { get; set; }

@@ -10,16 +10,18 @@ namespace Dispo.Service.Services
 {
     public class PurchaseOrderService : IPurchaseOrderService
     {
-        private readonly IPurchaseOrderRepository _purchaseOrderRepository;
+        private readonly IPurchaseOrderRepository _PurchaseOrderRepository;
         private readonly IOrderRepository _OrderRepository;
+        private readonly IAccountResolverService _AccountResolverService;
 
-        public PurchaseOrderService(IPurchaseOrderRepository purchaseOrderRepository, IOrderRepository orderRepository)
+        public PurchaseOrderService(IPurchaseOrderRepository PurchaseOrderRepository, IOrderRepository OrderRepository, IAccountResolverService AccountResolverService)
         {
-            this._purchaseOrderRepository = purchaseOrderRepository;
-            this._OrderRepository = orderRepository;
+            this._PurchaseOrderRepository = PurchaseOrderRepository;
+            this._OrderRepository = OrderRepository;
+            this._AccountResolverService = AccountResolverService;
         }
 
-        public long CreatePurchaseOrder(PurchaseOrderRequestDto purchaseOrderRequestDto)
+        public long CreatePurchaseOrder(PurchaseOrderRequestDto PurchaseOrderRequestDto)
         {
             try
             {
@@ -27,35 +29,35 @@ namespace Dispo.Service.Services
 
                 using (var tc = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
                 {
+                    var currentWareHouse = _AccountResolverService.GetLoggedAccountId();
+
                     var purchaseOrder = new PurchaseOrder()
                     {
-                        Number = purchaseOrderRequestDto.Number,
-                        CreationDate = purchaseOrderRequestDto.CreationDate,
-                        PaymentMethod = purchaseOrderRequestDto.PaymentMethod,
-                        NotificationType = purchaseOrderRequestDto.NotificationType,
-                        SupplierId = purchaseOrderRequestDto.SupplierId,
-                        WarehouseId = /*purchaseOrderRequestDto.WarehouseId*/ 1,
+                        Number = PurchaseOrderRequestDto.Number,
+                        CreationDate = PurchaseOrderRequestDto.CreationDate,
+                        PaymentMethod = PurchaseOrderRequestDto.PaymentMethod,
+                        NotificationType = PurchaseOrderRequestDto.NotificationType,
+                        SupplierId = PurchaseOrderRequestDto.SupplierId,
+                        WarehouseId = currentWareHouse,
                     };
                     purchaseOrder.ChangeStatusPurchaseOrder(ePurchaseOrderActions.CREATING);
 
-                    _purchaseOrderRepository.Create(purchaseOrder);
+                    _PurchaseOrderRepository.Create(purchaseOrder);
 
                     purchaseOrderCreatedId = purchaseOrder.Id;
 
-                    var orderList = new List<Order>();
-                    foreach (var order in purchaseOrderRequestDto.Orders)
+                    foreach (var orderDto in PurchaseOrderRequestDto.Orders)
                     {
-                        orderList.Add(new Order()
+                        var order = new Order()
                         {
-                            Description = order.Description,
-                            Quantity = order.Quantity,
-                            TotalPrice = order.TotalPrice,
+                            Description = orderDto.Description,
+                            Quantity = orderDto.Quantity,
+                            TotalPrice = orderDto.TotalPrice,
                             PurchaseOrderId = purchaseOrderCreatedId
-                        });
-                    }
+                        };
 
-                    foreach (var order in orderList)
                         _OrderRepository.Create(order);
+                    }                       
 
                     tc.Complete();
                 }
