@@ -1,5 +1,6 @@
 ﻿using Dispo.API.ResponseBuilder;
 using Dispo.Domain;
+using Dispo.Domain.DTOs;
 using Dispo.Domain.DTOs.RequestDTOs;
 using Dispo.Service.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -22,8 +23,6 @@ namespace Dispo.APIs.Controllers
         /// <summary>
         /// Realiza a movimentação de um produto.
         /// </summary>
-        /// <param name="productMovimentationDto"></param>
-        /// <returns></returns>
         [HttpPost]
         [Route("move")]
         public async Task<IActionResult> MoveProduct([FromBody] ProductMovimentationDto productMovimentationDto)
@@ -33,6 +32,29 @@ namespace Dispo.APIs.Controllers
                 productMovimentationDto.Validate();
                 await _movementService.MoveProductAsync(productMovimentationDto);
 
+                return Ok(new ResponseModelBuilder().WithMessage("Movimentação de produto realizada com sucesso.")
+                                                    .WithSuccess(true)
+                                                    .Build());
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ResponseModelBuilder().WithMessage(ex.Message)
+                                                            .WithSuccess(false)
+                                                            .Build());
+            }
+        }
+
+        /// <summary>
+        /// Realiza a movimentação de entrada em lote.
+        /// </summary>
+        [HttpPost]
+        [Route("move/batch")]
+        [AllowAnonymous]
+        public async Task<IActionResult> BatchInputMovement([FromBody] BatchMovimentationDto batchMovimentationDto)
+        {
+            try
+            {
+                await _movementService.MoveBatchAsync(batchMovimentationDto);
                 return Ok(new ResponseModelBuilder().WithMessage("Movimentação de produto realizada com sucesso.")
                                                     .WithSuccess(true)
                                                     .Build());

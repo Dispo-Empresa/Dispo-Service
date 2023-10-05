@@ -1,4 +1,5 @@
 ﻿using Dispo.Commom;
+using Dispo.Domain.DTOs;
 using Dispo.Domain.DTOs.Request;
 using Dispo.Domain.Entities;
 using Dispo.Infrastructure.Repositories.Interfaces;
@@ -38,7 +39,7 @@ namespace Dispo.Service.Services
                         PaymentMethod = PurchaseOrderRequestDto.PaymentMethod,
                         NotificationType = PurchaseOrderRequestDto.NotificationType,
                         SupplierId = PurchaseOrderRequestDto.SupplierId,
-                        WarehouseId = currentWareHouse,
+                        WarehouseId = currentWareHouse.Value,
                     };
                     purchaseOrder.ChangeStatusPurchaseOrder(ePurchaseOrderActions.CREATING);
 
@@ -68,6 +69,11 @@ namespace Dispo.Service.Services
             {               
                 throw;
             }          
+        }
+
+        public List<PurschaseOrderDto> GetByProcuctId(long productId)
+        {
+            return _PurchaseOrderRepository.GetByProcuctId(productId);
         }
     }
 }

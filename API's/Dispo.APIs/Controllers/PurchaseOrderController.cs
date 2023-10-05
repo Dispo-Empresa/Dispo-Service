@@ -4,22 +4,24 @@ using Dispo.Domain.DTOs.Request;
 using Dispo.Domain.Exceptions;
 using Dispo.Infrastructure.Repositories.Interfaces;
 using Dispo.Service.Services.Interfaces;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Dispo.APIs.Controllers
 {
-    [Route("/api/v1/purchaseorder")]
+    [Route("/api/v1/purschase-orders")]
     [ApiController]
-    public class PurchaseOrderController : ControllerBase
+    [Authorize]
+    public class PurschaseOrderController : ControllerBase
     {
         private readonly IPurchaseOrderRepository _purchaseOrderRepository;
         private readonly IPurchaseOrderService _purchaseOrderService;
-        public PurchaseOrderController(IPurchaseOrderRepository purchaseOrderRepository, IPurchaseOrderService purchaseOrderService)
+        public PurschaseOrderController(IPurchaseOrderRepository purchaseOrderRepository, IPurchaseOrderService purchaseOrderService)
         {
             this._purchaseOrderRepository = purchaseOrderRepository;
             this._purchaseOrderService = purchaseOrderService;
         }
+
         [HttpPost]
         public IActionResult Create([FromBody] PurchaseOrderRequestDto purchaseOrderRequestDto)
         {
@@ -45,8 +47,18 @@ namespace Dispo.APIs.Controllers
                 return BadRequest(new ResponseModelBuilder().WithMessage($"Erro inesperado:  {ex.Message}")
                                                             .WithSuccess(false)
                                                             .WithAlert(AlertType.Error)
-                                                            .Build());
+                                                .Build());
             }
+        }
+
+        [HttpGet]
+        [Route("get-by-product/{productId}")]
+        public IActionResult GetByProcuctId(long productId)
+        {
+            var purschaseOrders = _purchaseOrderService.GetByProcuctId(productId);
+            return Ok(new ResponseModelBuilder().WithSuccess(true)
+                                                .WithData(purschaseOrders)
+                                                .Build());
         }
     }
 }

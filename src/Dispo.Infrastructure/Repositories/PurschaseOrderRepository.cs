@@ -6,12 +6,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Dispo.Infrastructure.Repositories
 {
-    public class PurchaseOrderRepository : BaseRepository<PurchaseOrder>, IPurchaseOrderRepository
+    public class PurschaseOrderRepository : BaseRepository<PurchaseOrder>, IPurschaseOrderRepository
     {
-        private readonly DispoContext _context;
-        public PurchaseOrderRepository(DispoContext context) : base(context)
+        private DispoContext _context;
+        public PurschaseOrderRepository(DispoContext context) 
+            : base(context)
         {
-            this._context = context;
+            _context = context;
         }
 
         public List<PurschaseOrderDto> GetByProcuctId(long productId)

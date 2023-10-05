@@ -14,7 +14,7 @@ namespace Dispo.APIs.Controllers
     [Route("/api/v1/purchaseorderattachment")]
     [ApiController]
     [Authorize]
-    public class PurchaseOrderAttachmentController : Controller
+    public class PurchaseOrderAttachmentController : ControllerBase
     {
         private readonly IPurchaseOrderAttachmentRepository _purchaseOrderAttachmentRepository;
         private readonly IPurchaseOrderAttachmentService _purchaseOrderAttachmentService;
@@ -52,10 +52,6 @@ namespace Dispo.APIs.Controllers
                                                             .WithAlert(AlertType.Error)
                                                             .Build());
             }
-        }
-        public IActionResult Index()
-        {
-            return View();
         }
     }
 }

@@ -45,5 +45,19 @@ namespace Dispo.Service.Services
             var claimsIdentity = httpContextAcessor.HttpContext.User.Identity as ClaimsIdentity;
             return claimsIdentity?.Claims.FirstOrDefault(c => c.Type.Equals(claim));
         }
+
+
+        /// <summary>
+        /// Get many clains from current logged session.
+        /// </summary>
+        /// <param name="claim"></param>
+        public IEnumerable<Claim?> GetLoggedAccountDynamicClaims(params string[] claims)
+        {
+            var claimsIdentity = httpContextAcessor.HttpContext.User.Identity as ClaimsIdentity;
+            foreach (var claim in claims)
+            {
+                yield return claimsIdentity?.Claims.FirstOrDefault(c => c.Type.Equals(claim));
+            }
+        }
     }
 }

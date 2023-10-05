@@ -1,6 +1,7 @@
 ﻿using Dispo.API.ResponseBuilder;
 using Dispo.APIs.ResponseBuilder;
 using Dispo.Domain.DTOs.Request;
+using Dispo.Domain.Entities;
 using Dispo.Domain.Exceptions;
 using Dispo.Infrastructure.Repositories.Interfaces;
 using Dispo.Service.Services.Interfaces;
@@ -64,7 +65,6 @@ namespace Dispo.API.Controllers
                                                     .WithData(productNames)
                                                     .WithAlert(AlertType.Success)
                                                     .Build());
-
             }
             catch (Exception ex)
             {
@@ -109,9 +109,6 @@ namespace Dispo.API.Controllers
             }
         }
 
-        // -------------------
-
-
         [HttpGet]
         [Route("getPurchaseOrders")]
         public IActionResult GetPurchaseOrders()
@@ -131,6 +128,26 @@ namespace Dispo.API.Controllers
                 return BadRequest(new ResponseModelBuilder().WithMessage("Products not found: " + ex.Message)
                                                             .Build());
             }
+        }
+
+        [HttpGet]
+        [Route("get-with-active-pursche-orders")]
+        public IActionResult GetWithActivePurschaseOrder()
+        {
+            var products = _productService.GetWithActivePurschaseOrder();
+            return Ok(new ResponseModelBuilder().WithSuccess(true)
+                                                .WithData(products)
+                                                .Build());
+        }
+
+        [HttpGet]
+        [Route("get-with-saleprice")]
+        public IActionResult GetWithSalePrice()
+        {
+            var products = _productRepository.GetWithSalePrice();
+            return Ok(new ResponseModelBuilder().WithSuccess(true)
+                                                .WithData(products)
+                                                .Build());
         }
     }
 }
