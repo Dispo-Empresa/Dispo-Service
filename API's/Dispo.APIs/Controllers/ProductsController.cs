@@ -65,7 +65,6 @@ namespace Dispo.API.Controllers
                                                     .WithData(productNames)
                                                     .WithAlert(AlertType.Success)
                                                     .Build());
-
             }
             catch (Exception ex)
             {
