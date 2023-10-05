@@ -49,12 +49,12 @@ namespace Dispo.APIs.Controllers
         /// </summary>
         [HttpPost]
         [Route("move/batch")]
+        [AllowAnonymous]
         public async Task<IActionResult> BatchInputMovement([FromBody] BatchMovimentationDto batchMovimentationDto)
         {
             try
             {
                 await _movementService.MoveBatchAsync(batchMovimentationDto);
-
                 return Ok(new ResponseModelBuilder().WithMessage("Movimentação de produto realizada com sucesso.")
                                                     .WithSuccess(true)
                                                     .Build());

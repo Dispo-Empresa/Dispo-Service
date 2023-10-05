@@ -7,5 +7,6 @@ namespace Dispo.Infrastructure.Repositories.Interfaces
     {
         Task<bool> ExistsByKeyAsync(string key);
         List<BatchDetailsDto> GetWithQuantityByProduct(long productId);
+        Task<Batch?> GetByKeyAsync(string key);
     }
 }

@@ -25,10 +25,16 @@ namespace Dispo.Infrastructure.Repositories
             return _context.Batches.Where(w => w.ProductId == productId)
                                    .Select(s => new BatchDetailsDto
                                    {
-                                       Id = s.ProductId,
+                                       Id = s.Id,
+                                       ProductId = s.ProductId,
                                        Key = s.Key,
                                        Quantity = s.ProductQuantity
                                    }).ToList();
+        }
+
+        public async Task<Batch?> GetByKeyAsync(string key)
+        {
+            return await _context.Batches.FirstOrDefaultAsync(w => w.Key == key);
         }
     }
 }

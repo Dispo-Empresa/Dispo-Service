@@ -1,6 +1,7 @@
 ﻿using Dispo.Domain.DTOs;
 using Dispo.Domain.DTOs.RequestDTOs;
 using Dispo.Domain.Entities;
+using Dispo.Domain.Enums;
 using Dispo.Domain.Exceptions;
 using Dispo.Infrastructure.Repositories.Interfaces;
 using Dispo.Service.Services.Interfaces;
@@ -13,22 +14,22 @@ namespace Dispo.Service.Services
     {
         private readonly IMovementRepository _movementRepository;
         private readonly IProductService _productService;
-        private readonly IInputBatchMovementService _inputBatchMovementService;
-        private readonly IBatchMovementService _batchMovementService;
-        private readonly IBatchService _batchService;
         private readonly IAccountResolverService _accountResolverService;
+        private readonly IBatchService _batchService;
+        private readonly IBatchMovementService _batchMovementService;
         private readonly ILogger<MovementService> _logger;
 
-        public MovementService(IMovementRepository movementRepository, IProductService productService, IInputBatchMovementService inputBatchMovementService, IBatchMovementService batchMovementService, IBatchService batchService, IAccountResolverService accountResolverService, ILogger<MovementService> logger)
+        public MovementService(IMovementRepository movementRepository, IProductService productService, IAccountResolverService accountResolverService, IBatchService batchService, IBatchMovementService batchMovementService, ILogger<MovementService> logger)
         {
             _movementRepository = movementRepository;
             _productService = productService;
-            _inputBatchMovementService = inputBatchMovementService;
-            _batchMovementService = batchMovementService;
-            _batchService = batchService;
             _accountResolverService = accountResolverService;
+            _batchService = batchService;
+            _batchMovementService = batchMovementService;
             _logger = logger;
         }
+
+        #region Public Methods
 
         /// <summary>
         /// Realiza a movimentação de um produto.
@@ -52,6 +53,69 @@ namespace Dispo.Service.Services
             }
 
             _logger.LogInformation("Movimentação do produto {P} no depósito {I} realizada.", productMovimentationDto.ProductId, productMovimentationDto.WarehouseId);
+        }
+
+        public async Task MoveBatchAsync(BatchMovimentationDto batchMovimentationDto)
+        {
+            using (var transaction = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+            {
+                var movement = await CreateWithAccountAndWarehouseByMovementTypeAsync(batchMovimentationDto.MovementType);
+                foreach (var batchDetails in batchMovimentationDto.Batches)
+                {
+                    //if (batchMovimentationDto.MovementType is eMovementType.Input && await _batchService.ExistsByKeyAsync(batchDetails.Key))
+                    //{
+                    //    _logger.LogWarning("Batch com a Key {K} já existe.", batchDetails.Key);
+                    //    continue;
+                    //}
+
+                    movement.Quantity += batchDetails.Quantity;
+                    var batch = await _batchService.GetOrCreateForMovementationAsync(batchDetails, batchMovimentationDto.MovementType);
+                    await _batchMovementService.CreateAsync(new BatchMovement
+                    {
+                        BatchId = batch.Id,
+                        MovementId = movement.Id
+                    });
+                }
+                await _movementRepository.UpdateAsync(movement);
+                transaction.Complete();
+            }
+        }
+
+        #endregion
+
+        #region Private Methods
+
+        private async Task<Movement> CreateWithAccountAndWarehouseByMovementTypeAsync(eMovementType movementType)
+        {
+            var accountId = _accountResolverService.GetLoggedAccountId();
+            if (accountId is null)
+            {
+                _logger.LogError("O usuário não está autenticado.");
+                throw new UnhandledException("O usuário não está autenticado.");
+            }
+
+            var warehouseId = _accountResolverService.GetLoggedWarehouseId();
+            if (warehouseId is null)
+            {
+                _logger.LogError("O usuário não possui um estoque vinculado.");
+                throw new UnhandledException("O usuário não possui um estoque vinculado.");
+            }
+
+            var movement = new Movement
+            {
+                AccountId = accountId.Value,
+                WarehouseId = warehouseId.Value,
+                Date = DateTime.UtcNow,
+                Type = movementType
+            };
+
+            if (!await _movementRepository.CreateAsync(movement))
+            {
+                _logger.LogError("Não foi possível criar a movimentação.");
+                throw new UnhandledException("Não foi possível criar a movimentação.");
+            }
+
+            return movement;
         }
 
         /// <summary>
@@ -109,9 +173,6 @@ namespace Dispo.Service.Services
             //}
         }
 
-        public async Task MoveBatchAsync(BatchMovimentationDto batchMovimentationDto)
-        {
-            await _inputBatchMovementService.MoveAsync(batchMovimentationDto);
-        }
+        #endregion
     }
 }

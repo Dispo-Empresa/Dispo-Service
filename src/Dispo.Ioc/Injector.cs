@@ -57,7 +57,6 @@ namespace Dispo.IoC
             serviceColletion.AddScoped<ISupplierService, SupplierService>();
             serviceColletion.AddScoped<IAddressService, AddressService>();
             serviceColletion.AddScoped<IWarehouseService, WarehouseService>();
-            serviceColletion.AddScoped<IInputBatchMovementService, InputBatchMovementService>();
             serviceColletion.AddScoped<IOrderService, OrderService>();
             serviceColletion.AddScoped<IBatchMovementService, BatchMovementService>();
             serviceColletion.AddScoped<IBatchService, BatchService>();

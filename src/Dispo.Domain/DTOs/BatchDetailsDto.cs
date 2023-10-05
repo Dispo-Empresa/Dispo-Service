@@ -11,5 +11,6 @@ namespace Dispo.Domain.DTOs
         public DateTime? ExpirationDate { get; set; }
         public required int Quantity { get; set; }
         public int? OrderId { get; set; }
+        public long ProductId { get; set; }
     }
 }
