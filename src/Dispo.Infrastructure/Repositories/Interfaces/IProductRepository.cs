@@ -14,10 +14,6 @@ namespace Dispo.Infrastructure.Repositories.Interfaces
 
         List<ProductInfoDto> GetWithActivePurschaseOrder();
 
-        List<ProductInfoDto> GetWithSalePrice();
-
-        IEnumerable<ProductInfoDatatableDto> GetProductInfoDto();
-
         IEnumerable<PurchaseOrderInfoDto> GetPurchaseOrderInfoDto();
 
         List<ProductExitMovementDto> GetWithSalePrice();

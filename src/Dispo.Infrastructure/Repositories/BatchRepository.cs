@@ -1,4 +1,5 @@
-﻿using Dispo.Domain.DTOs;
+﻿using Dispo.Commom;
+using Dispo.Domain.DTOs;
 using Dispo.Domain.Entities;
 using Dispo.Infrastructure.Context;
 using Dispo.Infrastructure.Repositories.Interfaces;
@@ -27,7 +28,7 @@ namespace Dispo.Infrastructure.Repositories
                                    .Select(s => new BatchDetailsDto
                                    {
                                        Id = s.Id,
-                                       ProductId = s.ProductId,
+                                       ProductId = (s.Order == null) ? IDHelper.INVALID_ID : s.Order.ProductId,
                                        Key = s.Key,
                                        Quantity = s.ProductQuantity,
                                        ExpirationDate = s.ExpirationDate

@@ -10,6 +10,7 @@ namespace Dispo.Infrastructure.Repositories
     {
         private readonly DispoContext _context;
         public OrderRepository(DispoContext context)
+            : base(context)
         {
             _context = context;
         }

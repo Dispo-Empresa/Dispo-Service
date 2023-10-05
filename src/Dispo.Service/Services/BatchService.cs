@@ -69,7 +69,6 @@ namespace Dispo.Service.Services
                 throw new UnhandledException("O campo 'OrderId' deve ser preenchido para movimentações de entrada.");
             }
 
-            var productId = await _orderRepository.GetProductByOrderId(batchDetails.OrderId.Value);
             var batch = new Batch
             {
                 Key = batchDetails.Key,
@@ -77,8 +76,8 @@ namespace Dispo.Service.Services
                 ExpirationDate = batchDetails.ExpirationDate.HasValue ? batchDetails.ExpirationDate.Value : DateTime.Now,
                 QuantityPerBatch = batchDetails.Quantity,
                 OrderId = batchDetails.OrderId.Value,
-                ProductId = productId,
             };
+
             batch.IncreaseOrDecreaseQuantityByMovementType(movementType, batchDetails.Quantity, batchDetails.ExpirationDate);
             await _batchRepository.CreateAsync(batch);
             return batch;
