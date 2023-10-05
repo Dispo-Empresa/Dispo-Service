@@ -15,7 +15,5 @@ namespace Dispo.Service.Services.Interfaces
         Task<bool> ExistsByIdAsync(long productId);
 
         List<ProductInfoDto> GetWithActivePurschaseOrder();
-
-        List<ProductInfoDto> GetWithSalePrice();
     }
 }

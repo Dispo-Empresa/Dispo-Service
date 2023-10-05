@@ -14,6 +14,6 @@ namespace Dispo.Infrastructure.Repositories.Interfaces
 
         List<ProductInfoDto> GetWithActivePurschaseOrder();
 
-        List<ProductInfoDto> GetWithSalePrice();
+        List<ProductExitMovementDto> GetWithSalePrice();
     }
 }

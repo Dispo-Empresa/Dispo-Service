@@ -4,6 +4,7 @@ using Dispo.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Dispo.Infrastructure.Migrations
 {
     [DbContext(typeof(DispoContext))]
-    partial class DispoContextModelSnapshot : ModelSnapshot
+    [Migration("20230928042324_PR98-CorrecaoCampoProdutoNoLote")]
+    partial class PR98CorrecaoCampoProdutoNoLote
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -467,6 +470,9 @@ namespace Dispo.Infrastructure.Migrations
                         .HasMaxLength(120)
                         .HasColumnType("SMALLINT")
                         .HasColumnName("PaymentMethod");
+
+                    b.Property<long>("ShippingId")
+                        .HasColumnType("bigint");
 
                     b.Property<short>("Status")
                         .HasMaxLength(120)
