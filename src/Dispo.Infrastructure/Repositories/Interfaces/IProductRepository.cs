@@ -9,9 +9,8 @@ namespace Dispo.Infrastructure.Repositories.Interfaces
         IEnumerable<ProductNameWithCode> GetAllProductNames();
 
         long GetProductIdByName(string productName);
-
         IEnumerable<ProductInfoDto> GetProductInfoDto();
-
+        IEnumerable<PurchaseOrderInfoDto> GetPurchaseOrderInfoDto();
         List<ProductInfoDto> GetWithActivePurschaseOrder();
 
         IEnumerable<PurchaseOrderInfoDto> GetPurchaseOrderInfoDto();

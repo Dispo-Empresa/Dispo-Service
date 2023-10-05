@@ -1,5 +1,6 @@
 ﻿using Dispo.Domain.Entities;
 using Dispo.Domain.DTOs;
+using Dispo.Domain.Entities;
 using Dispo.Infrastructure.Context;
 using Dispo.Infrastructure.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;

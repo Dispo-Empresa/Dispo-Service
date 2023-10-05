@@ -1,10 +1,7 @@
 ﻿using Dispo.API.ResponseBuilder;
 using Dispo.APIs.ResponseBuilder;
 using Dispo.Domain.DTOs.Request;
-using Dispo.Domain.Entities;
 using Dispo.Domain.Exceptions;
-using Dispo.Infrastructure.Repositories.Interfaces;
-using Dispo.Service.Services;
 using Dispo.Service.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -16,12 +13,10 @@ namespace Dispo.APIs.Controllers
     [Authorize]
     public class PurchaseOrderAttachmentController : ControllerBase
     {
-        private readonly IPurchaseOrderAttachmentRepository _purchaseOrderAttachmentRepository;
         private readonly IPurchaseOrderAttachmentService _purchaseOrderAttachmentService;
 
-        public PurchaseOrderAttachmentController(IPurchaseOrderAttachmentRepository purchaseOrderAttachmentRepository, IPurchaseOrderAttachmentService purchaseOrderAttachmentService)
+        public PurchaseOrderAttachmentController(IPurchaseOrderAttachmentService purchaseOrderAttachmentService)
         {
-            _purchaseOrderAttachmentRepository = purchaseOrderAttachmentRepository;
             _purchaseOrderAttachmentService = purchaseOrderAttachmentService;
         }
 
