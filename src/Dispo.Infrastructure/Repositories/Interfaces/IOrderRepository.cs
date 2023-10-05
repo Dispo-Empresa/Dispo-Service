@@ -8,5 +8,6 @@ namespace Dispo.Infrastructure.Repositories.Interfaces
     {
         Task<List<OrdersWithProductDto>> GetWithProductsAsync();
         Task<List<OrdersWithProductDto>> GetWithProductsByProductIdAsync(long productId);
+        Task<long> GetProductByOrderId(long orderId);
     }
 }

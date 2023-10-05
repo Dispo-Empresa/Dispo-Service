@@ -73,5 +73,12 @@ namespace Dispo.Infrastructure.Repositories
                     }
                 }).ToListAsync();
         }
+
+        public Task<long> GetProductByOrderId(long orderId)
+        {
+            return _context.Orders.Where(w => w.Id == orderId)
+                                  .Select(s => s.ProductId)
+                                  .FirstOrDefaultAsync();
+        }
     }
 }

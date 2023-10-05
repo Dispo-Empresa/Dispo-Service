@@ -19,14 +19,11 @@ namespace Dispo.Domain.Entities
         public void IncreaseOrDecreaseQuantityByMovementType(eMovementType movementType, int quantity, DateTime? expirationDate = null)
         {
             if (movementType is eMovementType.Input)
-            {
                 QuantityPerBatch += quantity;
-                ExpirationDate = expirationDate.GetValueOrDefault(DateTime.UtcNow);
-                return;
-            }
+            else
+                QuantityPerBatch -= quantity;
 
-            QuantityPerBatch -= quantity;
-            ExpirationDate = expirationDate.GetValueOrDefault(DateTime.UtcNow);
+            ExpirationDate = expirationDate.GetValueOrDefault(DateTime.Now);
         }
     }
 }
