@@ -42,6 +42,8 @@ namespace Dispo.IoC
             serviceColletion.AddScoped<IOrderRepository, OrderRepository>();
             serviceColletion.AddScoped<IBatchMovementRepository, BatchMovementRepository>();
             serviceColletion.AddScoped<IBatchRepository, BatchRepository>();
+            serviceColletion.AddScoped<IPurchaseOrderRepository, PurchaseOrderRepository>();
+            serviceColletion.AddScoped<IPurchaseOrderAttachmentRepository, PurchaseOrderAttachmentRepository>();
         }
 
         private static void InjectServices(IServiceCollection serviceColletion)

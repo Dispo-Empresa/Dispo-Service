@@ -30,7 +30,7 @@ namespace Dispo.Service.Services
 
                 using (var tc = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
                 {
-                    var currentWareHouse = _AccountResolverService.GetLoggedAccountId();
+                    var currentWareHouse = _AccountResolverService.GetLoggedWarehouseId();
 
                     var purchaseOrder = new PurchaseOrder()
                     {
@@ -54,6 +54,7 @@ namespace Dispo.Service.Services
                             Description = orderDto.Description,
                             Quantity = orderDto.Quantity,
                             TotalPrice = orderDto.TotalPrice,
+                            ProductId = orderDto.Product,
                             PurchaseOrderId = purchaseOrderCreatedId
                         };
 

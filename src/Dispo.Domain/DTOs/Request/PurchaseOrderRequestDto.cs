@@ -1,6 +1,7 @@
 ﻿
 using Dispo.Domain.Entities;
 using Dispo.Domain.Enums;
+using Newtonsoft.Json;
 
 namespace Dispo.Domain.DTOs.Request
 {
