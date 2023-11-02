@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Account\Dispo.Account.Core.Application\Dispo.Account.Core.Application.csproj" />
+    <ProjectReference Include="..\..\Shared\Dispo.Shared.Core.Domain\Dispo.Shared.Core.Domain.csproj" />
+    <ProjectReference Include="..\..\Shared\Dispo.Shared.Utils\Dispo.Shared.Utils.csproj" />
+  </ItemGroup>
+
+</Project>

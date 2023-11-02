@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="12.0.1" />
+    <PackageReference Include="EscNet" Version="7.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="7.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="7.0.0" />
+    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.24.0" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.24.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Shared\Dispo.Shared.Caching\Dispo.Shared.Caching.csproj" />
+    <ProjectReference Include="..\..\Shared\Dispo.Shared.Core.Domain\Dispo.Shared.Core.Domain.csproj" />
+    <ProjectReference Include="..\..\Shared\Dispo.Shared.Queue\Dispo.Shared.Queue.csproj" />
+    <ProjectReference Include="..\..\Shared\Dispo.Shared.Utils\Dispo.Shared.Utils.csproj" />
+  </ItemGroup>
+
+</Project>
