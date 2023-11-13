@@ -1,7 +1,7 @@
-﻿using Dispo.Shared.Core.Domain.Entities;
-using Dispo.Shared.Core.Domain.Interfaces;
-using Dispo.Product.Core.Application.Services.Interfaces;
+﻿using Dispo.Product.Core.Application.Services.Interfaces;
 using Dispo.Shared.Core.Domain.DTOs.Request;
+using Dispo.Shared.Core.Domain.Entities;
+using Dispo.Shared.Core.Domain.Interfaces;
 
 namespace Dispo.Product.Core.Application.Services
 {
@@ -20,7 +20,7 @@ namespace Dispo.Product.Core.Application.Services
         {
             try
             {
-                var newAccount = new Account();
+                var newAccount = new Shared.Core.Domain.Entities.Account();
                 newAccount.Email = createEmployeeRequestDto.Email;
                 newAccount.Ativo = true;
                 newAccount.Password = "alterarsenha";

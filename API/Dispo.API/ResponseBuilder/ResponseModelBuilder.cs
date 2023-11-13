@@ -1,4 +1,4 @@
-﻿using Dispo.Common.Utils.Extensions;
+﻿using Dispo.Shared.Utils.Extensions;
 
 namespace Dispo.API.ResponseBuilder
 {

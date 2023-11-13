@@ -1,6 +1,6 @@
-﻿using Dispo.Shared.Core.Domain.Entities;
+﻿using Dispo.Shared.Core.Domain.DTOs;
+using Dispo.Shared.Core.Domain.Entities;
 using Dispo.Shared.Core.Domain.Enums;
-using Dispo.Shared.Core.Domain.DTOs;
 
 namespace Dispo.Movement.Core.Application.Services.Interfaces
 {

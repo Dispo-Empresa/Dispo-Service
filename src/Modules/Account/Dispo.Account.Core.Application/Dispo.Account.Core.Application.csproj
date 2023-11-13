@@ -21,6 +21,7 @@
     <ProjectReference Include="..\..\Shared\Dispo.Shared.Core.Domain\Dispo.Shared.Core.Domain.csproj" />
     <ProjectReference Include="..\..\Shared\Dispo.Shared.Queue\Dispo.Shared.Queue.csproj" />
     <ProjectReference Include="..\..\Shared\Dispo.Shared.Utils\Dispo.Shared.Utils.csproj" />
+    <ProjectReference Include="..\Dispo.Account.Domain\Dispo.Account.Domain.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,8 +1,8 @@
-﻿using Dispo.Shared.Core.Domain.Interfaces;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Dispo.Movement.Core.Application.Services;
 using Dispo.Movement.Core.Application.Services.Interfaces;
-using Dispo.Movement.Core.Application.Services;
 using Dispo.Movement.Infrastructure.Persistence.Repositories;
+using Dispo.Shared.Core.Domain.Interfaces;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Dispo.Movement.Infrastructure.IoC
 {

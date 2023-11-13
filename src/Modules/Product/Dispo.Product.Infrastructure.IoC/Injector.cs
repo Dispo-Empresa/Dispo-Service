@@ -24,6 +24,7 @@ namespace Dispo.Product.Infrastructure.IoC
 
         private static void InjectServices(IServiceCollection serviceColletion)
         {
+            serviceColletion.AddScoped<IAdmService, AdmService>();
             serviceColletion.AddScoped<IProductService, ProductService>();
             serviceColletion.AddScoped<IManufacturerService, ManufacturerService>();
             serviceColletion.AddScoped<IAddressService, AddressService>();

@@ -1,11 +1,11 @@
-﻿using Dispo.Shared.Core.Domain.Interfaces;
+﻿using AutoMapper;
 using Dispo.Product.Core.Application.Services.Interfaces;
 using Dispo.Shared.Core.Domain.DTOs;
 using Dispo.Shared.Core.Domain.DTOs.Request;
-using System.Transactions;
-using AutoMapper;
 using Dispo.Shared.Core.Domain.Exceptions;
+using Dispo.Shared.Core.Domain.Interfaces;
 using Dispo.Shared.Utils;
+using System.Transactions;
 
 namespace Dispo.Product.Core.Application.Services
 {
