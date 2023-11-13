@@ -1,5 +1,4 @@
 ﻿using Dispo.Shared.Core.Domain.Enums;
-using Dispo.Shared.Core.Domain.DTOs;
 
 namespace Dispo.Shared.Core.Domain.DTOs.Request
 {

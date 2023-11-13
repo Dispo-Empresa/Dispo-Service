@@ -4,6 +4,7 @@ using Dispo.Shared.Infrastructure.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Dispo.Infrastructure.Migrations
 {
     [DbContext(typeof(DispoContext))]
-    partial class DispoContextModelSnapshot : ModelSnapshot
+    [Migration("20231107031853_FieldCompanyIdByHubAdded")]
+    partial class FieldCompanyIdByHubAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -187,6 +190,43 @@ namespace Dispo.Infrastructure.Migrations
                     b.HasIndex("MovementId");
 
                     b.ToTable("BatchMovements", (string)null);
+                });
+
+            modelBuilder.Entity("Dispo.Shared.Core.Domain.Entities.Company", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("BIGINT");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<long>("AddressId")
+                        .HasColumnType("BIGINT");
+
+                    b.Property<bool>("Ativo")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true)
+                        .HasColumnName("Ativo");
+
+                    b.Property<string>("Cnpj")
+                        .IsRequired()
+                        .HasMaxLength(18)
+                        .HasColumnType("VARCHAR(18)")
+                        .HasColumnName("Cnpj");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(220)
+                        .HasColumnType("VARCHAR(220)")
+                        .HasColumnName("Name");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AddressId")
+                        .IsUnique();
+
+                    b.ToTable("Companies", (string)null);
                 });
 
             modelBuilder.Entity("Dispo.Shared.Core.Domain.Entities.Manufacturer", b =>
@@ -647,6 +687,9 @@ namespace Dispo.Infrastructure.Migrations
                         .HasColumnType("datetime2")
                         .HasColumnName("BirthDate");
 
+                    b.Property<long>("CompanyId")
+                        .HasColumnType("BIGINT");
+
                     b.Property<string>("Cpf")
                         .IsRequired()
                         .HasMaxLength(18)
@@ -676,6 +719,8 @@ namespace Dispo.Infrastructure.Migrations
                     b.HasIndex("AddressId")
                         .IsUnique();
 
+                    b.HasIndex("CompanyId");
+
                     b.ToTable("Users", (string)null);
                 });
 
@@ -696,6 +741,9 @@ namespace Dispo.Infrastructure.Migrations
                         .HasDefaultValue(true)
                         .HasColumnName("Ativo");
 
+                    b.Property<long>("CompanyId")
+                        .HasColumnType("BIGINT");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(60)
@@ -706,6 +754,8 @@ namespace Dispo.Infrastructure.Migrations
 
                     b.HasIndex("AddressId")
                         .IsUnique();
+
+                    b.HasIndex("CompanyId");
 
                     b.ToTable("Warehouses", (string)null);
                 });
@@ -786,6 +836,17 @@ namespace Dispo.Infrastructure.Migrations
                     b.Navigation("Batch");
 
                     b.Navigation("Movement");
+                });
+
+            modelBuilder.Entity("Dispo.Shared.Core.Domain.Entities.Company", b =>
+                {
+                    b.HasOne("Dispo.Shared.Core.Domain.Entities.Address", "Address")
+                        .WithOne("Company")
+                        .HasForeignKey("Dispo.Shared.Core.Domain.Entities.Company", "AddressId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Address");
                 });
 
             modelBuilder.Entity("Dispo.Shared.Core.Domain.Entities.Movement", b =>
@@ -916,7 +977,15 @@ namespace Dispo.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("Dispo.Shared.Core.Domain.Entities.Company", "Company")
+                        .WithMany("Users")
+                        .HasForeignKey("CompanyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Address");
+
+                    b.Navigation("Company");
                 });
 
             modelBuilder.Entity("Dispo.Shared.Core.Domain.Entities.Warehouse", b =>
@@ -927,7 +996,15 @@ namespace Dispo.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("Dispo.Shared.Core.Domain.Entities.Company", "Company")
+                        .WithMany("Warehouses")
+                        .HasForeignKey("CompanyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Address");
+
+                    b.Navigation("Company");
                 });
 
             modelBuilder.Entity("Dispo.Shared.Core.Domain.Entities.WarehouseAccount", b =>
@@ -958,6 +1035,9 @@ namespace Dispo.Infrastructure.Migrations
 
             modelBuilder.Entity("Dispo.Shared.Core.Domain.Entities.Address", b =>
                 {
+                    b.Navigation("Company")
+                        .IsRequired();
+
                     b.Navigation("Supplier")
                         .IsRequired();
 
@@ -971,6 +1051,13 @@ namespace Dispo.Infrastructure.Migrations
             modelBuilder.Entity("Dispo.Shared.Core.Domain.Entities.Batch", b =>
                 {
                     b.Navigation("BatchMovements");
+                });
+
+            modelBuilder.Entity("Dispo.Shared.Core.Domain.Entities.Company", b =>
+                {
+                    b.Navigation("Users");
+
+                    b.Navigation("Warehouses");
                 });
 
             modelBuilder.Entity("Dispo.Shared.Core.Domain.Entities.Manufacturer", b =>

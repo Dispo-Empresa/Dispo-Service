@@ -13,11 +13,10 @@ namespace Dispo.Shared.Infrastructure.Persistence.Context
         public DispoContext()
         { }
 
-        public DbSet<Account> Accounts { get; set; }
+        public DbSet<Core.Domain.Entities.Account> Accounts { get; set; }
         public DbSet<Address> Addresses { get; set; }
         public DbSet<Batch> Batches { get; set; }
         public DbSet<BatchMovement> BatchMovements { get; set; }
-        public DbSet<Company> Companies { get; set; }
         public DbSet<Manufacturer> Manufacturers { get; set; }
         public DbSet<Movement> Movements { get; set; }
         public DbSet<Order> Orders { get; set; }
@@ -39,7 +38,6 @@ namespace Dispo.Shared.Infrastructure.Persistence.Context
             modelBuilder.ApplyConfiguration(new AddressMapping());
             modelBuilder.ApplyConfiguration(new BatchMapping());
             modelBuilder.ApplyConfiguration(new BatchMovementMapping());
-            modelBuilder.ApplyConfiguration(new CompanyMapping());
             modelBuilder.ApplyConfiguration(new ManufacturerMapping());
             modelBuilder.ApplyConfiguration(new MovementMapping());
             modelBuilder.ApplyConfiguration(new OrderMapping());

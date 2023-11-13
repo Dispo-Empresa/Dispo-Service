@@ -1,12 +1,11 @@
-﻿using Dispo.Shared.Core.Domain.Entities;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Dispo.Shared.Infrastructure.Persistence.Mappings
 {
-    public class AccountMapping : IEntityTypeConfiguration<Account>
+    public class AccountMapping : IEntityTypeConfiguration<Core.Domain.Entities.Account>
     {
-        public void Configure(EntityTypeBuilder<Account> builder)
+        public void Configure(EntityTypeBuilder<Core.Domain.Entities.Account> builder)
         {
             builder.ToTable("Accounts");
 
@@ -34,6 +33,15 @@ namespace Dispo.Shared.Infrastructure.Persistence.Mappings
                    .HasColumnType("VARCHAR(255)")
                    .HasMaxLength(255);
 
+            builder.Property(x => x.LastLicenceCheck)
+                   .HasColumnName("LastLicenceCheck")
+                   .HasColumnType("datetime2");
+
+            builder.Property(x => x.CompanyIdByHub)
+                   .IsRequired()
+                   .HasColumnName("CompanyIdByHub")
+                   .HasColumnType("BIGINT");
+
             builder.Property(x => x.UserId)
                    .IsRequired(false);
 
@@ -44,7 +52,7 @@ namespace Dispo.Shared.Infrastructure.Persistence.Mappings
 
             builder.HasOne(a => a.User)
                    .WithOne(b => b.Account)
-                   .HasForeignKey<Account>(b => b.UserId)
+                   .HasForeignKey<Core.Domain.Entities.Account>(b => b.UserId)
                    .OnDelete(DeleteBehavior.Restrict);
         }
     }

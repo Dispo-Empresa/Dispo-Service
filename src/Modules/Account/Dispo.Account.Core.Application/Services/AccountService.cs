@@ -2,13 +2,17 @@
 using Dispo.Account.Core.Application.Services.Interfaces;
 using Dispo.Shared.Core.Domain.DTOs.Request;
 using Dispo.Shared.Core.Domain.DTOs.Response;
+using Dispo.Shared.Core.Domain.Endpoints;
 using Dispo.Shared.Core.Domain.Entities;
 using Dispo.Shared.Core.Domain.Exceptions;
 using Dispo.Shared.Core.Domain.Interfaces;
+using Dispo.Shared.Core.Domain.Models;
 using Dispo.Shared.Utils;
 using EscNet.Cryptography.Interfaces;
 using EscNet.Hashers.Interfaces.Algorithms;
 using Microsoft.Extensions.Caching.Memory;
+using Newtonsoft.Json;
+using System.Net.Http.Headers;
 using System.Transactions;
 
 namespace Dispo.Account.Core.Application.Services
@@ -43,7 +47,7 @@ namespace Dispo.Account.Core.Application.Services
             });
         }
 
-        public SignInResponseDto AuthenticateByEmailAndPassword(string email, string password)
+        public async Task<SignInResponseDto> AuthenticateByEmailAndPassword(string email, string password)
         {
             var encryptedEmail = email;
             var hashedPassword = password;
@@ -52,6 +56,8 @@ namespace Dispo.Account.Core.Application.Services
 
             if (loggedAccount == null)
                 throw new NotFoundException("Conta não encontrada");
+
+            await ValidateLicence(loggedAccount.Id, loggedAccount.CompanyIdByHub);
 
             return new SignInResponseDto()
             {
@@ -113,7 +119,7 @@ namespace Dispo.Account.Core.Application.Services
 
             using (var tc = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
-                var userUpdated = new Shared.Core.Domain.Entities.User(); //_userRepository.GetUserByAccountId(userAccountModel.Id);
+                var userUpdated = new User();
 
                 if (userUpdated == null)
                     throw new Exception("Informações não encontradas para esta conta!");
@@ -159,6 +165,47 @@ namespace Dispo.Account.Core.Application.Services
             var user = _accountRepository.GetById(userId) ?? throw new NotFoundException("Esse usuário não existe.");
             user.CurrentWarehouseId = warehouseId;
             _accountRepository.Update(user);
+        }
+
+        public async Task ValidateLicence(long accountId, long companyId)
+        {
+            var lastLicenceCheck = _accountRepository.GetLastLicenceCheckCurrentByCompanyId(companyId);
+
+            if (lastLicenceCheck.AddDays(1) >= DateTime.Now)
+                return;
+
+            await ValidateLicenceByHub(accountId, companyId);
+        }
+
+        public async Task ValidateLicenceByHub(long accountId, long companyId)
+        {
+            try
+            {
+                var url = HubEndpoints.GetLicence;
+                var parameters = $"?companyId={companyId}";
+
+                HttpClient client = new HttpClient();
+                client.BaseAddress = new Uri(url);
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                var response = await client.GetAsync(parameters);
+
+                var jsonString = await response.Content.ReadAsStringAsync();
+                var responseModel = JsonConvert.DeserializeObject<ResponseModel>(jsonString);
+
+                if (!responseModel.Success)
+                    throw new BusinessException($"Falha ao obter a licença: {responseModel.Message}");
+
+                _accountRepository.UpdateLastLicenceCheckById(accountId);
+            }
+            catch (BusinessException ex)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Falha na comunicação com o DispoHub: {ex.Message}");
+            }
         }
     }
 }

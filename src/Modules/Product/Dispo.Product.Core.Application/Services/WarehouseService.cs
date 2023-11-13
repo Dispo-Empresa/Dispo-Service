@@ -1,9 +1,9 @@
-﻿using Dispo.Shared.Core.Domain.Entities;
-using Dispo.Shared.Core.Domain.Interfaces;
-using Dispo.Product.Core.Application.Services.Interfaces;
+﻿using Dispo.Product.Core.Application.Services.Interfaces;
 using Dispo.Shared.Core.Domain.DTOs.Request;
-using System.Transactions;
+using Dispo.Shared.Core.Domain.Entities;
 using Dispo.Shared.Core.Domain.Exceptions;
+using Dispo.Shared.Core.Domain.Interfaces;
+using System.Transactions;
 
 namespace Dispo.Product.Core.Application.Services
 {
@@ -27,7 +27,6 @@ namespace Dispo.Product.Core.Application.Services
                 {
                     AddressId = warehouseRequestDto.AddressId,
                     Name = warehouseRequestDto.Name,
-                    CompanyId = 1,
                 };
 
                 _warehouseRepository.Create(warehouse);

@@ -1,10 +1,10 @@
-﻿using Dispo.Shared.Core.Domain.Entities;
-using Dispo.Shared.Core.Domain.Interfaces;
-using Dispo.Product.Core.Application.Services.Interfaces;
+﻿using Dispo.Product.Core.Application.Services.Interfaces;
 using Dispo.Shared.Core.Domain.DTOs.Request;
-using System.Transactions;
+using Dispo.Shared.Core.Domain.Entities;
 using Dispo.Shared.Core.Domain.Exceptions;
-using Dispo.Common.Utils;
+using Dispo.Shared.Core.Domain.Interfaces;
+using Dispo.Shared.Utils;
+using System.Transactions;
 
 namespace Dispo.Product.Core.Application.Services
 {

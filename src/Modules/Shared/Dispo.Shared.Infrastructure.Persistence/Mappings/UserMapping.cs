@@ -55,11 +55,6 @@ namespace Dispo.Shared.Infrastructure.Persistence.Mappings
                    .HasColumnName("BirthDate")
                    .HasColumnType("datetime2");
 
-            builder.HasOne(a => a.Company)
-                   .WithMany(b => b.Users)
-                   .HasForeignKey(c => c.CompanyId)
-                   .OnDelete(DeleteBehavior.Cascade);
-
             builder.HasOne(a => a.Address)
                    .WithOne(b => b.User)
                    .HasForeignKey<User>(c => c.AddressId)

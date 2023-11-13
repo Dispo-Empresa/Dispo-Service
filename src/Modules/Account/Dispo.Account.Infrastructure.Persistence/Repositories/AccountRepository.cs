@@ -45,7 +45,6 @@ namespace Dispo.Account.Infrastructure.Persistence.Repositories
 
         public Shared.Core.Domain.Entities.Account? GetAccountByEmailAndPassword(string email, string password)
             => _dispoContext.Accounts
-                            .Include(x => x.Role)
                             .FirstOrDefault(ExpBySignInModel(email, password));
 
         public void ResetPassword(Shared.Core.Domain.Entities.Account account, string newPassword)
@@ -57,9 +56,9 @@ namespace Dispo.Account.Infrastructure.Persistence.Repositories
 
         public long GetAccountIdByEmail(string email)
             => _dispoContext.Accounts.Where(x => x.Email == email)
-                                      .Select(s => s.Id)
-                                      .SingleOrDefault()
-                                      .ToLong();
+                                     .Select(s => s.Id)
+                                     .SingleOrDefault()
+                                     .ToLong();
 
         public UserInfoResponseDto GetUserInfoResponseDto(long id)
             => _dispoContext.Accounts.Where(x => x.Id == id)
@@ -102,6 +101,20 @@ namespace Dispo.Account.Infrastructure.Persistence.Repositories
         {
             return _dispoContext.Accounts.Include(i => i.WarehouseAccounts)
                                          .FirstOrDefault(w => w.Id == id);
+        }
+
+        public DateTime GetLastLicenceCheckCurrentByCompanyId(long companyId)
+            => _dispoContext.Accounts.Where(x => x.CompanyIdByHub == companyId)
+                                     .OrderByDescending(o => o.LastLicenceCheck)
+                                     .Select(s => s.LastLicenceCheck)
+                                     .FirstOrDefault();
+
+        public void UpdateLastLicenceCheckById(long accountId)
+        {
+            var account = GetById(accountId);
+            account.LastLicenceCheck = DateTime.Now;
+
+            Update(account);
         }
     }
 }
