@@ -23,11 +23,11 @@ namespace Dispo.API.Controllers
 
         [HttpPost]
         [Route("signin")]
-        public IActionResult SignIn([FromBody] SignInRequestDto signInRequestDto)
+        public async Task<IActionResult> SignIn([FromBody] SignInRequestDto signInRequestDto)
         {
             try
             {
-                var infoAccount = _accountService.AuthenticateByEmailAndPassword(signInRequestDto.Email, signInRequestDto.Password);
+                var infoAccount = await _accountService.AuthenticateByEmailAndPassword(signInRequestDto.Email, signInRequestDto.Password);
                 var generatedToken = _tokenGenerator.GenerateJwtToken(infoAccount.AccountId, infoAccount.CurrentWarehouseId);
 
                 return Ok(new ResponseModelBuilder().WithMessage("User exists!")

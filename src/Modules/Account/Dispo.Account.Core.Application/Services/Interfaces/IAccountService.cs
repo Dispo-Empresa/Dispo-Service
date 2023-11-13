@@ -7,7 +7,7 @@ namespace Dispo.Account.Core.Application.Services.Interfaces
     {
         Task<Shared.Core.Domain.Entities.Account?> GetByIdAsyncFromCache(long id);
 
-        SignInResponseDto AuthenticateByEmailAndPassword(string email, string password);
+        Task<SignInResponseDto> AuthenticateByEmailAndPassword(string email, string password);
 
         UserResponseDto CreateAccountAndUser(SignUpRequestDto signUpModel);
 

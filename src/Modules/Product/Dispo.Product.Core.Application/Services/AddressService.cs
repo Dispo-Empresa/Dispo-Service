@@ -1,6 +1,6 @@
-﻿using Dispo.Shared.Core.Domain.Interfaces;
-using Dispo.Product.Core.Application.Services.Interfaces;
+﻿using Dispo.Product.Core.Application.Services.Interfaces;
 using Dispo.Shared.Core.Domain.DTOs;
+using Dispo.Shared.Core.Domain.Interfaces;
 
 namespace Dispo.Product.Core.Application.Services
 {

@@ -28,11 +28,6 @@ namespace Dispo.Shared.Infrastructure.Persistence.Mappings
                    .HasColumnType("VARCHAR(60)")
                    .HasMaxLength(60);
 
-            builder.HasOne(a => a.Company)
-                   .WithMany(b => b.Warehouses)
-                   .HasForeignKey(c => c.CompanyId)
-                   .OnDelete(DeleteBehavior.Cascade);
-
             builder.HasOne(a => a.Address)
                    .WithOne(b => b.Warehouse)
                    .HasForeignKey<Warehouse>(c => c.AddressId)

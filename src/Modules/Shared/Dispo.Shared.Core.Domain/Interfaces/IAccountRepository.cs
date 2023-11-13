@@ -1,17 +1,16 @@
 ﻿using Dispo.Shared.Core.Domain.DTOs;
-using Dispo.Shared.Core.Domain.Entities;
 
 namespace Dispo.Shared.Core.Domain.Interfaces
 {
-    public interface IAccountRepository : IBaseRepository<Account>
+    public interface IAccountRepository : IBaseRepository<Entities.Account>
     {
         bool ExistsByEmail(string email);
 
         bool ExistsByEmailAndPassword(string email, string password);
 
-        Account? GetAccountByEmailAndPassword(string email, string password);
+        Entities.Account? GetAccountByEmailAndPassword(string email, string password);
 
-        void ResetPassword(Account account, string newPassword);
+        void ResetPassword(Entities.Account account, string newPassword);
 
         long GetAccountIdByEmail(string email);
 
@@ -23,6 +22,10 @@ namespace Dispo.Shared.Core.Domain.Interfaces
 
         IList<AccountUserInfoDto> GetAccountsUserInfo();
 
-        Account? GetWithWarehousesById(long id);
+        Entities.Account? GetWithWarehousesById(long id);
+
+        DateTime GetLastLicenceCheckCurrentByCompanyId(long companyId);
+
+        void UpdateLastLicenceCheckById(long accountId);
     }
 }
