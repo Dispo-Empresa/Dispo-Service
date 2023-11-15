@@ -2,7 +2,7 @@
 {
     public class HubEndpoints
     {
-        private const string _baseUrl = "https://localhost:7265/api/v1/licences";
+        private const string _baseUrl = "http://localhost:5191/api/v1/licences";
 
         public static string GetLicence = _baseUrl;
     }

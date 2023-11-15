@@ -1,2 +1,2 @@
-cd ../API's/Dispo.APIs
+cd ../API/Dispo.API
 dotnet run
