@@ -5,6 +5,8 @@ using Dispo.Shared.Core.Domain.DTOs.Request;
 using Dispo.Shared.Core.Domain.Exceptions;
 using Dispo.Shared.Core.Domain.Interfaces;
 using Dispo.Shared.Utils;
+using Dispo.Shared.Utils.Extensions;
+using Microsoft.AspNetCore.Http;
 using System.Transactions;
 
 namespace Dispo.Product.Core.Application.Services
@@ -34,9 +36,11 @@ namespace Dispo.Product.Core.Application.Services
                 {
                     Name = productModel.Name,
                     UnitOfMeasurement = productModel.UnitOfMeasurement,
-                    SalePrice = 0,
                     Category = productModel.Category,
-                    Description = productModel.Description
+                    Description = productModel.Description,
+                    Image = productModel.Image.ConvertToByteArray(),
+                    PurchasePrice = productModel.PurchasePrice ?? 0,
+                    SalePrice = productModel.SalePrice,
                 };
 
                 var productCreated = _productRepository.Create(product);

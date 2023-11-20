@@ -1,4 +1,5 @@
 ﻿using Dispo.Shared.Core.Domain.Enums;
+using Microsoft.AspNetCore.Http;
 
 namespace Dispo.Shared.Core.Domain.DTOs.Request
 {
@@ -6,7 +7,7 @@ namespace Dispo.Shared.Core.Domain.DTOs.Request
     {
         public string Name { get; set; }
         public string Description { get; set; }
-        public byte[]? Image { get; set; }
+        public IFormFile? Image { get; set; }
         public decimal? PurchasePrice { get; set; }
         public decimal SalePrice { get; set; }
         public eProductCategory Category { get; set; }

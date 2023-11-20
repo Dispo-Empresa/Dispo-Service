@@ -1,5 +1,6 @@
 ﻿using Dispo.Shared.Core.Domain.DTOs;
 using Dispo.Shared.Core.Domain.DTOs.Request;
+using Microsoft.AspNetCore.Http;
 
 namespace Dispo.Product.Core.Application.Services.Interfaces
 {

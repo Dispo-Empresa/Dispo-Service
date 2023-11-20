@@ -23,7 +23,7 @@ namespace Dispo.API.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody] ProductRequestDto productRequestDto)
+        public IActionResult Create([FromForm] ProductRequestDto productRequestDto)
         {
             try
             {

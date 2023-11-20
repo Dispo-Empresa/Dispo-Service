@@ -4,6 +4,7 @@ using Dispo.Shared.Core.Domain.Entities;
 using Dispo.Shared.Core.Domain.Exceptions;
 using Dispo.Shared.Core.Domain.Interfaces;
 using Dispo.Shared.Utils;
+using Dispo.Shared.Utils.Extensions;
 using System.Transactions;
 
 namespace Dispo.Product.Core.Application.Services
@@ -28,6 +29,7 @@ namespace Dispo.Product.Core.Application.Services
                 var manufacturer = new Manufacturer()
                 {
                     Name = manufacturerRequestDto.Name,
+                    Logo = manufacturerRequestDto.Logo.ConvertToByteArray()
                 };
 
                 var manufacturerCreated = _manufacturerRepository.Create(manufacturer);
