@@ -100,7 +100,11 @@ namespace Dispo.API.Controllers
             {
                 var product = _productRepository.GetById(id);
 
-                return Ok(product);
+                return Ok(new ResponseModelBuilder().WithMessage("Busca pelo produto realizada com sucesso")
+                                                    .WithSuccess(true)
+                                                    .WithData(product)
+                                                    .WithAlert(AlertType.Success)
+                                                    .Build());
             }
             catch (Exception ex)
             {
