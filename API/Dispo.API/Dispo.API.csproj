@@ -1,0 +1,37 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>c7194375-e79a-4214-afdc-cdf7e1347bbe</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.2" />
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Serilog" Version="2.12.0" />
+    <PackageReference Include="Serilog.AspNetCore" Version="6.1.0" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="4.1.0" />
+    <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Modules\Account\Dispo.Account.Core.Application\Dispo.Account.Core.Application.csproj" />
+    <ProjectReference Include="..\..\src\Modules\Account\Dispo.Account.Infrastructure.IoC\Dispo.Account.Infrastructure.IoC.csproj" />
+    <ProjectReference Include="..\..\src\Modules\Movement\Dispo.Movement.Core.Application\Dispo.Movement.Core.Application.csproj" />
+    <ProjectReference Include="..\..\src\Modules\Movement\Dispo.Movement.Infrastructure.IoC\Dispo.Movement.Infrastructure.IoC.csproj" />
+    <ProjectReference Include="..\..\src\Modules\Product\Dispo.Product.Core.Application\Dispo.Product.Core.Application.csproj" />
+    <ProjectReference Include="..\..\src\Modules\Product\Dispo.Product.Infrastructure.IoC\Dispo.Product.Infrastructure.IoC.csproj" />
+    <ProjectReference Include="..\..\src\Modules\PurchaseOrder\Dispo.PurchaseOrder.Core.Application\Dispo.PurchaseOrder.Core.Application.csproj" />
+    <ProjectReference Include="..\..\src\Modules\PurchaseOrder\Dispo.PurchaseOrder.Infrastructure.IoC\Dispo.PurchaseOrder.Infrastructure.IoC.csproj" />
+    <ProjectReference Include="..\..\src\Modules\Shared\Dispo.Shared.Core.Domain\Dispo.Shared.Core.Domain.csproj" />
+    <ProjectReference Include="..\..\src\Modules\Shared\Dispo.Shared.Infrastructure.Persistence\Dispo.Shared.Infrastructure.Persistence.csproj" />
+  </ItemGroup>
+
+</Project>
