@@ -1,17 +1,18 @@
-﻿using EmailSender.API.Services.Interfaces;
+﻿using Dispo.Shared.Log;
+using EmailSender.API.Services.Interfaces;
 using Microsoft.Extensions.Caching.Memory;
 
 namespace EmailSender.API.Services
 {
     public class CacheManager : ICacheManager
     {
-        private readonly Serilog.ILogger _logger;
+        private readonly ILoggingService _logger;
         private readonly IMemoryCache _memoryCache;
 
-        public CacheManager(IMemoryCache memoryCache, Serilog.ILogger logger)
+        public CacheManager(ILoggingService logger, IMemoryCache memoryCache)
         {
-            _memoryCache = memoryCache;
             _logger = logger;
+            _memoryCache = memoryCache;
         }
 
         /// <summary>

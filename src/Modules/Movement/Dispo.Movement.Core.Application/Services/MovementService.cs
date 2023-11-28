@@ -6,6 +6,7 @@ using Dispo.Shared.Core.Domain.Entities;
 using Dispo.Shared.Core.Domain.Enums;
 using Dispo.Shared.Core.Domain.Exceptions;
 using Dispo.Shared.Core.Domain.Interfaces;
+using Dispo.Shared.Log;
 using Microsoft.Extensions.Logging;
 using System.Transactions;
 
@@ -18,9 +19,9 @@ namespace Dispo.Movement.Core.Application.Services
         private readonly IAccountResolverService _accountResolverService;
         private readonly IBatchService _batchService;
         private readonly IBatchMovementService _batchMovementService;
-        private readonly ILogger<MovementService> _logger;
+        private readonly ILoggingService _logger;
 
-        public MovementService(IMovementRepository movementRepository, IProductService productService, IAccountResolverService accountResolverService, IBatchService batchService, IBatchMovementService batchMovementService, ILogger<MovementService> logger)
+        public MovementService(IMovementRepository movementRepository, IProductService productService, IAccountResolverService accountResolverService, IBatchService batchService, IBatchMovementService batchMovementService, ILoggingService logger)
         {
             _movementRepository = movementRepository;
             _productService = productService;
@@ -41,7 +42,7 @@ namespace Dispo.Movement.Core.Application.Services
         /// <exception cref="UnhandledException"></exception>
         public async Task MoveProductAsync(ProductMovimentationDto productMovimentationDto)
         {
-            _logger.LogInformation("Iniciando uma movimentação do produto {P} no depósito {I}.", productMovimentationDto.ProductId, productMovimentationDto.WarehouseId);
+            _logger.Information("Iniciando uma movimentação do produto {P} no depósito {I}.", productMovimentationDto.ProductId, productMovimentationDto.WarehouseId);
 
             await ValidateProductExistenceAsync(productMovimentationDto.ProductId);
 
@@ -53,7 +54,7 @@ namespace Dispo.Movement.Core.Application.Services
                 ts.Complete();
             }
 
-            _logger.LogInformation("Movimentação do produto {P} no depósito {I} realizada.", productMovimentationDto.ProductId, productMovimentationDto.WarehouseId);
+            _logger.Information("Movimentação do produto {P} no depósito {I} realizada.", productMovimentationDto.ProductId, productMovimentationDto.WarehouseId);
         }
 
         public async Task MoveBatchAsync(BatchMovimentationDto batchMovimentationDto)
@@ -91,14 +92,14 @@ namespace Dispo.Movement.Core.Application.Services
             var accountId = _accountResolverService.GetLoggedAccountId();
             if (accountId is null)
             {
-                _logger.LogError("O usuário não está autenticado.");
+                _logger.Error("O usuário não está autenticado.");
                 throw new UnhandledException("O usuário não está autenticado.");
             }
 
             var warehouseId = _accountResolverService.GetLoggedWarehouseId();
             if (warehouseId is null)
             {
-                _logger.LogError("O usuário não possui um estoque vinculado.");
+                _logger.Error("O usuário não possui um estoque vinculado.");
                 throw new UnhandledException("O usuário não possui um estoque vinculado.");
             }
 
@@ -112,7 +113,7 @@ namespace Dispo.Movement.Core.Application.Services
 
             if (!await _movementRepository.CreateAsync(movement))
             {
-                _logger.LogError("Não foi possível criar a movimentação.");
+                _logger.Error("Não foi possível criar a movimentação.");
                 throw new UnhandledException("Não foi possível criar a movimentação.");
             }
 
@@ -130,7 +131,7 @@ namespace Dispo.Movement.Core.Application.Services
             var productExists = await _productService.ExistsByIdAsync(productId);
             if (!productExists)
             {
-                _logger.LogError("Produto com o Id {P} não foi encontrado.", productId);
+                _logger.Error("Produto com o Id {P} não foi encontrado.", productId);
                 throw new NotFoundException($"Produto com o Id {productId} não foi encontrado.");
             }
         }
@@ -153,7 +154,7 @@ namespace Dispo.Movement.Core.Application.Services
 
             if (!createdMovimentation)
             {
-                _logger.LogError("Movimentação não pode ser criada.");
+                _logger.Error("Movimentação não pode ser criada.");
                 throw new UnhandledException("Movimentação não pode ser criada.");
             }
         }

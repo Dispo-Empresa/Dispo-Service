@@ -1,15 +1,15 @@
 ﻿using Dispo.Shared.Caching.Interfaces;
+using Dispo.Shared.Log;
 using Microsoft.Extensions.Caching.Memory;
-using Serilog;
 
 namespace Dispo.Shared.Caching
 {
     public class CacheManager : ICacheManager
     {
-        private readonly ILogger _logger;
         private readonly IMemoryCache _memoryCache;
+        private readonly ILoggingService _logger;
 
-        public CacheManager(IMemoryCache memoryCache, ILogger logger)
+        public CacheManager(IMemoryCache memoryCache, ILoggingService logger)
         {
             _memoryCache = memoryCache;
             _logger = logger;

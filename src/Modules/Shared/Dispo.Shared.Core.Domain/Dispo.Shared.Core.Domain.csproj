@@ -11,8 +11,4 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\Account\Dispo.Account.Domain\Dispo.Account.Domain.csproj" />
-  </ItemGroup>
-
 </Project>

@@ -2,6 +2,7 @@
 using Dispo.Account.Core.Application.Services.Interfaces;
 using Dispo.Shared.Caching;
 using Dispo.Shared.Caching.Interfaces;
+using Dispo.Shared.Log;
 using Dispo.Shared.Queue.Publishers;
 using Dispo.Shared.Queue.Publishers.Interfaces;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -16,6 +17,8 @@ namespace Dispo.API
             PurchaseOrder.Infrastructure.IoC.Injector.InjectIoCServices(services);
             Product.Infrastructure.IoC.Injector.InjectIoCServices(services);
             Movement.Infrastructure.IoC.Injector.InjectIoCServices(services);
+
+            services.AddSingleton<ILoggingService, LoggingService>();
 
             InjectGenerics(services);
         }
