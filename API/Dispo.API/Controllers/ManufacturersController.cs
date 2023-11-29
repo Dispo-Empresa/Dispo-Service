@@ -5,6 +5,7 @@ using Dispo.Product.Infrastructure.Persistence.Repositories;
 using Dispo.Shared.Core.Domain.DTOs.Request;
 using Dispo.Shared.Core.Domain.Exceptions;
 using Dispo.Shared.Core.Domain.Interfaces;
+using Dispo.Shared.Log;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,11 +18,13 @@ namespace Dispo.API.Controllers
     {
         private readonly IManufacturerRepository _manufacturerRepository;
         private readonly IManufacturerService _manufacturerService;
+        private readonly ILoggingService _logger;
 
-        public ManufacturersController(IManufacturerRepository manufacturerRepository, IManufacturerService manufacturerService)
+        public ManufacturersController(IManufacturerRepository manufacturerRepository, IManufacturerService manufacturerService, ILoggingService logger)
         {
             _manufacturerRepository = manufacturerRepository;
             _manufacturerService = manufacturerService;
+            _logger = logger;
         }
 
         [HttpPost]
@@ -76,6 +79,7 @@ namespace Dispo.API.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult GetAll()
         {
             try

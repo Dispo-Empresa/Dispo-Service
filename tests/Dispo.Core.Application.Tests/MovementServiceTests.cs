@@ -4,7 +4,7 @@ using Dispo.Shared.Core.Domain.DTOs;
 using Dispo.Shared.Core.Domain.Enums;
 using Dispo.Shared.Core.Domain.Exceptions;
 using Dispo.Shared.Core.Domain.Interfaces;
-using Microsoft.Extensions.Logging;
+using Dispo.Shared.Log;
 using Moq;
 
 namespace Dispo.Core.Application.Tests
@@ -14,14 +14,14 @@ namespace Dispo.Core.Application.Tests
         private MovementService _sut;
         private Mock<IMovementRepository> _movementRepositoryMock;
         private Mock<IProductService> _productServiceMock;
-        private Mock<ILogger<MovementService>> _loggerMock;
+        private Mock<ILoggingService> _loggerMock;
 
         [SetUp]
         public void Setup()
         {
             _movementRepositoryMock = new Mock<IMovementRepository>();
             _productServiceMock = new Mock<IProductService>();
-            _loggerMock = new Mock<ILogger<MovementService>>();
+            _loggerMock = new Mock<ILoggingService>();
 
             _sut = new MovementService(_movementRepositoryMock.Object, _productServiceMock.Object, null, null, null, _loggerMock.Object);
         }

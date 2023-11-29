@@ -1,4 +1,5 @@
-﻿using EmailSender.API.DTOs.RequestDTO;
+﻿using Dispo.Shared.Log;
+using EmailSender.API.DTOs.RequestDTO;
 using EmailSender.API.Queues.Subscribers.Interfaces;
 using EmailSender.API.Services.Interfaces;
 using Newtonsoft.Json;
@@ -15,12 +16,12 @@ namespace EmailSender.API.Queues.Subscribers
         public IModel? Channel { get; set; }
         private const string QUEUE_NAME = "email_sender";
         private readonly IEmailSenderService _emailSenderService;
-        private readonly Serilog.ILogger _logger;
+        private readonly ILoggingService _logger;
 
-        public EmailSenderSubscriber(IEmailSenderService emailSenderService)
+        public EmailSenderSubscriber(IEmailSenderService emailSenderService, ILoggingService logger)
         {
             _emailSenderService = emailSenderService;
-            _logger = new LoggerConfiguration().WriteTo.Console().CreateLogger();
+            _logger = logger;
         }
 
         public void StartConsuming()
