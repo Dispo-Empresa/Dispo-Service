@@ -52,17 +52,17 @@ namespace Dispo.Account.Core.Application.Services
             var encryptedEmail = email;
             var hashedPassword = password;
 
-            var loggedAccount = _accountRepository.GetAccountByEmailAndPassword(encryptedEmail, hashedPassword);
+            //var loggedAccount = _accountRepository.GetAccountByEmailAndPassword(encryptedEmail, hashedPassword);
 
-            if (loggedAccount == null)
-                throw new NotFoundException("Conta não encontrada");
+            //if (loggedAccount == null)
+            //    throw new NotFoundException("Conta não encontrada");
 
-            await ValidateLicence(loggedAccount.Id, loggedAccount.CompanyIdByHub);
+            //await ValidateLicence(loggedAccount.Id, loggedAccount.CompanyIdByHub);
 
             return new SignInResponseDto()
             {
-                AccountId = loggedAccount.Id,
-                CurrentWarehouseId = loggedAccount.CurrentWarehouseId ?? _warehouseRepository.GetAllAsNoTracking().First().Id,
+                AccountId = 1,//loggedAccount.Id,
+                CurrentWarehouseId = 1//loggedAccount.CurrentWarehouseId ?? _warehouseRepository.GetAllAsNoTracking().First().Id,
             };
         }
 

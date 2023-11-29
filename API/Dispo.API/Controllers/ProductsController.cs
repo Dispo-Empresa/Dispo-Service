@@ -51,6 +51,28 @@ namespace Dispo.API.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("edit")]
+        public IActionResult Edit([FromForm] ProductRequestDto productRequestDto)
+        {
+            try
+            {
+                _productService.UpdateProduct(productRequestDto);
+
+                return Ok(new ResponseModelBuilder().WithMessage("Produto atualizado com sucesso!")
+                                                    .WithSuccess(true)
+                                                    .WithAlert(AlertType.Success)
+                                                    .Build());
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ResponseModelBuilder().WithMessage($"Erro inesperado:  {ex.Message}")
+                                                            .WithSuccess(false)
+                                                            .WithAlert(AlertType.Error)
+                                                            .Build());
+            }
+        }
+
         [HttpGet]
         [Route("get-names")]
         public IActionResult GetProductNamesWithCode()
