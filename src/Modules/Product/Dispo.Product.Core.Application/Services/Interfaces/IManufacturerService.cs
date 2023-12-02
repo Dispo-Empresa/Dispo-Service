@@ -5,5 +5,6 @@ namespace Dispo.Product.Core.Application.Services.Interfaces
     public interface IManufacturerService
     {
         long CreateManufacturer(ManufacturerRequestDto manufacturerRequestDto);
+        void UpdateManufacturer(ManufacturerRequestDto manufacturerRequestDto);
     }
 }

@@ -22,6 +22,7 @@ namespace Dispo.PurchaseOrder.Infrastructure.IoC
             serviceColletion.AddScoped<IOrderRepository, OrderRepository>();
             serviceColletion.AddScoped<IPurchaseOrderRepository, PurchaseOrderRepository>();
             serviceColletion.AddScoped<IPurchaseOrderAttachmentRepository, PurchaseOrderAttachmentRepository>();
+            serviceColletion.AddScoped<ISupplierRepository, SupplierRepository>();
         }
 
         private static void InjectServices(IServiceCollection serviceColletion)

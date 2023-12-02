@@ -40,7 +40,7 @@ namespace Dispo.Product.Core.Application.Services
                     Description = productModel.Description,
                     Image = productModel.Image.ConvertToByteArray(),
                     PurchasePrice = productModel.PurchasePrice ?? 0,
-                    SalePrice = productModel.SalePrice,
+                    SalePrice = productModel.SalePrice ?? 0,
                 };
 
                 var productCreated = _productRepository.Create(product);
@@ -50,6 +50,27 @@ namespace Dispo.Product.Core.Application.Services
             }
 
             return productCreatedId;
+        }
+
+        public void UpdateProduct(ProductRequestDto productModel)
+        {
+            using (var tc = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+            {
+                var product = new Shared.Core.Domain.Entities.Product()
+                {
+                    Id = productModel.Id,
+                    Name = productModel.Name,
+                    UnitOfMeasurement = productModel.UnitOfMeasurement,
+                    Category = productModel.Category,
+                    Description = productModel.Description,
+                    Image = productModel.Image.ConvertToByteArray(),
+                    PurchasePrice = productModel.PurchasePrice ?? 0,
+                    SalePrice = productModel.SalePrice ?? 0,
+                };
+
+                _productRepository.Update(product);
+                tc.Complete();
+            }
         }
 
         public string BuildProductSKUCode(string productName, string productType)

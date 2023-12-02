@@ -2,6 +2,7 @@
 {
     public class AddressRequestDto
     {
+        public long AddressId { get; set; }
         public string Country { get; set; }
         public string UF { get; set; }
         public string City { get; set; }

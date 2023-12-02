@@ -63,5 +63,32 @@ namespace Dispo.PurchaseOrder.Core.Application.Services
 
             return supplierCreatedId;
         }
+
+        public void UpdateSupplier(SupplierRequestDto supplierRequestDto)
+        {
+            using (var tc = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+            {
+                var supplier = new Shared.Core.Domain.Entities.Supplier()
+                {
+                    Id = supplierRequestDto.Id,
+                    AddressId = supplierRequestDto.Address.AddressId,
+                    Name = supplierRequestDto.Name,
+                    ContactName = supplierRequestDto.ContactName,
+                    ContactTitle = supplierRequestDto.ContactTitle,
+                    Cnpj = supplierRequestDto.Cnpj,
+                    Email = supplierRequestDto.Email,
+                    Phone = supplierRequestDto.Phone
+                };
+
+                var address = _addressRepository.GetById(supplierRequestDto.Address.AddressId);
+
+                supplier.Address = address;
+
+                _supplierRepository.Update(supplier);
+                tc.Complete();
+            }
+        }
+
+
     }
 }

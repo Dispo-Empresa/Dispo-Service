@@ -2,6 +2,7 @@
 {
     public class SupplierRequestDto
     {
+        public long Id { get; set; }
         public string Name { get; set; }
         public string ContactName { get; set; }
         public string ContactTitle { get; set; }

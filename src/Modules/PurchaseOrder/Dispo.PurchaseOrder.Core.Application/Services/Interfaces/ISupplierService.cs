@@ -5,5 +5,6 @@ namespace Dispo.PurchaseOrder.Core.Application.Services.Interfaces
     public interface ISupplierService
     {
         long CreateSupplier(SupplierRequestDto supplierRequestDto);
+        void UpdateSupplier(SupplierRequestDto supplierRequestDto);
     }
 }

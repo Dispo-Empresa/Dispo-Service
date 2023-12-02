@@ -1,4 +1,5 @@
 ﻿using Dispo.API.ResponseBuilder;
+using Dispo.Product.Infrastructure.Persistence.Repositories;
 using Dispo.PurchaseOrder.Core.Application.Services.Interfaces;
 using Dispo.Shared.Core.Domain.DTOs.Request;
 using Dispo.Shared.Core.Domain.Exceptions;
@@ -51,6 +52,28 @@ namespace Dispo.API.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("edit")]
+        public IActionResult Edit([FromBody] SupplierRequestDto supplierRequestDto)
+        {
+            try
+            {
+                _supplierService.UpdateSupplier(supplierRequestDto);
+
+                return Ok(new ResponseModelBuilder().WithMessage("Fornecedor atualizado com sucesso!")
+                                                    .WithSuccess(true)
+                                                    .WithAlert(AlertType.Success)
+                                                    .Build());
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ResponseModelBuilder().WithMessage($"Erro inesperado:  {ex.Message}")
+                                                            .WithSuccess(false)
+                                                            .WithAlert(AlertType.Error)
+                                                            .Build());
+            }
+        }
+
         [HttpGet]
         public IActionResult GetAll()
         {
@@ -65,8 +88,34 @@ namespace Dispo.API.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new ResponseModelBuilder().WithMessage("Suppliers not found: " + ex.Message)
+                return BadRequest(new ResponseModelBuilder().WithMessage("Fornecedor não encontrado: " + ex.Message)
                                                             .Build());
+            }
+        }
+
+        [HttpGet]
+        [Route("{id}")]
+        public IActionResult Get(long id)
+        {
+            try
+            {
+               var supplier = _supplierRepository.GetById(id);
+
+                if (supplier != null)
+                {
+                    var address = _supplierService.GetSupplierAddressById(supplier.AddressId);
+                    supplier.Address = address;
+                }
+
+                return Ok(new ResponseModelBuilder().WithMessage("Busca pelo fornecedor realizada com sucesso")
+                                                    .WithSuccess(true)
+                                                    .WithData(supplier)
+                                                    .WithAlert(AlertType.Success)
+                                                    .Build());
+            }
+            catch (Exception ex)
+            {
+                throw;
             }
         }
     }

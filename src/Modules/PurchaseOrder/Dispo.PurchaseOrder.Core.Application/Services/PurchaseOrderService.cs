@@ -15,12 +15,14 @@ namespace Dispo.PurchaseOrder.Core.Application.Services
         private readonly IPurchaseOrderRepository _PurchaseOrderRepository;
         private readonly IOrderRepository _OrderRepository;
         private readonly IAccountResolverService _AccountResolverService;
+        private readonly ISupplierRepository _SupplierRepository;
 
-        public PurchaseOrderService(IPurchaseOrderRepository PurchaseOrderRepository, IOrderRepository OrderRepository, IAccountResolverService AccountResolverService)
+        public PurchaseOrderService(IPurchaseOrderRepository PurchaseOrderRepository, IOrderRepository OrderRepository, IAccountResolverService AccountResolverService, ISupplierRepository supplierRepository)
         {
             _PurchaseOrderRepository = PurchaseOrderRepository;
             _OrderRepository = OrderRepository;
             _AccountResolverService = AccountResolverService;
+            _SupplierRepository = supplierRepository;
         }
 
         public long CreatePurchaseOrder(PurchaseOrderRequestDto PurchaseOrderRequestDto)
@@ -71,6 +73,14 @@ namespace Dispo.PurchaseOrder.Core.Application.Services
             {
                 throw;
             }
+        }
+
+        public IEnumerable<Shared.Core.Domain.Entities.PurchaseOrder> FillPurchaseOrderWithSupplier(IEnumerable<Shared.Core.Domain.Entities.PurchaseOrder> purchaseOrderList)
+        {
+            foreach (var purchaseOrder in purchaseOrderList)
+                purchaseOrder.Supplier = _SupplierRepository.GetById(purchaseOrder.SupplierId);
+
+            return purchaseOrderList;
         }
 
         public List<PurschaseOrderDto> GetByProcuctId(long productId)

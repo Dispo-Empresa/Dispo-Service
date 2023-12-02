@@ -1,5 +1,7 @@
 ﻿using Dispo.API.ResponseBuilder;
+using Dispo.Product.Core.Application.Services;
 using Dispo.Product.Core.Application.Services.Interfaces;
+using Dispo.Product.Infrastructure.Persistence.Repositories;
 using Dispo.Shared.Core.Domain.DTOs.Request;
 using Dispo.Shared.Core.Domain.Exceptions;
 using Dispo.Shared.Core.Domain.Interfaces;
@@ -54,6 +56,28 @@ namespace Dispo.API.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("edit")]
+        public IActionResult Edit([FromForm] ManufacturerRequestDto manufacturerRequestDto)
+        {
+            try
+            {
+                _manufacturerService.UpdateManufacturer(manufacturerRequestDto);
+
+                return Ok(new ResponseModelBuilder().WithMessage("Fabricante atualizado com sucesso!")
+                                                    .WithSuccess(true)
+                                                    .WithAlert(AlertType.Success)
+                                                    .Build());
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ResponseModelBuilder().WithMessage($"Erro inesperado:  {ex.Message}")
+                                                            .WithSuccess(false)
+                                                            .WithAlert(AlertType.Error)
+                                                            .Build());
+            }
+        }
+
         [HttpGet]
         [AllowAnonymous]
         public IActionResult GetAll()
@@ -69,8 +93,28 @@ namespace Dispo.API.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new ResponseModelBuilder().WithMessage("Manufacturers not found: " + ex.Message)
+                return BadRequest(new ResponseModelBuilder().WithMessage("Fabricante não encontrado: " + ex.Message)
                                                             .Build());
+            }
+        }
+
+        [HttpGet]
+        [Route("{id}")]
+        public IActionResult Get(long id)
+        {
+            try
+            {
+                var manufacturer = _manufacturerRepository.GetById(id);
+
+                return Ok(new ResponseModelBuilder().WithMessage("Busca do fabricante realizada com sucesso")
+                                                    .WithSuccess(true)
+                                                    .WithData(manufacturer)
+                                                    .WithAlert(AlertType.Success)
+                                                    .Build());
+            }
+            catch (Exception ex)
+            {
+                throw;
             }
         }
     }
