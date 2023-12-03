@@ -1,0 +1,12 @@
+D:\Projetos\Dispo-Service\src\Modules\Shared\Dispo.Shared.Log\bin\Debug\net7.0\Dispo.Shared.Log.deps.json
+D:\Projetos\Dispo-Service\src\Modules\Shared\Dispo.Shared.Log\bin\Debug\net7.0\Dispo.Shared.Log.dll
+D:\Projetos\Dispo-Service\src\Modules\Shared\Dispo.Shared.Log\bin\Debug\net7.0\Dispo.Shared.Log.pdb
+D:\Projetos\Dispo-Service\src\Modules\Shared\Dispo.Shared.Log\obj\Debug\net7.0\Dispo.Shared.Log.csproj.AssemblyReference.cache
+D:\Projetos\Dispo-Service\src\Modules\Shared\Dispo.Shared.Log\obj\Debug\net7.0\Dispo.Shared.Log.GeneratedMSBuildEditorConfig.editorconfig
+D:\Projetos\Dispo-Service\src\Modules\Shared\Dispo.Shared.Log\obj\Debug\net7.0\Dispo.Shared.Log.AssemblyInfoInputs.cache
+D:\Projetos\Dispo-Service\src\Modules\Shared\Dispo.Shared.Log\obj\Debug\net7.0\Dispo.Shared.Log.AssemblyInfo.cs
+D:\Projetos\Dispo-Service\src\Modules\Shared\Dispo.Shared.Log\obj\Debug\net7.0\Dispo.Shared.Log.csproj.CoreCompileInputs.cache
+D:\Projetos\Dispo-Service\src\Modules\Shared\Dispo.Shared.Log\obj\Debug\net7.0\Dispo.Shared.Log.dll
+D:\Projetos\Dispo-Service\src\Modules\Shared\Dispo.Shared.Log\obj\Debug\net7.0\refint\Dispo.Shared.Log.dll
+D:\Projetos\Dispo-Service\src\Modules\Shared\Dispo.Shared.Log\obj\Debug\net7.0\Dispo.Shared.Log.pdb
+D:\Projetos\Dispo-Service\src\Modules\Shared\Dispo.Shared.Log\obj\Debug\net7.0\ref\Dispo.Shared.Log.dll
