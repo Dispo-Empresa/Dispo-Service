@@ -1,5 +1,6 @@
 ﻿using Dispo.API.ResponseBuilder;
-using Dispo.Movement.Core.Application.Services.Interfaces;
+using Dispo.Movement.Core.Application.Interfaces;
+using Dispo.Shared.Core.Domain;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,7 +8,7 @@ namespace Dispo.API.Controllers
 {
     [Route("/api/v1/batches")]
     [ApiController]
-    [Authorize]
+    [Authorize(Roles = RolesManager.WarehouseOperatorAssociated)]
     public class BatchesController : ControllerBase
     {
         private readonly IBatchService _batchService;
@@ -17,8 +18,7 @@ namespace Dispo.API.Controllers
             _batchService = batchService;
         }
 
-        [HttpGet]
-        [Route("get-by-product/{productId}")]
+        [HttpGet("get-by-product/{productId}")]
         public IActionResult GetByProduct(long productId)
         {
             var batches = _batchService.GetWithQuantityByProduct(productId);

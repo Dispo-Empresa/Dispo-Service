@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Shared\Dispo.Shared.Infrastructure.Persistence\Dispo.Shared.Infrastructure.Persistence.csproj" />
+    <ProjectReference Include="..\..\Shared\Dispo.Shared.Utilss\Dispo.Shared.Utils.csproj" />
     <ProjectReference Include="..\..\Shared\Dispo.Shared.Utils\Dispo.Shared.Utils.csproj" />
   </ItemGroup>
 

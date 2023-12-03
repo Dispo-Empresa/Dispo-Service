@@ -2,7 +2,7 @@
 
 namespace Dispo.Shared.Core.Domain.Entities
 {
-    public class Batch : Base
+    public class Batch : EntityBase
     {
         public string Key { get; set; }
         public int ProductQuantity { get; set; }

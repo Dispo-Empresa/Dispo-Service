@@ -1,5 +1,5 @@
 using Dispo.Movement.Core.Application.Services;
-using Dispo.Product.Core.Application.Services.Interfaces;
+using Dispo.Product.Core.Application.Interfaces;
 using Dispo.Shared.Core.Domain.DTOs;
 using Dispo.Shared.Core.Domain.Enums;
 using Dispo.Shared.Core.Domain.Exceptions;

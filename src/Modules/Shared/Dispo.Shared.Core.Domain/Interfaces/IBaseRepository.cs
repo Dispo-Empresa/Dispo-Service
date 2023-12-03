@@ -3,7 +3,7 @@ using System.Linq.Expressions;
 
 namespace Dispo.Shared.Core.Domain.Interfaces
 {
-    public interface IBaseRepository<T> where T : Base
+    public interface IBaseRepository<T> where T : EntityBase
     {
         T Create(T obj);
 

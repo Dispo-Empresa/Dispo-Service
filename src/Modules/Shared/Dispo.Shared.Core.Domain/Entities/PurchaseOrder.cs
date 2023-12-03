@@ -2,7 +2,7 @@
 
 namespace Dispo.Shared.Core.Domain.Entities
 {
-    public class PurchaseOrder : Base
+    public class PurchaseOrder : EntityBase
     {
         public string Number { get; set; }
         public DateTime CreationDate { get; set; }

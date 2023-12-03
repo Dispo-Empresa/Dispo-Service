@@ -1,4 +1,4 @@
-﻿using Dispo.Movement.Core.Application.Services.Interfaces;
+﻿using Dispo.Movement.Core.Application.Interfaces;
 using Dispo.Shared.Core.Domain.Entities;
 using Dispo.Shared.Core.Domain.Interfaces;
 

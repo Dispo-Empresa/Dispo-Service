@@ -1,7 +1,7 @@
-﻿using Dispo.Account.Core.Application.Services.Interfaces;
-using Dispo.API.ResponseBuilder;
-using Dispo.Shared.Core.Domain.DTOs.Plugin;
-using Dispo.Shared.Core.Domain.DTOs.Request;
+﻿using Dispo.API.ResponseBuilder;
+using Dispo.Infra.Core.Application.Interfaces;
+using Dispo.Infra.Core.Application.Models.Request;
+using Dispo.Infra.Plugin.Hub.Mensager.Models;
 using Dispo.Shared.Core.Domain.Exceptions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -22,8 +22,7 @@ namespace Dispo.API.Controllers
             _passwordRecoveryService = emailRecoveryService;
         }
 
-        [HttpPost]
-        [Route("send-recovery-token")]
+        [HttpPost("send-recovery-token")]
         public IActionResult SendEmailCodeResetPassword([FromBody] string emailTo)
         {
             try
@@ -46,8 +45,7 @@ namespace Dispo.API.Controllers
             }
         }
 
-        [HttpPost]
-        [Route("validate-recovery-token")]
+        [HttpPost("validate-recovery-token")]
         public IActionResult VerifyEmailCode([FromBody] VerifyEmailCodeRequestDto verifyEmailCodeRequestDto)
         {
             try
@@ -66,9 +64,8 @@ namespace Dispo.API.Controllers
             }
         }
 
-        [HttpPost]
-        [Route("reset-password")]
-        public IActionResult ResetPassword([FromBody] ResetPasswordRequestDto resetPasswordRequestDto)
+        [HttpPost("reset-password")]
+        public IActionResult ResetPassword([FromBody] ResetPasswordRequestModel resetPasswordRequestDto)
         {
             try
             {

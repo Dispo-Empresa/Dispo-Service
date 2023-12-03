@@ -1,6 +1,6 @@
 ﻿namespace Dispo.Shared.Core.Domain.Entities
 {
-    public class Account : Base
+    public class Account : EntityBase
     {
         public bool Ativo { get; set; }
         public string Email { get; set; }

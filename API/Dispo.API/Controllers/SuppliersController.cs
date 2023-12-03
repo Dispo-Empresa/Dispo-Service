@@ -1,6 +1,7 @@
 ﻿using Dispo.API.ResponseBuilder;
-using Dispo.PurchaseOrder.Core.Application.Services.Interfaces;
-using Dispo.Shared.Core.Domain.DTOs.Request;
+using Dispo.PurchaseOrder.Core.Application.Interfaces;
+using Dispo.PurchaseOrder.Core.Application.Models;
+using Dispo.Shared.Core.Domain;
 using Dispo.Shared.Core.Domain.Exceptions;
 using Dispo.Shared.Core.Domain.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -10,7 +11,7 @@ namespace Dispo.API.Controllers
 {
     [Route("/api/v1/suppliers")]
     [ApiController]
-    [Authorize]
+    [Authorize(Roles = RolesManager.AllRoles)]
     public class SuppliersController : ControllerBase
     {
         private readonly ISupplierRepository _supplierRepository;
@@ -23,7 +24,7 @@ namespace Dispo.API.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody] SupplierRequestDto supplierRequestDto)
+        public IActionResult Create([FromBody] SupplierRequestModel supplierRequestDto)
         {
             try
             {

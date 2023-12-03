@@ -1,6 +1,6 @@
 ﻿namespace Dispo.Shared.Core.Domain.Entities
 {
-    public class Supplier : Base
+    public class Supplier : EntityBase
     {
         public bool Ativo { get; set; }
         public string Name { get; set; }

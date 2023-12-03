@@ -1,6 +1,7 @@
 ﻿using Dispo.API.ResponseBuilder;
-using Dispo.PurchaseOrder.Core.Application.Services.Interfaces;
-using Dispo.Shared.Core.Domain.DTOs.Request;
+using Dispo.PurchaseOrder.Core.Application.Interfaces;
+using Dispo.PurchaseOrder.Core.Application.Models;
+using Dispo.Shared.Core.Domain;
 using Dispo.Shared.Core.Domain.Exceptions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -9,7 +10,7 @@ namespace Dispo.API.Controllers
 {
     [Route("/api/v1/purchaseorderattachment")]
     [ApiController]
-    [Authorize]
+    [Authorize(Roles = RolesManager.PurchasingManagerAssociated)]
     public class PurchaseOrderAttachmentController : ControllerBase
     {
         private readonly IPurchaseOrderAttachmentService _purchaseOrderAttachmentService;
@@ -20,7 +21,7 @@ namespace Dispo.API.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody] PurchaseOrderAttachmentRequestDto purchaseOrderAttachmentRequestDto)
+        public IActionResult Create([FromBody] PurchaseOrderAttachmentRequestModel purchaseOrderAttachmentRequestDto)
         {
             try
             {

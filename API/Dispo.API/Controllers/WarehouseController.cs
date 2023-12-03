@@ -1,8 +1,8 @@
-﻿using Dispo.Account.Core.Application.Services.Interfaces;
-using Dispo.API.ResponseBuilder;
-using Dispo.Product.Core.Application.Services.Interfaces;
+﻿using Dispo.API.ResponseBuilder;
+using Dispo.Infra.Core.Application.Interfaces;
+using Dispo.Product.Core.Application.Interfaces;
+using Dispo.Product.Core.Application.Models;
 using Dispo.Shared.Core.Domain;
-using Dispo.Shared.Core.Domain.DTOs.Request;
 using Dispo.Shared.Core.Domain.Exceptions;
 using Dispo.Shared.Core.Domain.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -12,7 +12,7 @@ namespace Dispo.API.Controllers
 {
     [Route("/api/v1/warehouses")]
     [ApiController]
-    [Authorize(Roles = Roles.Manager)]
+    [Authorize(Roles = RolesManager.Manager)]
     public class WarehouseController : ControllerBase
     {
         private readonly IWarehouseRepository _warehouseRepository;
@@ -27,7 +27,7 @@ namespace Dispo.API.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody] WarehouseRequestDto warehouseRequestDto)
+        public IActionResult Create([FromBody] WarehouseRequestModel warehouseRequestDto)
         {
             try
             {
@@ -65,8 +65,7 @@ namespace Dispo.API.Controllers
             }
         }
 
-        [HttpGet]
-        [Route("get-with-address-by-user")]
+        [HttpGet("get-with-address-by-user")]
         public IActionResult GetWarehouseWithAddressByUserId()
         {
             try
@@ -86,8 +85,7 @@ namespace Dispo.API.Controllers
             }
         }
 
-        [HttpGet]
-        [Route("get-with-address")]
+        [HttpGet("get-with-address")]
         public IActionResult GetWarehouseWithAddress()
         {
             try

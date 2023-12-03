@@ -1,6 +1,6 @@
 ﻿namespace Dispo.Shared.Core.Domain.Entities
 {
-    public class WarehouseAccount : Base
+    public class WarehouseAccount : EntityBase
     {
         public WarehouseAccount(long warehouseId, long accountId)
         {

@@ -1,4 +1,5 @@
-﻿using Dispo.Shared.Core.Domain.Entities;
+﻿using Dispo.Shared.Core.Domain;
+using Dispo.Shared.Core.Domain.Entities;
 using Dispo.Shared.Infrastructure.Persistence.Mappings;
 using Microsoft.EntityFrameworkCore;
 
@@ -60,9 +61,9 @@ namespace Dispo.Shared.Infrastructure.Persistence.Context
 
         private void CreateRoles(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Role>().HasData(new Role() { Id = 1, Name = "Gerente", Key = Core.Domain.Roles.Manager },
-                                                new Role() { Id = 2, Name = "Gerente de compras", Key = Core.Domain.Roles.PurchasingManager },
-                                                new Role() { Id = 3, Name = "Operador de depósito", Key = Core.Domain.Roles.WarehouseOperator });
+            modelBuilder.Entity<Role>().HasData(new Role() { Id = 1, Name = "Gerente", Key = RolesManager.Manager },
+                                                new Role() { Id = 2, Name = "Gerente de compras", Key = RolesManager.PurchasingManager },
+                                                new Role() { Id = 3, Name = "Operador de depósito", Key = RolesManager.WarehouseOperator });
         }
     }
 }

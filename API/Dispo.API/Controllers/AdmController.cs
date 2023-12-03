@@ -1,7 +1,7 @@
 ﻿using Dispo.API.ResponseBuilder;
-using Dispo.Product.Core.Application.Services.Interfaces;
+using Dispo.Infra.Core.Application.Interfaces;
+using Dispo.Infra.Core.Application.Models.Request;
 using Dispo.Shared.Core.Domain;
-using Dispo.Shared.Core.Domain.DTOs.Request;
 using Dispo.Shared.Core.Domain.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,7 +10,7 @@ namespace Dispo.API.Controllers
 {
     [Route("api/v1/adm")]
     [ApiController]
-    [Authorize(Roles = Roles.Manager)]
+    [Authorize(Roles = RolesManager.Manager)]
     public class AdmController : ControllerBase
     {
         public readonly IAdmService _admService;
@@ -24,8 +24,7 @@ namespace Dispo.API.Controllers
             _accountRepository = accountRepository;
         }
 
-        [HttpGet]
-        [Route("getRoles")]
+        [HttpGet("getRoles")]
         public IActionResult GetRoles()
         {
             try
@@ -46,9 +45,8 @@ namespace Dispo.API.Controllers
             }
         }
 
-        [HttpPost]
-        [Route("createEmployee")]
-        public IActionResult CreateEmployee([FromBody] CreateEmployeeRequestDto createEmployeeRequestDto)
+        [HttpPost("createEmployee")]
+        public IActionResult CreateEmployee([FromBody] CreateEmployeeRequestModel createEmployeeRequestDto)
         {
             try
             {
@@ -68,8 +66,7 @@ namespace Dispo.API.Controllers
             }
         }
 
-        [HttpGet]
-        [Route("employees")]
+        [HttpGet("employees")]
         public IActionResult GetEmployees()
         {
             try

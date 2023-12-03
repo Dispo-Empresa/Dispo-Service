@@ -1,6 +1,6 @@
 ﻿namespace Dispo.Shared.Core.Domain.Entities
 {
-    public class ProductManufacturer : Base
+    public class ProductManufacturer : EntityBase
     {
         public long ProductId { get; set; }
         public long ManufacturerId { get; set; }

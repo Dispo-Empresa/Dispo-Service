@@ -1,5 +1,5 @@
-﻿using Dispo.PurchaseOrder.Core.Application.Services.Interfaces;
-using Dispo.Shared.Core.Domain.DTOs.Request;
+﻿using Dispo.PurchaseOrder.Core.Application.Interfaces;
+using Dispo.PurchaseOrder.Core.Application.Models;
 using Dispo.Shared.Core.Domain.Entities;
 using Dispo.Shared.Core.Domain.Exceptions;
 using Dispo.Shared.Core.Domain.Interfaces;
@@ -19,7 +19,7 @@ namespace Dispo.PurchaseOrder.Core.Application.Services
             _addressRepository = addressRepository;
         }
 
-        public long CreateSupplier(SupplierRequestDto supplierRequestDto)
+        public long CreateSupplier(SupplierRequestModel supplierRequestDto)
         {
             if (_supplierRepository.GetSupplierIdByName(supplierRequestDto.Name).IsIdValid())
                 throw new AlreadyExistsException("Já existe o fornecedor informado");
