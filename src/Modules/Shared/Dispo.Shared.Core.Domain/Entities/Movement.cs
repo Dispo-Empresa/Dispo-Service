@@ -2,7 +2,7 @@
 
 namespace Dispo.Shared.Core.Domain.Entities
 {
-    public class Movement : Base
+    public class Movement : EntityBase
     {
         public DateTime Date { get; set; }
         public eMovementType Type { get; set; }

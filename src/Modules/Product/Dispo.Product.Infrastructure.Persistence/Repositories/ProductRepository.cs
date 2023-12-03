@@ -1,7 +1,7 @@
 ﻿using Dispo.Shared.Core.Domain.DTOs;
 using Dispo.Shared.Core.Domain.Interfaces;
+using Dispo.Shared.Infrastructure.Persistence;
 using Dispo.Shared.Infrastructure.Persistence.Context;
-using Dispo.Shared.Infrastructure.Persistence.Repositories;
 using Dispo.Shared.Utils;
 using Dispo.Shared.Utils.Extensions;
 using Microsoft.EntityFrameworkCore;
@@ -40,8 +40,8 @@ namespace Dispo.Product.Infrastructure.Persistence.Repositories
                             {
                                 Id = s.Id,
                                 Name = s.Name,
-                                PurchasePrice = s.PurchasePrice.ConverterParaReal(),
-                                SalePrice = s.SalePrice.ConverterParaReal(),
+                                PurchasePrice = s.PurchasePrice.ConvertToCurrency(),
+                                SalePrice = s.SalePrice.ConvertToCurrency(),
                                 Category = EnumExtension.ConvertToString(s.Category),
                                 UnitOfMeasurement = EnumExtension.ConvertToString(s.UnitOfMeasurement),
                             })

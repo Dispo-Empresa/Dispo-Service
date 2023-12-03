@@ -1,6 +1,6 @@
 ﻿namespace Dispo.Shared.Core.Domain.Entities
 {
-    public class PurchaseOrderAttachment : Base
+    public class PurchaseOrderAttachment : EntityBase
     {
         public long PurchaseOrderId { get; set; }
         public byte[] Attatchment { get; set; }

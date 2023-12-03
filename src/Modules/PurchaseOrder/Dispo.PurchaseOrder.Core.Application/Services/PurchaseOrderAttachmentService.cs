@@ -1,5 +1,5 @@
-﻿using Dispo.PurchaseOrder.Core.Application.Services.Interfaces;
-using Dispo.Shared.Core.Domain.DTOs.Request;
+﻿using Dispo.PurchaseOrder.Core.Application.Interfaces;
+using Dispo.PurchaseOrder.Core.Application.Models;
 using Dispo.Shared.Core.Domain.Interfaces;
 using Dispo.Shared.Utils;
 using System.Transactions;
@@ -15,7 +15,7 @@ namespace Dispo.PurchaseOrder.Core.Application.Services
             _purchaseOrderAttachmentRepository = purchaseOrderAttachmentRepository;
         }
 
-        public long CreatePurchaseOrderAttachment(PurchaseOrderAttachmentRequestDto PurchaseOrderAttachment)
+        public long CreatePurchaseOrderAttachment(PurchaseOrderAttachmentRequestModel PurchaseOrderAttachment)
         {
             long purchaseOrderAttachmentId = IDHelper.INVALID_ID;
 

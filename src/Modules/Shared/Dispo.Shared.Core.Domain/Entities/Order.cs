@@ -1,6 +1,6 @@
 ﻿namespace Dispo.Shared.Core.Domain.Entities
 {
-    public class Order : Base
+    public class Order : EntityBase
     {
         public string Description { get; set; }
         public int Quantity { get; set; }

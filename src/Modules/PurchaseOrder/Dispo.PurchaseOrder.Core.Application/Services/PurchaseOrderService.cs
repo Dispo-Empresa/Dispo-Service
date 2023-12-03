@@ -1,7 +1,7 @@
-﻿using Dispo.Account.Core.Application.Services.Interfaces;
-using Dispo.PurchaseOrder.Core.Application.Services.Interfaces;
+﻿using Dispo.Infra.Core.Application.Interfaces;
+using Dispo.PurchaseOrder.Core.Application.Interfaces;
+using Dispo.PurchaseOrder.Core.Application.Models;
 using Dispo.Shared.Core.Domain.DTOs;
-using Dispo.Shared.Core.Domain.DTOs.Request;
 using Dispo.Shared.Core.Domain.Entities;
 using Dispo.Shared.Core.Domain.Enums;
 using Dispo.Shared.Core.Domain.Interfaces;
@@ -23,7 +23,7 @@ namespace Dispo.PurchaseOrder.Core.Application.Services
             _AccountResolverService = AccountResolverService;
         }
 
-        public long CreatePurchaseOrder(PurchaseOrderRequestDto PurchaseOrderRequestDto)
+        public long CreatePurchaseOrder(PurchaseOrderRequestModel PurchaseOrderRequestDto)
         {
             try
             {

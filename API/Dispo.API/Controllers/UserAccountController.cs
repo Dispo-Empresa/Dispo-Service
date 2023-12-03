@@ -1,6 +1,7 @@
-﻿using Dispo.Account.Core.Application.Services.Interfaces;
-using Dispo.API.ResponseBuilder;
-using Dispo.Shared.Core.Domain.DTOs.Response;
+﻿using Dispo.API.ResponseBuilder;
+using Dispo.Infra.Core.Application.Interfaces;
+using Dispo.Infra.Core.Application.Models.Response;
+using Dispo.Shared.Core.Domain;
 using Dispo.Shared.Core.Domain.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -9,22 +10,20 @@ namespace Dispo.API.Controllers
 {
     [Route("/api/v1/user-account")]
     [ApiController]
-    [Authorize]
+    [Authorize(Roles = RolesManager.AllRoles)]
     public class UserAccountController : ControllerBase
     {
         private readonly IUserAccountService _userAccountService;
         private readonly IAccountRepository _accountRepository;
-        private readonly IUserRepository _userRepository;
 
-        public UserAccountController(IUserAccountService userAccountService, IAccountRepository accountRepository, IUserRepository userRepository)
+        public UserAccountController(IUserAccountService userAccountService, IAccountRepository accountRepository)
         {
             _userAccountService = userAccountService;
             _accountRepository = accountRepository;
-            _userRepository = userRepository;
         }
 
         [HttpPut("{id}")]
-        public IActionResult UpdateUserAccountInfo([FromRoute] long accountId, [FromBody] UserAccountResponseDto userAccountModel)
+        public IActionResult UpdateUserAccountInfo([FromRoute] long accountId, [FromBody] UserAccountResponseModel userAccountModel)
         {
             try
             {
@@ -46,8 +45,7 @@ namespace Dispo.API.Controllers
             }
         }
 
-        [HttpGet]
-        [Route("id={id}")]
+        [HttpGet("id={id}")]
         public IActionResult GetAllUserInfo([FromRoute] long id)
         {
             try

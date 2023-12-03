@@ -1,5 +1,6 @@
-﻿using Dispo.Account.Core.Application.Services.Interfaces;
-using Dispo.API.ResponseBuilder;
+﻿using Dispo.API.ResponseBuilder;
+using Dispo.Infra.Core.Application.Interfaces;
+using Dispo.Shared.Core.Domain;
 using Dispo.Shared.Core.Domain.Exceptions;
 using Dispo.Shared.Core.Domain.Interfaces;
 using Dispo.Shared.Utils;
@@ -11,7 +12,7 @@ namespace Dispo.API.Controllers
 {
     [Route("/api/v1/accounts")]
     [ApiController]
-    [Authorize]
+    [Authorize(Roles = RolesManager.AllRoles)]
     public class AccountsController : ControllerBase
     {
         private readonly IAccountRepository _accountRepository;
@@ -27,8 +28,7 @@ namespace Dispo.API.Controllers
             _accountService = accountService;
         }
 
-        [HttpGet]
-        [Route("get-id")]
+        [HttpGet("get-id")]
         public IActionResult GetAccountIdByEmail([FromRoute] string email)
         {
             var accountId = _accountRepository.GetAccountIdByEmail(_rijndaelCryptography.Encrypt(email));
@@ -45,9 +45,7 @@ namespace Dispo.API.Controllers
                                                         .Build());
         }
 
-        [HttpPost]
-        [AllowAnonymous]
-        [Route("change-warehouse")]
+        [HttpPost("change-warehouse")]
         public IActionResult ChangeWarehouse([FromBody] long warehouseId)
         {
             try

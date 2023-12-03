@@ -1,6 +1,6 @@
 ﻿namespace Dispo.Shared.Core.Domain.Entities
 {
-    public class ProductDimension : Base
+    public class ProductDimension : EntityBase
     {
         public decimal Weight { get; set; }
         public decimal Height { get; set; }

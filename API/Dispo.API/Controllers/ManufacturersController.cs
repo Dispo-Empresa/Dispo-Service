@@ -1,6 +1,7 @@
 ﻿using Dispo.API.ResponseBuilder;
-using Dispo.Product.Core.Application.Services.Interfaces;
-using Dispo.Shared.Core.Domain.DTOs.Request;
+using Dispo.Product.Core.Application.Interfaces;
+using Dispo.Product.Core.Application.Models;
+using Dispo.Shared.Core.Domain;
 using Dispo.Shared.Core.Domain.Exceptions;
 using Dispo.Shared.Core.Domain.Interfaces;
 using Dispo.Shared.Log;
@@ -11,7 +12,7 @@ namespace Dispo.API.Controllers
 {
     [Route("/api/v1/manufacturers")]
     [ApiController]
-    [Authorize]
+    [Authorize(Roles = RolesManager.AllRoles)]
     public class ManufacturersController : ControllerBase
     {
         private readonly IManufacturerRepository _manufacturerRepository;
@@ -26,7 +27,7 @@ namespace Dispo.API.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create([FromForm] ManufacturerRequestDto manufacturerRequestDto)
+        public IActionResult Create([FromForm] ManufacturerRequestModel manufacturerRequestDto)
         {
             try
             {

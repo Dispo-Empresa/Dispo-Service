@@ -1,5 +1,5 @@
-﻿using Dispo.Product.Core.Application.Services.Interfaces;
-using Dispo.Shared.Core.Domain.DTOs.Request;
+﻿using Dispo.Product.Core.Application.Interfaces;
+using Dispo.Product.Core.Application.Models;
 using Dispo.Shared.Core.Domain.Entities;
 using Dispo.Shared.Core.Domain.Exceptions;
 using Dispo.Shared.Core.Domain.Interfaces;
@@ -18,7 +18,7 @@ namespace Dispo.Product.Core.Application.Services
             _manufacturerRepository = manufacturerRepository;
         }
 
-        public long CreateManufacturer(ManufacturerRequestDto manufacturerRequestDto)
+        public long CreateManufacturer(ManufacturerRequestModel manufacturerRequestDto)
         {
             if (_manufacturerRepository.GetManufacturerIdByName(manufacturerRequestDto.Name).IsIdValid())
                 throw new AlreadyExistsException("Já existe o fabricante informado");

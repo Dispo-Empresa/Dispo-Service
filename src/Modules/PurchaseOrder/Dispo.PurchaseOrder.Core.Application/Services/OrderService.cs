@@ -1,4 +1,4 @@
-﻿using Dispo.PurchaseOrder.Core.Application.Services.Interfaces;
+﻿using Dispo.PurchaseOrder.Core.Application.Interfaces;
 using Dispo.Shared.Core.Domain.DTOs;
 using Dispo.Shared.Core.Domain.Interfaces;
 

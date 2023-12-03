@@ -1,5 +1,5 @@
-﻿using Dispo.PurchaseOrder.Core.Application.Services;
-using Dispo.PurchaseOrder.Core.Application.Services.Interfaces;
+﻿using Dispo.PurchaseOrder.Core.Application.Interfaces;
+using Dispo.PurchaseOrder.Core.Application.Services;
 using Dispo.PurchaseOrder.Infrastructure.Persistence.Repositories;
 using Dispo.Shared.Core.Domain.Interfaces;
 using Microsoft.Extensions.DependencyInjection;

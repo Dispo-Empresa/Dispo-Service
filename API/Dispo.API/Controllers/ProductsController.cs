@@ -1,6 +1,7 @@
 ﻿using Dispo.API.ResponseBuilder;
-using Dispo.Product.Core.Application.Services.Interfaces;
-using Dispo.Shared.Core.Domain.DTOs.Request;
+using Dispo.Product.Core.Application.Interfaces;
+using Dispo.Product.Core.Application.Models;
+using Dispo.Shared.Core.Domain;
 using Dispo.Shared.Core.Domain.Exceptions;
 using Dispo.Shared.Core.Domain.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -10,7 +11,7 @@ namespace Dispo.API.Controllers
 {
     [Route("/api/v1/products")]
     [ApiController]
-    [Authorize]
+    [Authorize(Roles = RolesManager.AllRoles)]
     public class ProductsController : ControllerBase
     {
         private readonly IProductService _productService;
@@ -23,7 +24,7 @@ namespace Dispo.API.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create([FromForm] ProductRequestDto productRequestDto)
+        public IActionResult Create([FromForm] ProductRequestModel productRequestDto)
         {
             try
             {
@@ -51,8 +52,7 @@ namespace Dispo.API.Controllers
             }
         }
 
-        [HttpGet]
-        [Route("get-names")]
+        [HttpGet("get-names")]
         public IActionResult GetProductNamesWithCode()
         {
             try
@@ -91,9 +91,8 @@ namespace Dispo.API.Controllers
             }
         }
 
-        [HttpGet]
-        [Route("{id}")]
-        public IActionResult Get(long id)
+        [HttpGet("{id}")]
+        public  IActionResult Get(long id)
         {
             try
             {
@@ -111,8 +110,7 @@ namespace Dispo.API.Controllers
             }
         }
 
-        [HttpGet]
-        [Route("getPurchaseOrders")]
+        [HttpGet("getPurchaseOrders")]
         public IActionResult GetPurchaseOrders()
         {
             try
@@ -131,8 +129,7 @@ namespace Dispo.API.Controllers
             }
         }
 
-        [HttpGet]
-        [Route("get-with-active-pursche-orders")]
+        [HttpGet("get-with-active-pursche-orders")]
         public IActionResult GetWithActivePurschaseOrder()
         {
             var products = _productService.GetWithActivePurschaseOrder();
@@ -141,8 +138,7 @@ namespace Dispo.API.Controllers
                                                 .Build());
         }
 
-        [HttpGet]
-        [Route("get-with-saleprice")]
+        [HttpGet("get-with-saleprice")]
         public IActionResult GetWithSalePrice()
         {
             var products = _productRepository.GetWithSalePrice();

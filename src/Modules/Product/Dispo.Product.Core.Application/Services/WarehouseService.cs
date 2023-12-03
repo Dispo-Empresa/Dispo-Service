@@ -1,5 +1,5 @@
-﻿using Dispo.Product.Core.Application.Services.Interfaces;
-using Dispo.Shared.Core.Domain.DTOs.Request;
+﻿using Dispo.Product.Core.Application.Interfaces;
+using Dispo.Product.Core.Application.Models;
 using Dispo.Shared.Core.Domain.Entities;
 using Dispo.Shared.Core.Domain.Exceptions;
 using Dispo.Shared.Core.Domain.Interfaces;
@@ -16,7 +16,7 @@ namespace Dispo.Product.Core.Application.Services
             _warehouseRepository = warehouseRepository;
         }
 
-        public void CreateWarehouse(WarehouseRequestDto warehouseRequestDto)
+        public void CreateWarehouse(WarehouseRequestModel warehouseRequestDto)
         {
             if (_warehouseRepository.ExistsByAddressId(warehouseRequestDto.AddressId))
                 throw new AlreadyExistsException("Já existe um depósito cadastrado nesse endereço.");

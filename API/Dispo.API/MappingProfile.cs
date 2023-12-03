@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Dispo.Shared.Core.Domain.DTOs.Response;
+using Dispo.Infra.Core.Application.Models.Response;
 using Dispo.Shared.Core.Domain.Entities;
 
 namespace Dispo.API
@@ -8,7 +8,7 @@ namespace Dispo.API
     {
         public MappingProfile()
         {
-            CreateMap<User, UserResponseDto>();
+            CreateMap<User, UserResponseModel>();
         }
 
         public static MapperConfiguration CreateMappingProfile()

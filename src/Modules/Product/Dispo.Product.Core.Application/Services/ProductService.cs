@@ -1,12 +1,11 @@
 ﻿using AutoMapper;
-using Dispo.Product.Core.Application.Services.Interfaces;
+using Dispo.Product.Core.Application.Interfaces;
+using Dispo.Product.Core.Application.Models;
 using Dispo.Shared.Core.Domain.DTOs;
-using Dispo.Shared.Core.Domain.DTOs.Request;
 using Dispo.Shared.Core.Domain.Exceptions;
 using Dispo.Shared.Core.Domain.Interfaces;
 using Dispo.Shared.Utils;
 using Dispo.Shared.Utils.Extensions;
-using Microsoft.AspNetCore.Http;
 using System.Transactions;
 
 namespace Dispo.Product.Core.Application.Services
@@ -24,7 +23,7 @@ namespace Dispo.Product.Core.Application.Services
 
         #region Public Methods
 
-        public long CreateProduct(ProductRequestDto productModel)
+        public long CreateProduct(ProductRequestModel productModel)
         {
             if (_productRepository.GetProductIdByName(productModel.Name).IsIdValid())
                 throw new AlreadyExistsException("Já existe o produto informado");

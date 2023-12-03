@@ -1,5 +1,5 @@
-﻿using Dispo.Account.Core.Application.Services;
-using Dispo.Account.Core.Application.Services.Interfaces;
+﻿using Dispo.Infra.Core.Application.Interfaces;
+using Dispo.Infra.Core.Application.Services;
 using Dispo.Shared.Caching;
 using Dispo.Shared.Caching.Interfaces;
 using Dispo.Shared.Log;
@@ -13,7 +13,7 @@ namespace Dispo.API
     {
         public static void InjectModules(this IServiceCollection services)
         {
-            Account.Infrastructure.IoC.Injector.InjectIoCServices(services);
+            Infra.Infrastructure.Ioc.Injector.InjectIoCServices(services);
             PurchaseOrder.Infrastructure.IoC.Injector.InjectIoCServices(services);
             Product.Infrastructure.IoC.Injector.InjectIoCServices(services);
             Movement.Infrastructure.IoC.Injector.InjectIoCServices(services);

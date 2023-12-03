@@ -1,5 +1,5 @@
 ﻿using Dispo.API.ResponseBuilder;
-using Dispo.Movement.Core.Application.Services.Interfaces;
+using Dispo.Movement.Core.Application.Interfaces;
 using Dispo.Shared.Core.Domain;
 using Dispo.Shared.Core.Domain.DTOs;
 using Microsoft.AspNetCore.Authorization;
@@ -9,7 +9,7 @@ namespace Dispo.API.Controllers
 {
     [Route("/api/v1/movements")]
     [ApiController]
-    [Authorize(Roles = Roles.WarehouseOperator)]
+    [Authorize(Roles = RolesManager.WarehouseOperatorAssociated)]
     public class MovementsController : ControllerBase
     {
         private readonly IMovementService _movementService;
@@ -22,8 +22,7 @@ namespace Dispo.API.Controllers
         /// <summary>
         /// Realiza a movimentação de um produto.
         /// </summary>
-        [HttpPost]
-        [Route("move")]
+        [HttpPost("move")]
         public async Task<IActionResult> MoveProduct([FromBody] ProductMovimentationDto productMovimentationDto)
         {
             try
@@ -46,9 +45,7 @@ namespace Dispo.API.Controllers
         /// <summary>
         /// Realiza a movimentação de entrada em lote.
         /// </summary>
-        [HttpPost]
-        [Route("move/batch")]
-        [AllowAnonymous]
+        [HttpPost("move/batch")]
         public async Task<IActionResult> BatchInputMovement([FromBody] BatchMovimentationDto batchMovimentationDto)
         {
             try

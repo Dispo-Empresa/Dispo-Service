@@ -14,7 +14,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Serilog" Version="2.12.0" />
+    <PackageReference Include="Serilog" Version="3.1.1" />
     <PackageReference Include="Serilog.AspNetCore" Version="6.1.0" />
     <PackageReference Include="Serilog.Sinks.Console" Version="4.1.0" />
     <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
@@ -22,8 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Modules\Account\Dispo.Account.Core.Application\Dispo.Account.Core.Application.csproj" />
-    <ProjectReference Include="..\..\src\Modules\Account\Dispo.Account.Infrastructure.IoC\Dispo.Account.Infrastructure.IoC.csproj" />
+    <ProjectReference Include="..\..\src\Modules\Infra\Dispo.Infra.Infrastructure.Ioc\Dispo.Infra.Infrastructure.Ioc.csproj" />
     <ProjectReference Include="..\..\src\Modules\Movement\Dispo.Movement.Core.Application\Dispo.Movement.Core.Application.csproj" />
     <ProjectReference Include="..\..\src\Modules\Movement\Dispo.Movement.Infrastructure.IoC\Dispo.Movement.Infrastructure.IoC.csproj" />
     <ProjectReference Include="..\..\src\Modules\Product\Dispo.Product.Core.Application\Dispo.Product.Core.Application.csproj" />

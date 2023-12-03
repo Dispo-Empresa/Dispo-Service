@@ -1,8 +1,8 @@
 ﻿using Dispo.Shared.Core.Domain.DTOs;
 using Dispo.Shared.Core.Domain.Entities;
 using Dispo.Shared.Core.Domain.Interfaces;
+using Dispo.Shared.Infrastructure.Persistence;
 using Dispo.Shared.Infrastructure.Persistence.Context;
-using Dispo.Shared.Infrastructure.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 namespace Dispo.PurchaseOrder.Infrastructure.Persistence.Repositories

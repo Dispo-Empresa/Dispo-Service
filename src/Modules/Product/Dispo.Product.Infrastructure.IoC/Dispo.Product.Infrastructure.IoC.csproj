@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Infra\Dispo.Infra.Core.Application\Dispo.Infra.Core.Application.csproj" />
     <ProjectReference Include="..\Dispo.Product.Core.Application\Dispo.Product.Core.Application.csproj" />
     <ProjectReference Include="..\Dispo.Product.Infrastructure.Persistence\Dispo.Product.Infrastructure.Persistence.csproj" />
   </ItemGroup>

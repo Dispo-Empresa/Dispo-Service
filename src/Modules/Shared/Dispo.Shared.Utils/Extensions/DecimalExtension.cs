@@ -4,21 +4,21 @@ namespace Dispo.Shared.Utils.Extensions
 {
     public static class DecimalExtension
     {
-        public static string ConverterParaReal(this decimal valorDecimal)
+        public static string ConvertToCurrency(this decimal value)
         {
-            int numeroCasasDecimais = 2;
+            int decimalPlaces = 2;
 
             CultureInfo culturaBRL = new CultureInfo("pt-BR");
 
-            NumberFormatInfo formatoMoedaBRL = culturaBRL.NumberFormat;
-            formatoMoedaBRL.CurrencyDecimalDigits = numeroCasasDecimais;
-            formatoMoedaBRL.CurrencyDecimalSeparator = ",";
-            formatoMoedaBRL.CurrencyGroupSeparator = ".";
-            formatoMoedaBRL.CurrencySymbol = "R$";
+            NumberFormatInfo valueBRL = culturaBRL.NumberFormat;
+            valueBRL.CurrencyDecimalDigits = decimalPlaces;
+            valueBRL.CurrencyDecimalSeparator = ",";
+            valueBRL.CurrencyGroupSeparator = ".";
+            valueBRL.CurrencySymbol = "R$";
 
-            string valorEmReal = valorDecimal.ToString("C", formatoMoedaBRL);
+            string valorInBRL = value.ToString("C", valueBRL);
 
-            return valorEmReal;
+            return valorInBRL;
         }
     }
 }

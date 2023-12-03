@@ -2,7 +2,7 @@
 
 namespace Dispo.Shared.Core.Domain.Entities
 {
-    public class Product : Base
+    public class Product : EntityBase
     {
         public bool Ativo { get; set; }
         public string Name { get; set; }

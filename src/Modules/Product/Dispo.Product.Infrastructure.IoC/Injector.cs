@@ -1,5 +1,7 @@
-﻿using Dispo.Product.Core.Application.Services;
-using Dispo.Product.Core.Application.Services.Interfaces;
+﻿using Dispo.Infra.Core.Application.Interfaces;
+using Dispo.Infra.Core.Application.Services;
+using Dispo.Product.Core.Application.Interfaces;
+using Dispo.Product.Core.Application.Services;
 using Dispo.Product.Infrastructure.Persistence.Repositories;
 using Dispo.Shared.Core.Domain.Interfaces;
 using Microsoft.Extensions.DependencyInjection;

@@ -1,6 +1,6 @@
 ﻿using Dispo.Shared.Core.Domain.Interfaces;
+using Dispo.Shared.Infrastructure.Persistence;
 using Dispo.Shared.Infrastructure.Persistence.Context;
-using Dispo.Shared.Infrastructure.Persistence.Repositories;
 
 namespace Dispo.Movement.Infrastructure.Persistence.Repositories
 {

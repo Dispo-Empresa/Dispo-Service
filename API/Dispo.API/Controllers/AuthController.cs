@@ -1,6 +1,6 @@
-﻿using Dispo.Account.Core.Application.Services.Interfaces;
-using Dispo.API.ResponseBuilder;
-using Dispo.Shared.Core.Domain.DTOs.Request;
+﻿using Dispo.API.ResponseBuilder;
+using Dispo.Infra.Core.Application.Interfaces;
+using Dispo.Infra.Core.Application.Models.Request;
 using Dispo.Shared.Core.Domain.Exceptions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -21,9 +21,8 @@ namespace Dispo.API.Controllers
             _tokenGenerator = tokenGenerator;
         }
 
-        [HttpPost]
-        [Route("signin")]
-        public async Task<IActionResult> SignIn([FromBody] SignInRequestDto signInRequestDto)
+        [HttpPost("signin")]
+        public async Task<IActionResult> SignIn([FromBody] SignInRequestModel signInRequestDto)
         {
             try
             {

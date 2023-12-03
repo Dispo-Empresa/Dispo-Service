@@ -1,11 +1,14 @@
 ﻿using Dispo.API.ResponseBuilder;
-using Dispo.Product.Core.Application.Services.Interfaces;
+using Dispo.Product.Core.Application.Interfaces;
+using Dispo.Shared.Core.Domain;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Dispo.API.Controllers
 {
     [Route("/api/v1/address")]
     [ApiController]
+    [Authorize(Roles = RolesManager.AllRoles)]
     public class AddressController : ControllerBase
     {
         private readonly IAddressService addressService;

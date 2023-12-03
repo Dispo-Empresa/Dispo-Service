@@ -1,7 +1,7 @@
 ﻿using Dispo.API.ResponseBuilder;
-using Dispo.PurchaseOrder.Core.Application.Services.Interfaces;
+using Dispo.PurchaseOrder.Core.Application.Interfaces;
+using Dispo.PurchaseOrder.Core.Application.Models;
 using Dispo.Shared.Core.Domain;
-using Dispo.Shared.Core.Domain.DTOs.Request;
 using Dispo.Shared.Core.Domain.Exceptions;
 using Dispo.Shared.Core.Domain.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -11,7 +11,7 @@ namespace Dispo.API.Controllers
 {
     [Route("/api/v1/purchase-orders")]
     [ApiController]
-    [Authorize(Roles = $"{Roles.Manager},{Roles.PurchasingManager}")]
+    [Authorize(Roles = RolesManager.PurchasingManagerAssociated)]
     public class PurchaseOrderController : ControllerBase
     {
         private readonly IPurchaseOrderService _purchaseOrderService;
@@ -24,7 +24,7 @@ namespace Dispo.API.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody] PurchaseOrderRequestDto purchaseOrderRequestDto)
+        public IActionResult Create([FromBody] PurchaseOrderRequestModel purchaseOrderRequestDto)
         {
             try
             {
@@ -52,8 +52,7 @@ namespace Dispo.API.Controllers
             }
         }
 
-        [HttpGet]
-        [Route("get-by-product/{productId}")]
+        [HttpGet("get-by-product/{productId}")]
         public IActionResult GetByProcuctId(long productId)
         {
             var purschaseOrders = _purchaseOrderRepository.GetByProcuctId(productId);
