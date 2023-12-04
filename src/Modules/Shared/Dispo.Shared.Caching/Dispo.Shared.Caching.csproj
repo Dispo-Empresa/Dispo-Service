@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Dispo.Shared.Utilss\Dispo.Shared.Log\Dispo.Shared.Log.csproj" />
+    <ProjectReference Include="..\Dispo.Shared.Log\Dispo.Shared.Log.csproj" />
   </ItemGroup>
 
 </Project>

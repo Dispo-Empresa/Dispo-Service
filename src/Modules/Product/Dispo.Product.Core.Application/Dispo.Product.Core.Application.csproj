@@ -12,7 +12,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Shared\Dispo.Shared.Core.Domain\Dispo.Shared.Core.Domain.csproj" />
-    <ProjectReference Include="..\..\Shared\Dispo.Shared.Utilss\Dispo.Shared.Utils.csproj" />
     <ProjectReference Include="..\..\Shared\Dispo.Shared.Utils\Dispo.Shared.Utils.csproj" />
   </ItemGroup>
 
