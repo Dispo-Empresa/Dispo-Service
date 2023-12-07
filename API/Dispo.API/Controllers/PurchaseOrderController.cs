@@ -49,7 +49,22 @@ namespace Dispo.API.Controllers
                                                             .WithSuccess(false)
                                                             .WithAlert(AlertType.Error)
                                                             .Build());
+           
+            
             }
+        }
+
+        [HttpGet]
+        public IActionResult GetAll()
+        {
+            var purschaseOrders = _purchaseOrderRepository.GetAll();
+
+            if (purschaseOrders != null)
+                purschaseOrders = _purchaseOrderService.FillPurchaseOrderWithSupplier(purschaseOrders);
+
+            return Ok(new ResponseModelBuilder().WithSuccess(true)
+                                                .WithData(purschaseOrders)
+                                                .Build());
         }
 
         [HttpGet("get-by-product/{productId}")]

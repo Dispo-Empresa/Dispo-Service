@@ -6,6 +6,7 @@ namespace Dispo.Product.Core.Application.Interfaces
     public interface IProductService
     {
         long CreateProduct(ProductRequestModel productModel);
+        void UpdateProduct(ProductRequestDto productModel);
 
         string BuildProductSKUCode(string productName, string productType);
 

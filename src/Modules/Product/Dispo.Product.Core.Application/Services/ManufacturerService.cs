@@ -40,5 +40,22 @@ namespace Dispo.Product.Core.Application.Services
 
             return manufacturerCreatedId;
         }
+
+        public void UpdateManufacturer(ManufacturerRequestDto manufacturerRequestDto)
+        {
+            using (var tc = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+            {
+                var manufacturer = new Shared.Core.Domain.Entities.Manufacturer()
+                {
+                    Id = manufacturerRequestDto.Id,
+                    Name = manufacturerRequestDto.Name,
+                    Logo = manufacturerRequestDto.Logo.ConvertToByteArray()
+                };
+
+                _manufacturerRepository.Update(manufacturer);
+                tc.Complete();
+            }
+            
+        }
     }
 }
