@@ -25,7 +25,7 @@ builder.Services.AddSingleton(x => builder.Configuration);
 #region Database
 
 builder.Services.AddDbContext<DispoContext>(option =>
-    option.UseSqlServer(builder.Configuration.GetConnectionString("DispoDefaultConnection")), ServiceLifetime.Transient);
+    option.UseSqlServer(Environment.GetEnvironmentVariable("ConnectionStrings__DispoDefaultConnection") ?? builder.Configuration.GetConnectionString("DispoDefaultConnection")), ServiceLifetime.Transient);
 
 #endregion Database
 

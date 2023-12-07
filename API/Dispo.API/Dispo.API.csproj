@@ -22,6 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\Modules\Infra\Dispo.Infra.Core.Application\Dispo.Infra.Core.Application.csproj" />
     <ProjectReference Include="..\..\src\Modules\Infra\Dispo.Infra.Infrastructure.Ioc\Dispo.Infra.Infrastructure.Ioc.csproj" />
     <ProjectReference Include="..\..\src\Modules\Movement\Dispo.Movement.Core.Application\Dispo.Movement.Core.Application.csproj" />
     <ProjectReference Include="..\..\src\Modules\Movement\Dispo.Movement.Infrastructure.IoC\Dispo.Movement.Infrastructure.IoC.csproj" />

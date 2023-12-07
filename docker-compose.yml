@@ -1,0 +1,44 @@
+version: '3'
+
+services:
+  dispo-api:
+    container_name: "dispo-api"
+    image: dispo-api:latest
+    build:
+      dockerfile: Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DispoDefaultConnection=Server=sql_server;Database=DispoDatabase;User=sa;Password=2gGC!olZ6^&ih3IX;TrustServerCertificate=True
+    expose:
+      - 80
+    ports:
+      - "5010:80"
+    depends_on:
+      - rabbitmq
+      - sql_server
+    networks:
+      - local
+
+  rabbitmq:
+    image: rabbitmq:3.13.0-rc.2-management-alpine
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - local
+
+  sql_server:
+    image: mcr.microsoft.com/mssql/server
+    container_name: sql_server
+    environment:
+      SA_PASSWORD: 2gGC!olZ6^&ih3IX
+      ACCEPT_EULA: Y
+    ports:
+      - "1433:1433"
+    networks:
+      - local
+
+networks:
+  local:
+    driver: bridge
