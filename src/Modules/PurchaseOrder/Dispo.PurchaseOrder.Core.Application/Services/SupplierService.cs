@@ -64,7 +64,7 @@ namespace Dispo.PurchaseOrder.Core.Application.Services
             return supplierCreatedId;
         }
 
-        public void UpdateSupplier(SupplierRequestDto supplierRequestDto)
+        public void UpdateSupplier(SupplierRequestModel supplierRequestDto)
         {
             using (var tc = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {

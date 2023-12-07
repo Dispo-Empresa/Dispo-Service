@@ -57,7 +57,7 @@ namespace Dispo.API.Controllers
 
         [HttpPost]
         [Route("edit")]
-        public IActionResult Edit([FromForm] ManufacturerRequestDto manufacturerRequestDto)
+        public IActionResult Edit([FromForm] ManufacturerRequestModel manufacturerRequestDto)
         {
             try
             {

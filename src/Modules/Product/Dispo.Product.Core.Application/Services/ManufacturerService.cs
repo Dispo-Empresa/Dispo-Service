@@ -41,7 +41,7 @@ namespace Dispo.Product.Core.Application.Services
             return manufacturerCreatedId;
         }
 
-        public void UpdateManufacturer(ManufacturerRequestDto manufacturerRequestDto)
+        public void UpdateManufacturer(ManufacturerRequestModel manufacturerRequestDto)
         {
             using (var tc = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {

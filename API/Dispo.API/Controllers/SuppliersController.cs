@@ -16,11 +16,13 @@ namespace Dispo.API.Controllers
     {
         private readonly ISupplierRepository _supplierRepository;
         private readonly ISupplierService _supplierService;
+        private readonly IAddressRepository _addressRepository;
 
-        public SuppliersController(ISupplierRepository supplierRepository, ISupplierService supplierService)
+        public SuppliersController(ISupplierRepository supplierRepository, ISupplierService supplierService, IAddressRepository addressRepository)
         {
             _supplierRepository = supplierRepository;
             _supplierService = supplierService;
+            _addressRepository = addressRepository;
         }
 
         [HttpPost]
@@ -54,7 +56,7 @@ namespace Dispo.API.Controllers
 
         [HttpPost]
         [Route("edit")]
-        public IActionResult Edit([FromBody] SupplierRequestDto supplierRequestDto)
+        public IActionResult Edit([FromBody] SupplierRequestModel supplierRequestDto)
         {
             try
             {
@@ -103,7 +105,7 @@ namespace Dispo.API.Controllers
 
                 if (supplier != null)
                 {
-                    var address = _supplierService.GetSupplierAddressById(supplier.AddressId);
+                    var address = _addressRepository.GetById(supplier.AddressId);
                     supplier.Address = address;
                 }
 

@@ -51,7 +51,7 @@ namespace Dispo.Product.Core.Application.Services
             return productCreatedId;
         }
 
-        public void UpdateProduct(ProductRequestDto productModel)
+        public void UpdateProduct(ProductRequestModel productModel)
         {
             using (var tc = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
