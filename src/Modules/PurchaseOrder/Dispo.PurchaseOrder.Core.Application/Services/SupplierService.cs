@@ -4,6 +4,7 @@ using Dispo.Shared.Core.Domain.Entities;
 using Dispo.Shared.Core.Domain.Exceptions;
 using Dispo.Shared.Core.Domain.Interfaces;
 using Dispo.Shared.Utils;
+using System.Text.RegularExpressions;
 using System.Transactions;
 
 namespace Dispo.PurchaseOrder.Core.Application.Services
@@ -50,9 +51,9 @@ namespace Dispo.PurchaseOrder.Core.Application.Services
                     Name = supplierRequestDto.Name,
                     ContactName = supplierRequestDto.ContactName,
                     ContactTitle = supplierRequestDto.ContactTitle,
-                    Cnpj = supplierRequestDto.Cnpj,
+                    Cnpj = Regex.Replace(supplierRequestDto.Cnpj, @"[^\d]", ""),
                     Email = supplierRequestDto.Email,
-                    Phone = supplierRequestDto.Phone,
+                    Phone = Regex.Replace(supplierRequestDto.Phone, @"[^\d]", ""),
                     AddressId = addressCreatedId
                 };
 

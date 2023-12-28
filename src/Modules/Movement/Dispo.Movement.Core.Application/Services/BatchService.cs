@@ -70,8 +70,8 @@ namespace Dispo.Movement.Core.Application.Services
             var batch = new Batch
             {
                 Key = batchDetails.Key,
-                ManufacturingDate = batchDetails.ManufacturingDate.HasValue ? batchDetails.ManufacturingDate.Value : DateTime.Now,
-                ExpirationDate = batchDetails.ExpirationDate.HasValue ? batchDetails.ExpirationDate.Value : DateTime.Now,
+                ManufacturingDate = batchDetails.ManufacturingDate,
+                ExpirationDate = batchDetails.ExpirationDate,
                 QuantityPerBatch = batchDetails.Quantity,
                 OrderId = batchDetails.OrderId.Value,
             };

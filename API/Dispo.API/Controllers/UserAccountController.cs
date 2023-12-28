@@ -59,10 +59,30 @@ namespace Dispo.API.Controllers
             catch (Exception ex)
             {
                 return BadRequest(new ResponseModelBuilder().WithMessage($"Erro não esperado: {ex.Message}")
-                                            .WithSuccess(false)
-                                            .WithData(ex)
-                                            .WithAlert(AlertType.Error)
-                                            .Build());
+                                                            .WithSuccess(false)
+                                                            .WithData(ex)
+                                                            .WithAlert(AlertType.Error)
+                                                            .Build());
+            }
+        }
+
+        [HttpPost("getAccountIdByEmail")]
+        [AllowAnonymous]
+        public IActionResult GetAccountIdByEmail([FromBody] string email)
+        {
+            try
+            {
+                var accountId = _accountRepository.GetAccountIdByEmail(email);
+
+                return Ok(new ResponseModelBuilder().WithSuccess(true)
+                                                    .WithData(accountId)
+                                                    .Build());
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ResponseModelBuilder().WithMessage($"Erro não esperado: {ex.Message}")
+                                                            .WithSuccess(false)
+                                                            .Build());
             }
         }
     }

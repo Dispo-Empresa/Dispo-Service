@@ -7,7 +7,6 @@ using Dispo.Shared.Core.Domain.Enums;
 using Dispo.Shared.Core.Domain.Exceptions;
 using Dispo.Shared.Core.Domain.Interfaces;
 using Dispo.Shared.Log;
-using Microsoft.Extensions.Logging;
 using System.Transactions;
 
 namespace Dispo.Movement.Core.Application.Services
@@ -64,11 +63,11 @@ namespace Dispo.Movement.Core.Application.Services
                 var movement = await CreateWithAccountAndWarehouseByMovementTypeAsync(batchMovimentationDto.MovementType);
                 foreach (var batchDetails in batchMovimentationDto.Batches)
                 {
-                    //if (batchMovimentationDto.MovementType is eMovementType.Input && await _batchService.ExistsByKeyAsync(batchDetails.Key))
-                    //{
-                    //    _logger.LogWarning("Batch com a Key {K} já existe.", batchDetails.Key);
-                    //    continue;
-                    //}
+                    if (batchMovimentationDto.MovementType is eMovementType.Input && await _batchService.ExistsByKeyAsync(batchDetails.Key))
+                    {
+                        _logger.Warning("Batch com a Key {K} já existe.", batchDetails.Key);
+                        continue;
+                    }
 
                     movement.Quantity += batchDetails.Quantity;
                     var batch = await _batchService.GetOrCreateForMovementationAsync(batchDetails, batchMovimentationDto.MovementType);

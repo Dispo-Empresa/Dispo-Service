@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Dispo.Infrastructure.Migrations
+namespace Dispo.Shared.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(DispoContext))]
     partial class DispoContextModelSnapshot : ModelSnapshot
