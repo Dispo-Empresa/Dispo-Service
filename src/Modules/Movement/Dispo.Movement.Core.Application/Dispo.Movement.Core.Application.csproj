@@ -14,6 +14,7 @@
     <ProjectReference Include="..\..\Infra\Dispo.Infra.Core.Application\Dispo.Infra.Core.Application.csproj" />
     <ProjectReference Include="..\..\Product\Dispo.Product.Core.Application\Dispo.Product.Core.Application.csproj" />
     <ProjectReference Include="..\..\Shared\Dispo.Shared.Core.Domain\Dispo.Shared.Core.Domain.csproj" />
+    <ProjectReference Include="..\..\Shared\Dispo.Shared.Utils\Dispo.Shared.Utils.csproj" />
   </ItemGroup>
 
 </Project>

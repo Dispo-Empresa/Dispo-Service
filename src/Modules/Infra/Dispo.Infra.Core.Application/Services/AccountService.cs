@@ -124,7 +124,7 @@ namespace Dispo.Infra.Core.Application.Services
                 if (userUpdated == null)
                     throw new Exception("Informações não encontradas para esta conta!");
 
-                userUpdated.BirthDate = userAccountModel.BirthDate;
+                userUpdated.BirthDate = userAccountModel.BirthDate ?? DateTime.MinValue;
                 userUpdated.Cpf = userAccountModel.CpfCnpj;
                 userUpdated.FirstName = userAccountModel.FirstName;
                 userUpdated.LastName = userAccountModel.LastName;

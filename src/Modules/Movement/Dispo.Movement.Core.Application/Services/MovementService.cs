@@ -58,6 +58,11 @@ namespace Dispo.Movement.Core.Application.Services
 
         public async Task MoveBatchAsync(BatchMovimentationDto batchMovimentationDto)
         {
+            if (batchMovimentationDto.MovementType == eMovementType.Input && batchMovimentationDto.Batches.Any(x => _movementRepository.ExistsInputMovementByOrderId(x.OrderId.Value)))
+            {
+                throw new BusinessException("Já existe movimentação de entrada para esta ordem de compra");
+            }
+
             using (var transaction = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
                 var movement = await CreateWithAccountAndWarehouseByMovementTypeAsync(batchMovimentationDto.MovementType);

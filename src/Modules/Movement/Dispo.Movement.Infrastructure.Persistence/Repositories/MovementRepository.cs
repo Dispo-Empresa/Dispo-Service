@@ -1,4 +1,5 @@
 ﻿using Dispo.Shared.Core.Domain.DTOs;
+using Dispo.Shared.Core.Domain.Enums;
 using Dispo.Shared.Core.Domain.Interfaces;
 using Dispo.Shared.Infrastructure.Persistence;
 using Dispo.Shared.Infrastructure.Persistence.Context;
@@ -29,5 +30,12 @@ namespace Dispo.Movement.Infrastructure.Persistence.Repositories
                                      Quantity = s.Quantity
                                  })
                                 .ToList();
+
+        public bool ExistsInputMovementByOrderId(long orderId)
+            => _context.Batches.Include(i => i.Order)
+                               .ThenInclude(i => i.Product)
+                               .Include(i => i.BatchMovements)
+                               .ThenInclude(i => i.Movement)
+                               .Any(s => s.OrderId == orderId && s.BatchMovements.Any(a => a.Movement.Type == eMovementType.Input));
     }
 }

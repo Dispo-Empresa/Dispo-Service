@@ -57,11 +57,6 @@ namespace Dispo.Shared.Infrastructure.Persistence.Mappings
                    .HasColumnName("Phone")
                    .HasColumnType("VARCHAR(16)")
                    .HasMaxLength(16);
-
-            builder.HasOne(a => a.Address)
-                   .WithOne(b => b.Supplier)
-                   .HasForeignKey<Supplier>(c => c.AddressId)
-                   .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

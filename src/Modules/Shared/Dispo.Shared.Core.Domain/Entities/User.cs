@@ -8,9 +8,10 @@
         public string Cpf { get; set; }
         public string Phone { get; set; }
         public DateTime BirthDate { get; set; }
-        public long AddressId { get; set; }
 
         public Account Account { get; set; }
-        public Address Address { get; set; }
+
+        public string GetFullName()
+            => $"{FirstName} {LastName}";
     }
 }

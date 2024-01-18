@@ -1,7 +1,6 @@
 ﻿using Dispo.Product.Core.Application.Interfaces;
 using Dispo.Product.Core.Application.Models;
 using Dispo.Shared.Core.Domain.Entities;
-using Dispo.Shared.Core.Domain.Exceptions;
 using Dispo.Shared.Core.Domain.Interfaces;
 using System.Transactions;
 
@@ -18,15 +17,17 @@ namespace Dispo.Product.Core.Application.Services
 
         public void CreateWarehouse(WarehouseRequestModel warehouseRequestDto)
         {
-            if (_warehouseRepository.ExistsByAddressId(warehouseRequestDto.AddressId))
-                throw new AlreadyExistsException("Já existe um depósito cadastrado nesse endereço.");
-
             using (var tc = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
                 var warehouse = new Warehouse
                 {
-                    AddressId = warehouseRequestDto.AddressId,
                     Name = warehouseRequestDto.Name,
+                    Country = warehouseRequestDto.Country,
+                    UF = warehouseRequestDto.UF,
+                    City = warehouseRequestDto.City,
+                    District = warehouseRequestDto.District,
+                    CEP = warehouseRequestDto.CEP,
+                    AdditionalInfo = warehouseRequestDto.AdditionalInfo,
                 };
 
                 _warehouseRepository.Create(warehouse);

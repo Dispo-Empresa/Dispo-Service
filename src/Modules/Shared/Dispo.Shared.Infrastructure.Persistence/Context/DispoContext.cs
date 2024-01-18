@@ -15,7 +15,6 @@ namespace Dispo.Shared.Infrastructure.Persistence.Context
         { }
 
         public DbSet<Core.Domain.Entities.Account> Accounts { get; set; }
-        public DbSet<Address> Addresses { get; set; }
         public DbSet<Batch> Batches { get; set; }
         public DbSet<BatchMovement> BatchMovements { get; set; }
         public DbSet<Manufacturer> Manufacturers { get; set; }
@@ -36,7 +35,6 @@ namespace Dispo.Shared.Infrastructure.Persistence.Context
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new AccountMapping());
-            modelBuilder.ApplyConfiguration(new AddressMapping());
             modelBuilder.ApplyConfiguration(new BatchMapping());
             modelBuilder.ApplyConfiguration(new BatchMovementMapping());
             modelBuilder.ApplyConfiguration(new ManufacturerMapping());

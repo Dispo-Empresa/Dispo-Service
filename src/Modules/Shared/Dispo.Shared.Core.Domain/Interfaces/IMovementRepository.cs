@@ -6,5 +6,7 @@ namespace Dispo.Shared.Core.Domain.Interfaces
     public interface IMovementRepository : IBaseRepository<Movement>
     {
         List<MovimentationDetailsDto> GetDetails();
+
+        bool ExistsInputMovementByOrderId(long orderId);
     }
 }

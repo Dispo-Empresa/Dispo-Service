@@ -23,29 +23,6 @@ namespace Dispo.API.Controllers
         }
 
         /// <summary>
-        /// Realiza a movimentação de um produto.
-        /// </summary>
-        [HttpPost("move")]
-        public async Task<IActionResult> MoveProduct([FromBody] ProductMovimentationDto productMovimentationDto)
-        {
-            try
-            {
-                productMovimentationDto.Validate();
-                await _movementService.MoveProductAsync(productMovimentationDto);
-
-                return Ok(new ResponseModelBuilder().WithMessage("Movimentação de produto realizada com sucesso.")
-                                                    .WithSuccess(true)
-                                                    .Build());
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new ResponseModelBuilder().WithMessage(ex.Message)
-                                                            .WithSuccess(false)
-                                                            .Build());
-            }
-        }
-
-        /// <summary>
         /// Realiza a movimentação de entrada em lote.
         /// </summary>
         [HttpPost("move/batch")]
@@ -55,6 +32,7 @@ namespace Dispo.API.Controllers
             {
                 await _movementService.MoveBatchAsync(batchMovimentationDto);
                 return Ok(new ResponseModelBuilder().WithMessage("Movimentação de produto realizada com sucesso.")
+                                                    .WithAlert(AlertType.Success)
                                                     .WithSuccess(true)
                                                     .Build());
             }

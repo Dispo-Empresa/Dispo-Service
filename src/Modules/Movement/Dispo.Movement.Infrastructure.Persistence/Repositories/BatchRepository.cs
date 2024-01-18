@@ -3,7 +3,6 @@ using Dispo.Shared.Core.Domain.Entities;
 using Dispo.Shared.Core.Domain.Interfaces;
 using Dispo.Shared.Infrastructure.Persistence;
 using Dispo.Shared.Infrastructure.Persistence.Context;
-using Dispo.Shared.Utils;
 using Microsoft.EntityFrameworkCore;
 
 namespace Dispo.Movement.Infrastructure.Persistence.Repositories
@@ -29,10 +28,10 @@ namespace Dispo.Movement.Infrastructure.Persistence.Repositories
                                    .Select(s => new BatchDetailsDto
                                    {
                                        Id = s.Id,
-                                       ProductId = s.Order == null ? IDHelper.INVALID_ID : s.Order.ProductId,
                                        Key = s.Key,
                                        Quantity = s.ProductQuantity,
-                                       ExpirationDate = s.ExpirationDate
+                                       ExpirationDate = s.ExpirationDate,
+                                       ManufacturingDate = s.ManufacturingDate
                                    }).ToList();
         }
 
@@ -40,5 +39,11 @@ namespace Dispo.Movement.Infrastructure.Persistence.Repositories
         {
             return await _context.Batches.FirstOrDefaultAsync(w => w.Key == key);
         }
+
+        public int GetTotalQuantityOfProduct(long productId)
+            => _context.Batches.Include(x => x.Order)
+                               .ThenInclude(x => x.Product)
+                               .Where(x => x.Order.ProductId == productId)
+                               .Sum(s => s.ProductQuantity);
     }
 }

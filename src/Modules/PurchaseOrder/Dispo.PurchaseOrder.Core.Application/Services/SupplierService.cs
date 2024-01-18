@@ -12,12 +12,10 @@ namespace Dispo.PurchaseOrder.Core.Application.Services
     public class SupplierService : ISupplierService
     {
         private readonly ISupplierRepository _supplierRepository;
-        private readonly IAddressRepository _addressRepository;
 
-        public SupplierService(ISupplierRepository supplierRepository, IAddressRepository addressRepository)
+        public SupplierService(ISupplierRepository supplierRepository)
         {
             _supplierRepository = supplierRepository;
-            _addressRepository = addressRepository;
         }
 
         public long CreateSupplier(SupplierRequestModel supplierRequestDto)
@@ -26,23 +24,6 @@ namespace Dispo.PurchaseOrder.Core.Application.Services
                 throw new AlreadyExistsException("Já existe o fornecedor informado");
 
             long supplierCreatedId = IDHelper.INVALID_ID;
-            long addressCreatedId = IDHelper.INVALID_ID;
-            using (var tc = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
-            {
-                var address = new Address()
-                {
-                    Country = supplierRequestDto.Address.Country,
-                    UF = supplierRequestDto.Address.UF,
-                    City = supplierRequestDto.Address.City,
-                    District = supplierRequestDto.Address.District,
-                    CEP = supplierRequestDto.Address.CEP,
-                    AdditionalInfo = supplierRequestDto.Address.AdditionalInfo ?? string.Empty,
-                };
-
-                _addressRepository.Create(address);
-                tc.Complete();
-                addressCreatedId = address.Id;
-            }
 
             using (var tc = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
@@ -54,7 +35,6 @@ namespace Dispo.PurchaseOrder.Core.Application.Services
                     Cnpj = Regex.Replace(supplierRequestDto.Cnpj, @"[^\d]", ""),
                     Email = supplierRequestDto.Email,
                     Phone = Regex.Replace(supplierRequestDto.Phone, @"[^\d]", ""),
-                    AddressId = addressCreatedId
                 };
 
                 _supplierRepository.Create(supplier);
@@ -69,10 +49,9 @@ namespace Dispo.PurchaseOrder.Core.Application.Services
         {
             using (var tc = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
-                var supplier = new Shared.Core.Domain.Entities.Supplier()
+                var supplier = new Supplier()
                 {
                     Id = supplierRequestDto.Id,
-                    AddressId = supplierRequestDto.Address.AddressId,
                     Name = supplierRequestDto.Name,
                     ContactName = supplierRequestDto.ContactName,
                     ContactTitle = supplierRequestDto.ContactTitle,
@@ -80,10 +59,6 @@ namespace Dispo.PurchaseOrder.Core.Application.Services
                     Email = supplierRequestDto.Email,
                     Phone = supplierRequestDto.Phone
                 };
-
-                var address = _addressRepository.GetById(supplierRequestDto.Address.AddressId);
-
-                supplier.Address = address;
 
                 _supplierRepository.Update(supplier);
                 tc.Complete();

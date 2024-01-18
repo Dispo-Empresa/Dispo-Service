@@ -21,7 +21,6 @@ namespace Dispo.Product.Infrastructure.IoC
             serviceColletion.AddScoped<IProductRepository, ProductRepository>();
             serviceColletion.AddScoped<IManufacturerRepository, ManufacturerRepository>();
             serviceColletion.AddScoped<IWarehouseRepository, WarehouseRepository>();
-            serviceColletion.AddScoped<IAddressRepository, AddressRepository>();
         }
 
         private static void InjectServices(IServiceCollection serviceColletion)
@@ -29,7 +28,6 @@ namespace Dispo.Product.Infrastructure.IoC
             serviceColletion.AddScoped<IAdmService, AdmService>();
             serviceColletion.AddScoped<IProductService, ProductService>();
             serviceColletion.AddScoped<IManufacturerService, ManufacturerService>();
-            serviceColletion.AddScoped<IAddressService, AddressService>();
             serviceColletion.AddScoped<IWarehouseService, WarehouseService>();
         }
     }

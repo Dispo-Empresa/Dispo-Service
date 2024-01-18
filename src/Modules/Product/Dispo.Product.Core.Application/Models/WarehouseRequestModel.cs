@@ -2,8 +2,12 @@
 {
     public class WarehouseRequestModel
     {
-        public long AddressId { get; set; }
         public string Name { get; set; }
-        public long CompanyId { get; set; }
+        public string Country { get; set; }
+        public string UF { get; set; }
+        public string City { get; set; }
+        public string District { get; set; }
+        public string CEP { get; set; }
+        public string? AdditionalInfo { get; set; }
     }
 }

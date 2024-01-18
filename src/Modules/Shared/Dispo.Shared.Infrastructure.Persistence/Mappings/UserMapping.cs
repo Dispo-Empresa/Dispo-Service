@@ -54,11 +54,6 @@ namespace Dispo.Shared.Infrastructure.Persistence.Mappings
             builder.Property(x => x.BirthDate)
                    .HasColumnName("BirthDate")
                    .HasColumnType("datetime2");
-
-            builder.HasOne(a => a.Address)
-                   .WithOne(b => b.User)
-                   .HasForeignKey<User>(c => c.AddressId)
-                   .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

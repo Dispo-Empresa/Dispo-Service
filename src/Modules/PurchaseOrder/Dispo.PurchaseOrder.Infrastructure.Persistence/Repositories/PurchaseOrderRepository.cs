@@ -1,4 +1,5 @@
 ﻿using Dispo.Shared.Core.Domain.DTOs;
+using Dispo.Shared.Core.Domain.Enums;
 using Dispo.Shared.Core.Domain.Interfaces;
 using Dispo.Shared.Infrastructure.Persistence;
 using Dispo.Shared.Infrastructure.Persistence.Context;
@@ -24,9 +25,11 @@ namespace Dispo.PurchaseOrder.Infrastructure.Persistence.Repositories
                            .Select(s => new PurschaseOrderDto
                            {
                                Id = s.Id,
-                               CreationDate = s.CreationDate,
-                               Quantity = s.Orders.Where(w => w.ProductId == productId).Sum(s => s.Quantity),
-                               Supplier = s.Supplier.Name
+                               PurchaseOrderNumber = s.Number,
+                               PurchaseOrderDate = s.CreationDate,
+                               OrderQuantity = s.Orders.Where(w => w.ProductId == productId).Sum(s => s.Quantity),
+                               SupplierName = s.Supplier.Name,
+                               OrderId = s.Orders.Where(w => w.PurchaseOrderId == s.Id).Select(s => s.Id).First()
                            }).ToList();
         }
     }

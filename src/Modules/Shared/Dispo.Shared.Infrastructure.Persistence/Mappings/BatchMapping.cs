@@ -29,12 +29,6 @@ namespace Dispo.Shared.Infrastructure.Persistence.Mappings
                    .HasColumnType("INTEGER")
                    .HasMaxLength(9999);
 
-            builder.Property(x => x.QuantityPerBatch)
-                   .IsRequired()
-                   .HasColumnName("QuantityPerBatch")
-                   .HasColumnType("INTEGER")
-                   .HasMaxLength(9999);
-
             builder.Property(x => x.ManufacturingDate)
                    .HasColumnName("ManufacturingDate")
                    .HasColumnType("datetime2");

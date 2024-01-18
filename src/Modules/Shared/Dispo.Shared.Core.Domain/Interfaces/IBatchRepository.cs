@@ -10,5 +10,7 @@ namespace Dispo.Shared.Core.Domain.Interfaces
         List<BatchDetailsDto> GetWithQuantityByProduct(long productId);
 
         Task<Batch?> GetByKeyAsync(string key);
+
+        int GetTotalQuantityOfProduct(long productId);
     }
 }

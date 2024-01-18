@@ -11,7 +11,5 @@ namespace Dispo.Product.Core.Application.Interfaces
         string BuildProductSKUCode(string productName, string productType);
 
         Task<bool> ExistsByIdAsync(long productId);
-
-        List<ProductInfoDto> GetWithActivePurschaseOrder();
     }
 }

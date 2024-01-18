@@ -6,7 +6,6 @@ namespace Dispo.Shared.Core.Domain.Entities
     {
         public string Key { get; set; }
         public int ProductQuantity { get; set; }
-        public int QuantityPerBatch { get; set; }
         public DateTime ManufacturingDate { get; set; }
         public DateTime ExpirationDate { get; set; }
         public long OrderId { get; set; }
@@ -17,11 +16,9 @@ namespace Dispo.Shared.Core.Domain.Entities
         public void IncreaseOrDecreaseQuantityByMovementType(eMovementType movementType, int quantity, DateTime? expirationDate = null)
         {
             if (movementType is eMovementType.Input)
-                QuantityPerBatch += quantity;
+                ProductQuantity += quantity;
             else
-                QuantityPerBatch -= quantity;
-
-            ExpirationDate = expirationDate.GetValueOrDefault(DateTime.Now);
+                ProductQuantity -= quantity;
         }
     }
 }
