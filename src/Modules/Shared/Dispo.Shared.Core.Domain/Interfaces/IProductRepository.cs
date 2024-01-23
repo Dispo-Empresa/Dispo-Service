@@ -13,7 +13,7 @@ namespace Dispo.Shared.Core.Domain.Interfaces
 
         IEnumerable<PurchaseOrderInfoDto> GetPurchaseOrderInfoDto();
 
-        List<ProductInfoDto> GetWithActivePurschaseOrder();
+        List<ProductMovementDto> GetWithActivePurschaseOrderByMovementType(int movementType);
 
         List<ProductExitMovementDto> GetWithSalePrice();
     }

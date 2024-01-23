@@ -1,4 +1,5 @@
 ﻿using Dispo.Shared.Core.Domain.DTOs;
+using Dispo.Shared.Core.Domain.Enums;
 using Dispo.Shared.Core.Domain.Interfaces;
 using Dispo.Shared.Infrastructure.Persistence;
 using Dispo.Shared.Infrastructure.Persistence.Context;
@@ -59,16 +60,35 @@ namespace Dispo.Product.Infrastructure.Persistence.Repositories
                                    })
                                    .ToList();
 
-        public List<ProductInfoDto> GetWithActivePurschaseOrder()
+        public List<ProductMovementDto> GetWithActivePurschaseOrderByMovementType(int movementType)
         {
-            return _dispoContext.Products
-                                .Include(i => i.Orders).ThenInclude(i => i.PurchaseOrder)
-                                .Where(w => w.Orders != null && w.Orders.Any(w => w.PurchaseOrderId > 0))
-                                .Select(s => new ProductInfoDto
-                                {
-                                    Id = s.Id,
-                                    Name = s.Name
-                                }).ToList();
+            if (movementType == (int)eMovementType.Input)
+            {
+                return _dispoContext.Products
+                                    .Include(i => i.Orders).ThenInclude(i => i.PurchaseOrder)
+                                    .Where(w => w.Orders != null && w.Orders.Any(w => w.PurchaseOrderId > 0))
+                                    .Select(s => new ProductMovementDto
+                                    {
+                                        Id = s.Id,
+                                        Name = s.Name,
+                                        PurchasePrice = s.PurchasePrice
+
+                                    }).ToList();
+            }
+            else
+            {
+                return _dispoContext.Products
+                                    .Include(i => i.Orders)
+                                    .ThenInclude(i => i.Batches)
+                                    .Where(w => w.Orders != null && w.Orders.Any(w => w.Batches.Sum(s => s.ProductQuantity) > 0))
+                                    .Select(s => new ProductMovementDto
+                                   {
+                                        Id = s.Id,
+                                        Name = s.Name,
+                                        PurchasePrice = s.PurchasePrice
+
+                                    }).ToList();
+            }
         }
 
         public List<ProductExitMovementDto> GetWithSalePrice()

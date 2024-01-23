@@ -28,6 +28,7 @@ namespace Dispo.Infra.Infrastructure.Ioc
             serviceColletion.AddScoped<IAccountResolverService, AccountResolverService>();
             serviceColletion.AddScoped<IPasswordRecoveryService, PasswordRecoveryService>();
             serviceColletion.AddScoped<ITokenGeneratorService, TokenGeneratorService>();
+            serviceColletion.AddScoped<IUserAccountService, UserAccountService>();
         }
     }
 }

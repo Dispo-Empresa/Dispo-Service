@@ -1,5 +1,4 @@
 ﻿using Dispo.PurchaseOrder.Core.Application.Models;
-using Dispo.Shared.Core.Domain.DTOs;
 
 namespace Dispo.PurchaseOrder.Core.Application.Interfaces
 {
@@ -8,7 +7,5 @@ namespace Dispo.PurchaseOrder.Core.Application.Interfaces
         long CreatePurchaseOrder(PurchaseOrderRequestModel supplierRequestDto);
 
         IEnumerable<Shared.Core.Domain.Entities.PurchaseOrder> FillPurchaseOrderWithSupplier(IEnumerable<Shared.Core.Domain.Entities.PurchaseOrder> purchaseOrderList);
-
-        List<PurschaseOrderDto> GetByProcuctId(long productId);
     }
 }

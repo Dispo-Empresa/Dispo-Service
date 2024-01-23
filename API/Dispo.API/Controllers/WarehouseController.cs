@@ -103,5 +103,24 @@ namespace Dispo.API.Controllers
                                                             .Build());
             }
         }
+
+        [HttpGet("get-by-accountId/{accountId}")]
+        public IActionResult GetWarehousesByAccountId([FromRoute] long accountId)
+        {
+            try
+            {
+                var warehouses = _warehouseRepository.GetWarehousesByAccountId(accountId);
+
+                return Ok(new ResponseModelBuilder().WithData(warehouses)
+                                                    .WithSuccess(true)
+                                                    .Build());
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ResponseModelBuilder().WithMessage(ex.Message)
+                                                            .WithSuccess(false)
+                                                            .Build());
+            }
+        }
     }
 }

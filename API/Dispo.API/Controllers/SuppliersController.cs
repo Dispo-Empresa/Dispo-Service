@@ -16,13 +16,11 @@ namespace Dispo.API.Controllers
     {
         private readonly ISupplierRepository _supplierRepository;
         private readonly ISupplierService _supplierService;
-        private readonly IAddressRepository _addressRepository;
 
-        public SuppliersController(ISupplierRepository supplierRepository, ISupplierService supplierService, IAddressRepository addressRepository)
+        public SuppliersController(ISupplierRepository supplierRepository, ISupplierService supplierService)
         {
             _supplierRepository = supplierRepository;
             _supplierService = supplierService;
-            _addressRepository = addressRepository;
         }
 
         [HttpPost]
@@ -102,12 +100,6 @@ namespace Dispo.API.Controllers
             try
             {
                var supplier = _supplierRepository.GetById(id);
-
-                if (supplier != null)
-                {
-                    var address = _addressRepository.GetById(supplier.AddressId);
-                    supplier.Address = address;
-                }
 
                 return Ok(new ResponseModelBuilder().WithMessage("Busca pelo fornecedor realizada com sucesso")
                                                     .WithSuccess(true)

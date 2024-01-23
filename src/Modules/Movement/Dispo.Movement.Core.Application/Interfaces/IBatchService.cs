@@ -10,8 +10,6 @@ namespace Dispo.Movement.Core.Application.Interfaces
 
         Task<bool> UpdateAsync(Batch batch);
 
-        List<BatchDetailsDto> GetWithQuantityByProduct(long productId);
-
         Task<Batch> GetOrCreateForMovementationAsync(BatchDetailsDto batchDetails, eMovementType movementType);
     }
 }

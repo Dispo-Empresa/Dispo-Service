@@ -9,25 +9,23 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Dispo.Infrastructure.Migrations
+namespace Dispo.Shared.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(DispoContext))]
-    [Migration("20230905021917_DeletandoCampoShipping")]
-    partial class DeletandoCampoShipping
+    [Migration("20231227171950_MigrationReset")]
+    partial class MigrationReset
     {
-        private object SqlServerModelBuilderExtensions;
-
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.2")
+                .HasAnnotation("ProductVersion", "7.0.13")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
-            Microsoft.EntityFrameworkCore.SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Dispo.Domain.Entities.Account", b =>
+            modelBuilder.Entity("Dispo.Shared.Core.Domain.Entities.Account", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -41,6 +39,10 @@ namespace Dispo.Infrastructure.Migrations
                         .HasDefaultValue(true)
                         .HasColumnName("Ativo");
 
+                    b.Property<long>("CompanyIdByHub")
+                        .HasColumnType("BIGINT")
+                        .HasColumnName("CompanyIdByHub");
+
                     b.Property<long?>("CurrentWarehouseId")
                         .HasColumnType("BIGINT");
 
@@ -49,6 +51,10 @@ namespace Dispo.Infrastructure.Migrations
                         .HasMaxLength(220)
                         .HasColumnType("VARCHAR(220)")
                         .HasColumnName("Email");
+
+                    b.Property<DateTime>("LastLicenceCheck")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("LastLicenceCheck");
 
                     b.Property<string>("Password")
                         .IsRequired()
@@ -75,7 +81,7 @@ namespace Dispo.Infrastructure.Migrations
                     b.ToTable("Accounts", (string)null);
                 });
 
-            modelBuilder.Entity("Dispo.Domain.Entities.Address", b =>
+            modelBuilder.Entity("Dispo.Shared.Core.Domain.Entities.Address", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -121,7 +127,7 @@ namespace Dispo.Infrastructure.Migrations
                     b.ToTable("Addresses", (string)null);
                 });
 
-            modelBuilder.Entity("Dispo.Domain.Entities.Batch", b =>
+            modelBuilder.Entity("Dispo.Shared.Core.Domain.Entities.Batch", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -146,9 +152,6 @@ namespace Dispo.Infrastructure.Migrations
                     b.Property<long>("OrderId")
                         .HasColumnType("BIGINT");
 
-                    b.Property<long>("ProductId")
-                        .HasColumnType("BIGINT");
-
                     b.Property<int>("ProductQuantity")
                         .HasMaxLength(9999)
                         .HasColumnType("INTEGER")
@@ -163,13 +166,10 @@ namespace Dispo.Infrastructure.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.HasIndex("ProductId")
-                        .IsUnique();
-
                     b.ToTable("Batches", (string)null);
                 });
 
-            modelBuilder.Entity("Dispo.Domain.Entities.BatchMovement", b =>
+            modelBuilder.Entity("Dispo.Shared.Core.Domain.Entities.BatchMovement", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -192,44 +192,7 @@ namespace Dispo.Infrastructure.Migrations
                     b.ToTable("BatchMovements", (string)null);
                 });
 
-            modelBuilder.Entity("Dispo.Domain.Entities.Company", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("BIGINT");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<long>("AddressId")
-                        .HasColumnType("BIGINT");
-
-                    b.Property<bool>("Ativo")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(true)
-                        .HasColumnName("Ativo");
-
-                    b.Property<string>("Cnpj")
-                        .IsRequired()
-                        .HasMaxLength(18)
-                        .HasColumnType("VARCHAR(18)")
-                        .HasColumnName("Cnpj");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(220)
-                        .HasColumnType("VARCHAR(220)")
-                        .HasColumnName("Name");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AddressId")
-                        .IsUnique();
-
-                    b.ToTable("Companies", (string)null);
-                });
-
-            modelBuilder.Entity("Dispo.Domain.Entities.Manufacturer", b =>
+            modelBuilder.Entity("Dispo.Shared.Core.Domain.Entities.Manufacturer", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -258,7 +221,7 @@ namespace Dispo.Infrastructure.Migrations
                     b.ToTable("Manufacturers", (string)null);
                 });
 
-            modelBuilder.Entity("Dispo.Domain.Entities.Movement", b =>
+            modelBuilder.Entity("Dispo.Shared.Core.Domain.Entities.Movement", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -286,23 +249,16 @@ namespace Dispo.Infrastructure.Migrations
                     b.Property<long>("WarehouseId")
                         .HasColumnType("BIGINT");
 
-                    b.Property<long?>("WarehouseId1")
-                        .HasColumnType("BIGINT");
-
                     b.HasKey("Id");
 
                     b.HasIndex("AccountId");
 
                     b.HasIndex("WarehouseId");
 
-                    b.HasIndex("WarehouseId1")
-                        .IsUnique()
-                        .HasFilter("[WarehouseId1] IS NOT NULL");
-
                     b.ToTable("Movements", (string)null);
                 });
 
-            modelBuilder.Entity("Dispo.Domain.Entities.Order", b =>
+            modelBuilder.Entity("Dispo.Shared.Core.Domain.Entities.Order", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -315,7 +271,7 @@ namespace Dispo.Infrastructure.Migrations
                         .HasColumnType("VARCHAR(200)")
                         .HasColumnName("Description");
 
-                    b.Property<long?>("ProductId")
+                    b.Property<long>("ProductId")
                         .HasColumnType("BIGINT");
 
                     b.Property<long>("PurchaseOrderId")
@@ -340,7 +296,7 @@ namespace Dispo.Infrastructure.Migrations
                     b.ToTable("Orders", (string)null);
                 });
 
-            modelBuilder.Entity("Dispo.Domain.Entities.Product", b =>
+            modelBuilder.Entity("Dispo.Shared.Core.Domain.Entities.Product", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -402,7 +358,7 @@ namespace Dispo.Infrastructure.Migrations
                     b.ToTable("Products", (string)null);
                 });
 
-            modelBuilder.Entity("Dispo.Domain.Entities.ProductDimension", b =>
+            modelBuilder.Entity("Dispo.Shared.Core.Domain.Entities.ProductDimension", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -435,7 +391,7 @@ namespace Dispo.Infrastructure.Migrations
                     b.ToTable("ProductDimensions", (string)null);
                 });
 
-            modelBuilder.Entity("Dispo.Domain.Entities.ProductManufacturer", b =>
+            modelBuilder.Entity("Dispo.Shared.Core.Domain.Entities.ProductManufacturer", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -458,7 +414,7 @@ namespace Dispo.Infrastructure.Migrations
                     b.ToTable("ProductManufacturers", (string)null);
                 });
 
-            modelBuilder.Entity("Dispo.Domain.Entities.PurchaseOrder", b =>
+            modelBuilder.Entity("Dispo.Shared.Core.Domain.Entities.PurchaseOrder", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -494,7 +450,8 @@ namespace Dispo.Infrastructure.Migrations
                     b.Property<long>("SupplierId")
                         .HasColumnType("BIGINT");
 
-                    b.Property<long>("WarehouseId")
+                    b.Property<long?>("WarehouseId")
+                        .IsRequired()
                         .HasColumnType("BIGINT");
 
                     b.HasKey("Id");
@@ -506,7 +463,7 @@ namespace Dispo.Infrastructure.Migrations
                     b.ToTable("PurchaseOrders", (string)null);
                 });
 
-            modelBuilder.Entity("Dispo.Domain.Entities.PurchaseOrderAttachment", b =>
+            modelBuilder.Entity("Dispo.Shared.Core.Domain.Entities.PurchaseOrderAttachment", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -537,7 +494,7 @@ namespace Dispo.Infrastructure.Migrations
                     b.ToTable("PurchaseOrderAttachments", (string)null);
                 });
 
-            modelBuilder.Entity("Dispo.Domain.Entities.Role", b =>
+            modelBuilder.Entity("Dispo.Shared.Core.Domain.Entities.Role", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -564,25 +521,25 @@ namespace Dispo.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 5L,
+                            Id = 1L,
                             Key = "manager",
                             Name = "Gerente"
                         },
                         new
                         {
-                            Id = 6L,
+                            Id = 2L,
                             Key = "purchasingManager",
                             Name = "Gerente de compras"
                         },
                         new
                         {
-                            Id = 7L,
+                            Id = 3L,
                             Key = "warehouseOperator",
                             Name = "Operador de depósito"
                         });
                 });
 
-            modelBuilder.Entity("Dispo.Domain.Entities.Shipping", b =>
+            modelBuilder.Entity("Dispo.Shared.Core.Domain.Entities.Shipping", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -611,7 +568,7 @@ namespace Dispo.Infrastructure.Migrations
                     b.ToTable("Shippings", (string)null);
                 });
 
-            modelBuilder.Entity("Dispo.Domain.Entities.Supplier", b =>
+            modelBuilder.Entity("Dispo.Shared.Core.Domain.Entities.Supplier", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -672,7 +629,7 @@ namespace Dispo.Infrastructure.Migrations
                     b.ToTable("Suppliers", (string)null);
                 });
 
-            modelBuilder.Entity("Dispo.Domain.Entities.User", b =>
+            modelBuilder.Entity("Dispo.Shared.Core.Domain.Entities.User", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -692,9 +649,6 @@ namespace Dispo.Infrastructure.Migrations
                     b.Property<DateTime>("BirthDate")
                         .HasColumnType("datetime2")
                         .HasColumnName("BirthDate");
-
-                    b.Property<long>("CompanyId")
-                        .HasColumnType("BIGINT");
 
                     b.Property<string>("Cpf")
                         .IsRequired()
@@ -725,12 +679,10 @@ namespace Dispo.Infrastructure.Migrations
                     b.HasIndex("AddressId")
                         .IsUnique();
 
-                    b.HasIndex("CompanyId");
-
                     b.ToTable("Users", (string)null);
                 });
 
-            modelBuilder.Entity("Dispo.Domain.Entities.Warehouse", b =>
+            modelBuilder.Entity("Dispo.Shared.Core.Domain.Entities.Warehouse", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -747,9 +699,6 @@ namespace Dispo.Infrastructure.Migrations
                         .HasDefaultValue(true)
                         .HasColumnName("Ativo");
 
-                    b.Property<long>("CompanyId")
-                        .HasColumnType("BIGINT");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(60)
@@ -761,12 +710,10 @@ namespace Dispo.Infrastructure.Migrations
                     b.HasIndex("AddressId")
                         .IsUnique();
 
-                    b.HasIndex("CompanyId");
-
                     b.ToTable("Warehouses", (string)null);
                 });
 
-            modelBuilder.Entity("Dispo.Domain.Entities.WarehouseAccount", b =>
+            modelBuilder.Entity("Dispo.Shared.Core.Domain.Entities.WarehouseAccount", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -789,21 +736,21 @@ namespace Dispo.Infrastructure.Migrations
                     b.ToTable("WarehouseAccounts", (string)null);
                 });
 
-            modelBuilder.Entity("Dispo.Domain.Entities.Account", b =>
+            modelBuilder.Entity("Dispo.Shared.Core.Domain.Entities.Account", b =>
                 {
-                    b.HasOne("Dispo.Domain.Entities.Warehouse", "CurrentWarehouse")
+                    b.HasOne("Dispo.Shared.Core.Domain.Entities.Warehouse", "CurrentWarehouse")
                         .WithMany()
                         .HasForeignKey("CurrentWarehouseId");
 
-                    b.HasOne("Dispo.Domain.Entities.Role", "Role")
+                    b.HasOne("Dispo.Shared.Core.Domain.Entities.Role", "Role")
                         .WithMany("Accounts")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Dispo.Domain.Entities.User", "User")
+                    b.HasOne("Dispo.Shared.Core.Domain.Entities.User", "User")
                         .WithOne("Account")
-                        .HasForeignKey("Dispo.Domain.Entities.Account", "UserId")
+                        .HasForeignKey("Dispo.Shared.Core.Domain.Entities.Account", "UserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
@@ -814,34 +761,26 @@ namespace Dispo.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Dispo.Domain.Entities.Batch", b =>
+            modelBuilder.Entity("Dispo.Shared.Core.Domain.Entities.Batch", b =>
                 {
-                    b.HasOne("Dispo.Domain.Entities.Order", "Order")
+                    b.HasOne("Dispo.Shared.Core.Domain.Entities.Order", "Order")
                         .WithMany("Batches")
                         .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Dispo.Domain.Entities.Product", "Product")
-                        .WithOne("Batch")
-                        .HasForeignKey("Dispo.Domain.Entities.Batch", "ProductId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Order");
-
-                    b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("Dispo.Domain.Entities.BatchMovement", b =>
+            modelBuilder.Entity("Dispo.Shared.Core.Domain.Entities.BatchMovement", b =>
                 {
-                    b.HasOne("Dispo.Domain.Entities.Batch", "Batch")
+                    b.HasOne("Dispo.Shared.Core.Domain.Entities.Batch", "Batch")
                         .WithMany("BatchMovements")
                         .HasForeignKey("BatchId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("Dispo.Domain.Entities.Movement", "Movement")
+                    b.HasOne("Dispo.Shared.Core.Domain.Entities.Movement", "Movement")
                         .WithMany("BatchMovements")
                         .HasForeignKey("MovementId")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -852,75 +791,64 @@ namespace Dispo.Infrastructure.Migrations
                     b.Navigation("Movement");
                 });
 
-            modelBuilder.Entity("Dispo.Domain.Entities.Company", b =>
+            modelBuilder.Entity("Dispo.Shared.Core.Domain.Entities.Movement", b =>
                 {
-                    b.HasOne("Dispo.Domain.Entities.Address", "Address")
-                        .WithOne("Company")
-                        .HasForeignKey("Dispo.Domain.Entities.Company", "AddressId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Address");
-                });
-
-            modelBuilder.Entity("Dispo.Domain.Entities.Movement", b =>
-                {
-                    b.HasOne("Dispo.Domain.Entities.Account", "Account")
+                    b.HasOne("Dispo.Shared.Core.Domain.Entities.Account", "Account")
                         .WithMany("Movements")
                         .HasForeignKey("AccountId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Dispo.Domain.Entities.Warehouse", "Warehouse")
+                    b.HasOne("Dispo.Shared.Core.Domain.Entities.Warehouse", "Warehouse")
                         .WithMany("Movements")
                         .HasForeignKey("WarehouseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("Dispo.Domain.Entities.Warehouse", null)
-                        .WithOne("Movement")
-                        .HasForeignKey("Dispo.Domain.Entities.Movement", "WarehouseId1");
 
                     b.Navigation("Account");
 
                     b.Navigation("Warehouse");
                 });
 
-            modelBuilder.Entity("Dispo.Domain.Entities.Order", b =>
+            modelBuilder.Entity("Dispo.Shared.Core.Domain.Entities.Order", b =>
                 {
-                    b.HasOne("Dispo.Domain.Entities.Product", null)
+                    b.HasOne("Dispo.Shared.Core.Domain.Entities.Product", "Product")
                         .WithMany("Orders")
-                        .HasForeignKey("ProductId");
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasOne("Dispo.Domain.Entities.PurchaseOrder", "PurchaseOrder")
+                    b.HasOne("Dispo.Shared.Core.Domain.Entities.PurchaseOrder", "PurchaseOrder")
                         .WithMany("Orders")
                         .HasForeignKey("PurchaseOrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("Product");
+
                     b.Navigation("PurchaseOrder");
                 });
 
-            modelBuilder.Entity("Dispo.Domain.Entities.Product", b =>
+            modelBuilder.Entity("Dispo.Shared.Core.Domain.Entities.Product", b =>
                 {
-                    b.HasOne("Dispo.Domain.Entities.ProductDimension", "ProductDimension")
+                    b.HasOne("Dispo.Shared.Core.Domain.Entities.ProductDimension", "ProductDimension")
                         .WithOne("Product")
-                        .HasForeignKey("Dispo.Domain.Entities.Product", "ProductDimensionId")
+                        .HasForeignKey("Dispo.Shared.Core.Domain.Entities.Product", "ProductDimensionId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("ProductDimension");
                 });
 
-            modelBuilder.Entity("Dispo.Domain.Entities.ProductManufacturer", b =>
+            modelBuilder.Entity("Dispo.Shared.Core.Domain.Entities.ProductManufacturer", b =>
                 {
-                    b.HasOne("Dispo.Domain.Entities.Manufacturer", "Manufacturer")
+                    b.HasOne("Dispo.Shared.Core.Domain.Entities.Manufacturer", "Manufacturer")
                         .WithMany("ProductManufacturers")
                         .HasForeignKey("ManufacturerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Dispo.Domain.Entities.Product", "Product")
+                    b.HasOne("Dispo.Shared.Core.Domain.Entities.Product", "Product")
                         .WithMany("ProductManufacturers")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -931,15 +859,15 @@ namespace Dispo.Infrastructure.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("Dispo.Domain.Entities.PurchaseOrder", b =>
+            modelBuilder.Entity("Dispo.Shared.Core.Domain.Entities.PurchaseOrder", b =>
                 {
-                    b.HasOne("Dispo.Domain.Entities.Supplier", "Supplier")
+                    b.HasOne("Dispo.Shared.Core.Domain.Entities.Supplier", "Supplier")
                         .WithMany("PurchaseOrders")
                         .HasForeignKey("SupplierId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Dispo.Domain.Entities.Warehouse", "Warehouse")
+                    b.HasOne("Dispo.Shared.Core.Domain.Entities.Warehouse", "Warehouse")
                         .WithMany("PurchaseOrders")
                         .HasForeignKey("WarehouseId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -950,9 +878,9 @@ namespace Dispo.Infrastructure.Migrations
                     b.Navigation("Warehouse");
                 });
 
-            modelBuilder.Entity("Dispo.Domain.Entities.PurchaseOrderAttachment", b =>
+            modelBuilder.Entity("Dispo.Shared.Core.Domain.Entities.PurchaseOrderAttachment", b =>
                 {
-                    b.HasOne("Dispo.Domain.Entities.PurchaseOrder", "PurchaseOrder")
+                    b.HasOne("Dispo.Shared.Core.Domain.Entities.PurchaseOrder", "PurchaseOrder")
                         .WithMany("PurchaseOrderAttachments")
                         .HasForeignKey("PurchaseOrderId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -961,75 +889,59 @@ namespace Dispo.Infrastructure.Migrations
                     b.Navigation("PurchaseOrder");
                 });
 
-            modelBuilder.Entity("Dispo.Domain.Entities.Shipping", b =>
+            modelBuilder.Entity("Dispo.Shared.Core.Domain.Entities.Shipping", b =>
                 {
-                    b.HasOne("Dispo.Domain.Entities.PurchaseOrder", "PurchaseOrder")
+                    b.HasOne("Dispo.Shared.Core.Domain.Entities.PurchaseOrder", "PurchaseOrder")
                         .WithOne("Shipping")
-                        .HasForeignKey("Dispo.Domain.Entities.Shipping", "PurchaseOrderId")
+                        .HasForeignKey("Dispo.Shared.Core.Domain.Entities.Shipping", "PurchaseOrderId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("PurchaseOrder");
                 });
 
-            modelBuilder.Entity("Dispo.Domain.Entities.Supplier", b =>
+            modelBuilder.Entity("Dispo.Shared.Core.Domain.Entities.Supplier", b =>
                 {
-                    b.HasOne("Dispo.Domain.Entities.Address", "Address")
+                    b.HasOne("Dispo.Shared.Core.Domain.Entities.Address", "Address")
                         .WithOne("Supplier")
-                        .HasForeignKey("Dispo.Domain.Entities.Supplier", "AddressId")
+                        .HasForeignKey("Dispo.Shared.Core.Domain.Entities.Supplier", "AddressId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Address");
                 });
 
-            modelBuilder.Entity("Dispo.Domain.Entities.User", b =>
+            modelBuilder.Entity("Dispo.Shared.Core.Domain.Entities.User", b =>
                 {
-                    b.HasOne("Dispo.Domain.Entities.Address", "Address")
+                    b.HasOne("Dispo.Shared.Core.Domain.Entities.Address", "Address")
                         .WithOne("User")
-                        .HasForeignKey("Dispo.Domain.Entities.User", "AddressId")
+                        .HasForeignKey("Dispo.Shared.Core.Domain.Entities.User", "AddressId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Dispo.Domain.Entities.Company", "Company")
-                        .WithMany("Users")
-                        .HasForeignKey("CompanyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Address");
-
-                    b.Navigation("Company");
                 });
 
-            modelBuilder.Entity("Dispo.Domain.Entities.Warehouse", b =>
+            modelBuilder.Entity("Dispo.Shared.Core.Domain.Entities.Warehouse", b =>
                 {
-                    b.HasOne("Dispo.Domain.Entities.Address", "Address")
+                    b.HasOne("Dispo.Shared.Core.Domain.Entities.Address", "Address")
                         .WithOne("Warehouse")
-                        .HasForeignKey("Dispo.Domain.Entities.Warehouse", "AddressId")
+                        .HasForeignKey("Dispo.Shared.Core.Domain.Entities.Warehouse", "AddressId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Dispo.Domain.Entities.Company", "Company")
-                        .WithMany("Warehouses")
-                        .HasForeignKey("CompanyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Address");
-
-                    b.Navigation("Company");
                 });
 
-            modelBuilder.Entity("Dispo.Domain.Entities.WarehouseAccount", b =>
+            modelBuilder.Entity("Dispo.Shared.Core.Domain.Entities.WarehouseAccount", b =>
                 {
-                    b.HasOne("Dispo.Domain.Entities.Account", "Account")
+                    b.HasOne("Dispo.Shared.Core.Domain.Entities.Account", "Account")
                         .WithMany("WarehouseAccounts")
                         .HasForeignKey("AccountId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("Dispo.Domain.Entities.Warehouse", "Warehouse")
+                    b.HasOne("Dispo.Shared.Core.Domain.Entities.Warehouse", "Warehouse")
                         .WithMany("WarehouseAccounts")
                         .HasForeignKey("WarehouseId")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -1040,18 +952,15 @@ namespace Dispo.Infrastructure.Migrations
                     b.Navigation("Warehouse");
                 });
 
-            modelBuilder.Entity("Dispo.Domain.Entities.Account", b =>
+            modelBuilder.Entity("Dispo.Shared.Core.Domain.Entities.Account", b =>
                 {
                     b.Navigation("Movements");
 
                     b.Navigation("WarehouseAccounts");
                 });
 
-            modelBuilder.Entity("Dispo.Domain.Entities.Address", b =>
+            modelBuilder.Entity("Dispo.Shared.Core.Domain.Entities.Address", b =>
                 {
-                    b.Navigation("Company")
-                        .IsRequired();
-
                     b.Navigation("Supplier")
                         .IsRequired();
 
@@ -1062,50 +971,40 @@ namespace Dispo.Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Dispo.Domain.Entities.Batch", b =>
+            modelBuilder.Entity("Dispo.Shared.Core.Domain.Entities.Batch", b =>
                 {
                     b.Navigation("BatchMovements");
                 });
 
-            modelBuilder.Entity("Dispo.Domain.Entities.Company", b =>
-                {
-                    b.Navigation("Users");
-
-                    b.Navigation("Warehouses");
-                });
-
-            modelBuilder.Entity("Dispo.Domain.Entities.Manufacturer", b =>
+            modelBuilder.Entity("Dispo.Shared.Core.Domain.Entities.Manufacturer", b =>
                 {
                     b.Navigation("ProductManufacturers");
                 });
 
-            modelBuilder.Entity("Dispo.Domain.Entities.Movement", b =>
+            modelBuilder.Entity("Dispo.Shared.Core.Domain.Entities.Movement", b =>
                 {
                     b.Navigation("BatchMovements");
                 });
 
-            modelBuilder.Entity("Dispo.Domain.Entities.Order", b =>
+            modelBuilder.Entity("Dispo.Shared.Core.Domain.Entities.Order", b =>
                 {
                     b.Navigation("Batches");
                 });
 
-            modelBuilder.Entity("Dispo.Domain.Entities.Product", b =>
+            modelBuilder.Entity("Dispo.Shared.Core.Domain.Entities.Product", b =>
                 {
-                    b.Navigation("Batch")
-                        .IsRequired();
-
                     b.Navigation("Orders");
 
                     b.Navigation("ProductManufacturers");
                 });
 
-            modelBuilder.Entity("Dispo.Domain.Entities.ProductDimension", b =>
+            modelBuilder.Entity("Dispo.Shared.Core.Domain.Entities.ProductDimension", b =>
                 {
                     b.Navigation("Product")
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Dispo.Domain.Entities.PurchaseOrder", b =>
+            modelBuilder.Entity("Dispo.Shared.Core.Domain.Entities.PurchaseOrder", b =>
                 {
                     b.Navigation("Orders");
 
@@ -1115,27 +1014,24 @@ namespace Dispo.Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Dispo.Domain.Entities.Role", b =>
+            modelBuilder.Entity("Dispo.Shared.Core.Domain.Entities.Role", b =>
                 {
                     b.Navigation("Accounts");
                 });
 
-            modelBuilder.Entity("Dispo.Domain.Entities.Supplier", b =>
+            modelBuilder.Entity("Dispo.Shared.Core.Domain.Entities.Supplier", b =>
                 {
                     b.Navigation("PurchaseOrders");
                 });
 
-            modelBuilder.Entity("Dispo.Domain.Entities.User", b =>
+            modelBuilder.Entity("Dispo.Shared.Core.Domain.Entities.User", b =>
                 {
                     b.Navigation("Account")
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Dispo.Domain.Entities.Warehouse", b =>
+            modelBuilder.Entity("Dispo.Shared.Core.Domain.Entities.Warehouse", b =>
                 {
-                    b.Navigation("Movement")
-                        .IsRequired();
-
                     b.Navigation("Movements");
 
                     b.Navigation("PurchaseOrders");

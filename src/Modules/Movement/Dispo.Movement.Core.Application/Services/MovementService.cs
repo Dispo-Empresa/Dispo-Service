@@ -7,7 +7,6 @@ using Dispo.Shared.Core.Domain.Enums;
 using Dispo.Shared.Core.Domain.Exceptions;
 using Dispo.Shared.Core.Domain.Interfaces;
 using Dispo.Shared.Log;
-using Microsoft.Extensions.Logging;
 using System.Transactions;
 
 namespace Dispo.Movement.Core.Application.Services
@@ -59,16 +58,21 @@ namespace Dispo.Movement.Core.Application.Services
 
         public async Task MoveBatchAsync(BatchMovimentationDto batchMovimentationDto)
         {
+            if (batchMovimentationDto.MovementType == eMovementType.Input && batchMovimentationDto.Batches.Any(x => _movementRepository.ExistsInputMovementByOrderId(x.OrderId.Value)))
+            {
+                throw new BusinessException("Já existe movimentação de entrada para esta ordem de compra");
+            }
+
             using (var transaction = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
                 var movement = await CreateWithAccountAndWarehouseByMovementTypeAsync(batchMovimentationDto.MovementType);
                 foreach (var batchDetails in batchMovimentationDto.Batches)
                 {
-                    //if (batchMovimentationDto.MovementType is eMovementType.Input && await _batchService.ExistsByKeyAsync(batchDetails.Key))
-                    //{
-                    //    _logger.LogWarning("Batch com a Key {K} já existe.", batchDetails.Key);
-                    //    continue;
-                    //}
+                    if (batchMovimentationDto.MovementType is eMovementType.Input && await _batchService.ExistsByKeyAsync(batchDetails.Key))
+                    {
+                        _logger.Warning("Batch com a Key {K} já existe.", batchDetails.Key);
+                        continue;
+                    }
 
                     movement.Quantity += batchDetails.Quantity;
                     var batch = await _batchService.GetOrCreateForMovementationAsync(batchDetails, batchMovimentationDto.MovementType);

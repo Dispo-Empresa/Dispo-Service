@@ -3,8 +3,10 @@
     public class PurschaseOrderDto
     {
         public long Id { get; set; }
-        public DateTime CreationDate { get; set; }
-        public int Quantity { get; set; }
-        public string Supplier { get; set; }
+        public string PurchaseOrderNumber { get; set; }
+        public DateTime PurchaseOrderDate { get; set; }
+        public string SupplierName { get; set; }
+        public int OrderQuantity { get; set; }
+        public long OrderId { get; set; }
     }
 }

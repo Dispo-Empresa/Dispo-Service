@@ -28,10 +28,41 @@ namespace Dispo.Shared.Infrastructure.Persistence.Mappings
                    .HasColumnType("VARCHAR(60)")
                    .HasMaxLength(60);
 
-            builder.HasOne(a => a.Address)
-                   .WithOne(b => b.Warehouse)
-                   .HasForeignKey<Warehouse>(c => c.AddressId)
-                   .OnDelete(DeleteBehavior.Restrict);
+            builder.Property(x => x.Country)
+                   .IsRequired()
+                   .HasColumnName("Country")
+                   .HasColumnType("VARCHAR(200)")
+                   .HasMaxLength(200);
+
+            builder.Property(x => x.UF)
+                   .IsRequired()
+                   .HasColumnName("UF")
+                   .HasColumnType("VARCHAR(3)")
+                   .HasMaxLength(3);
+
+            builder.Property(x => x.City)
+                   .IsRequired()
+                   .HasColumnName("City")
+                   .HasColumnType("VARCHAR(200)")
+                   .HasMaxLength(200);
+
+            builder.Property(x => x.District)
+                   .IsRequired(false)
+                   .HasColumnName("District")
+                   .HasColumnType("VARCHAR(200)")
+                   .HasMaxLength(200);
+
+            builder.Property(x => x.CEP)
+                   .IsRequired(false)
+                   .HasColumnName("CEP")
+                   .HasColumnType("VARCHAR(9)")
+                   .HasMaxLength(9);
+
+            builder.Property(x => x.AdditionalInfo)
+                   .IsRequired(false)
+                   .HasColumnName("AdditionalInfo")
+                   .HasColumnType("VARCHAR(200)")
+                   .HasMaxLength(200);
         }
     }
 }

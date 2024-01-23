@@ -22,7 +22,7 @@ namespace Dispo.API.Controllers
             _accountRepository = accountRepository;
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("{accountId}")]
         public IActionResult UpdateUserAccountInfo([FromRoute] long accountId, [FromBody] UserAccountResponseModel userAccountModel)
         {
             try
@@ -45,12 +45,12 @@ namespace Dispo.API.Controllers
             }
         }
 
-        [HttpGet("id={id}")]
-        public IActionResult GetAllUserInfo([FromRoute] long id)
+        [HttpGet("{accountId}")]
+        public IActionResult GetAllUserInfo([FromRoute] long accountId)
         {
             try
             {
-                var userAccountInfo = _accountRepository.GetUserInfoResponseDto(id);
+                var userAccountInfo = _accountRepository.GetUserInfoResponseDto(accountId);
 
                 return Ok(new ResponseModelBuilder().WithSuccess(true)
                                                     .WithData(userAccountInfo)
@@ -59,10 +59,30 @@ namespace Dispo.API.Controllers
             catch (Exception ex)
             {
                 return BadRequest(new ResponseModelBuilder().WithMessage($"Erro não esperado: {ex.Message}")
-                                            .WithSuccess(false)
-                                            .WithData(ex)
-                                            .WithAlert(AlertType.Error)
-                                            .Build());
+                                                            .WithSuccess(false)
+                                                            .WithData(ex)
+                                                            .WithAlert(AlertType.Error)
+                                                            .Build());
+            }
+        }
+
+        [HttpPost("getAccountIdByEmail")]
+        [AllowAnonymous]
+        public IActionResult GetAccountIdByEmail([FromBody] string email)
+        {
+            try
+            {
+                var accountId = _accountRepository.GetAccountIdByEmail(email);
+
+                return Ok(new ResponseModelBuilder().WithSuccess(true)
+                                                    .WithData(accountId)
+                                                    .Build());
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ResponseModelBuilder().WithMessage($"Erro não esperado: {ex.Message}")
+                                                            .WithSuccess(false)
+                                                            .Build());
             }
         }
     }

@@ -96,11 +96,6 @@ namespace Dispo.Product.Core.Application.Services
             return await _productRepository.ExistsByIdAsync(productId);
         }
 
-        public List<ProductInfoDto> GetWithActivePurschaseOrder()
-        {
-            return _productRepository.GetWithActivePurschaseOrder();
-        }
-
         #endregion Public Methods
     }
 }

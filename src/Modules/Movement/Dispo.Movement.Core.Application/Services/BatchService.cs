@@ -4,6 +4,7 @@ using Dispo.Shared.Core.Domain.Entities;
 using Dispo.Shared.Core.Domain.Enums;
 using Dispo.Shared.Core.Domain.Exceptions;
 using Dispo.Shared.Core.Domain.Interfaces;
+using Dispo.Shared.Utils;
 
 namespace Dispo.Movement.Core.Application.Services
 {
@@ -28,11 +29,6 @@ namespace Dispo.Movement.Core.Application.Services
             return await _batchRepository.UpdateAsync(batch);
         }
 
-        public List<BatchDetailsDto> GetWithQuantityByProduct(long productId)
-        {
-            return _batchRepository.GetWithQuantityByProduct(productId);
-        }
-
         public async Task<Batch> GetOrCreateForMovementationAsync(BatchDetailsDto batchDetails, eMovementType movementType)
         {
             if (movementType is eMovementType.Input)
@@ -49,7 +45,10 @@ namespace Dispo.Movement.Core.Application.Services
 
         private async Task<Batch> GetAndDecreaseAsync(BatchDetailsDto batchDetails, eMovementType movementType)
         {
-            var batch = await _batchRepository.GetByIdAsync(batchDetails.Id);
+            if (batchDetails.Id is null)
+                throw new UnhandledException("O campo 'Id' do lote deve ser preenchido para movimentações de saída.");
+
+            var batch = await _batchRepository.GetByIdAsync((long)batchDetails.Id);
             if (batch is null)
             {
                 throw new NotFoundException(string.Join("Batch com o Id {0} não foi encontrado.", batchDetails.Id));
@@ -63,16 +62,13 @@ namespace Dispo.Movement.Core.Application.Services
         private async Task<Batch> CreateAndIncreaseAsync(BatchDetailsDto batchDetails, eMovementType movementType)
         {
             if (batchDetails.OrderId is null)
-            {
                 throw new UnhandledException("O campo 'OrderId' deve ser preenchido para movimentações de entrada.");
-            }
 
             var batch = new Batch
             {
                 Key = batchDetails.Key,
-                ManufacturingDate = batchDetails.ManufacturingDate.HasValue ? batchDetails.ManufacturingDate.Value : DateTime.Now,
-                ExpirationDate = batchDetails.ExpirationDate.HasValue ? batchDetails.ExpirationDate.Value : DateTime.Now,
-                QuantityPerBatch = batchDetails.Quantity,
+                ManufacturingDate = batchDetails.ManufacturingDate,
+                ExpirationDate = batchDetails.ExpirationDate,
                 OrderId = batchDetails.OrderId.Value,
             };
 

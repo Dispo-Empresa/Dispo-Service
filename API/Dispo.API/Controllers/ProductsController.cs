@@ -150,10 +150,10 @@ namespace Dispo.API.Controllers
             }
         }
 
-        [HttpGet("get-with-active-pursche-orders")]
-        public IActionResult GetWithActivePurschaseOrder()
+        [HttpGet("get-with-active-pursche-orders/{movementType}")]
+        public IActionResult GetWithActivePurschaseOrder([FromRoute] int movementType)
         {
-            var products = _productService.GetWithActivePurschaseOrder();
+            var products = _productRepository.GetWithActivePurschaseOrderByMovementType(movementType);
             return Ok(new ResponseModelBuilder().WithSuccess(true)
                                                 .WithData(products)
                                                 .Build());

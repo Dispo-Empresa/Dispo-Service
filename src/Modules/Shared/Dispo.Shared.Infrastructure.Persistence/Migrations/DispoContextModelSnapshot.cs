@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Dispo.Infrastructure.Migrations
+namespace Dispo.Shared.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(DispoContext))]
     partial class DispoContextModelSnapshot : ModelSnapshot
@@ -78,52 +78,6 @@ namespace Dispo.Infrastructure.Migrations
                     b.ToTable("Accounts", (string)null);
                 });
 
-            modelBuilder.Entity("Dispo.Shared.Core.Domain.Entities.Address", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("BIGINT");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<string>("AdditionalInfo")
-                        .HasMaxLength(200)
-                        .HasColumnType("VARCHAR(200)")
-                        .HasColumnName("AdditionalInfo");
-
-                    b.Property<string>("CEP")
-                        .HasMaxLength(9)
-                        .HasColumnType("VARCHAR(9)")
-                        .HasColumnName("CEP");
-
-                    b.Property<string>("City")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("VARCHAR(200)")
-                        .HasColumnName("City");
-
-                    b.Property<string>("Country")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("VARCHAR(200)")
-                        .HasColumnName("Country");
-
-                    b.Property<string>("District")
-                        .HasMaxLength(200)
-                        .HasColumnType("VARCHAR(200)")
-                        .HasColumnName("District");
-
-                    b.Property<string>("UF")
-                        .IsRequired()
-                        .HasMaxLength(3)
-                        .HasColumnType("VARCHAR(3)")
-                        .HasColumnName("UF");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Addresses", (string)null);
-                });
-
             modelBuilder.Entity("Dispo.Shared.Core.Domain.Entities.Batch", b =>
                 {
                     b.Property<long>("Id")
@@ -153,11 +107,6 @@ namespace Dispo.Infrastructure.Migrations
                         .HasMaxLength(9999)
                         .HasColumnType("INTEGER")
                         .HasColumnName("ProductQuantity");
-
-                    b.Property<int>("QuantityPerBatch")
-                        .HasMaxLength(9999)
-                        .HasColumnType("INTEGER")
-                        .HasColumnName("QuantityPerBatch");
 
                     b.HasKey("Id");
 
@@ -573,9 +522,6 @@ namespace Dispo.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
-                    b.Property<long>("AddressId")
-                        .HasColumnType("BIGINT");
-
                     b.Property<bool>("Ativo")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
@@ -620,9 +566,6 @@ namespace Dispo.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AddressId")
-                        .IsUnique();
-
                     b.ToTable("Suppliers", (string)null);
                 });
 
@@ -633,9 +576,6 @@ namespace Dispo.Infrastructure.Migrations
                         .HasColumnType("BIGINT");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<long>("AddressId")
-                        .HasColumnType("BIGINT");
 
                     b.Property<bool>("Ativo")
                         .ValueGeneratedOnAdd()
@@ -673,9 +613,6 @@ namespace Dispo.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AddressId")
-                        .IsUnique();
-
                     b.ToTable("Users", (string)null);
                 });
 
@@ -687,8 +624,10 @@ namespace Dispo.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
-                    b.Property<long>("AddressId")
-                        .HasColumnType("BIGINT");
+                    b.Property<string>("AdditionalInfo")
+                        .HasMaxLength(200)
+                        .HasColumnType("VARCHAR(200)")
+                        .HasColumnName("AdditionalInfo");
 
                     b.Property<bool>("Ativo")
                         .ValueGeneratedOnAdd()
@@ -696,16 +635,41 @@ namespace Dispo.Infrastructure.Migrations
                         .HasDefaultValue(true)
                         .HasColumnName("Ativo");
 
+                    b.Property<string>("CEP")
+                        .HasMaxLength(9)
+                        .HasColumnType("VARCHAR(9)")
+                        .HasColumnName("CEP");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("VARCHAR(200)")
+                        .HasColumnName("City");
+
+                    b.Property<string>("Country")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("VARCHAR(200)")
+                        .HasColumnName("Country");
+
+                    b.Property<string>("District")
+                        .HasMaxLength(200)
+                        .HasColumnType("VARCHAR(200)")
+                        .HasColumnName("District");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(60)
                         .HasColumnType("VARCHAR(60)")
                         .HasColumnName("Name");
 
-                    b.HasKey("Id");
+                    b.Property<string>("UF")
+                        .IsRequired()
+                        .HasMaxLength(3)
+                        .HasColumnType("VARCHAR(3)")
+                        .HasColumnName("UF");
 
-                    b.HasIndex("AddressId")
-                        .IsUnique();
+                    b.HasKey("Id");
 
                     b.ToTable("Warehouses", (string)null);
                 });
@@ -897,39 +861,6 @@ namespace Dispo.Infrastructure.Migrations
                     b.Navigation("PurchaseOrder");
                 });
 
-            modelBuilder.Entity("Dispo.Shared.Core.Domain.Entities.Supplier", b =>
-                {
-                    b.HasOne("Dispo.Shared.Core.Domain.Entities.Address", "Address")
-                        .WithOne("Supplier")
-                        .HasForeignKey("Dispo.Shared.Core.Domain.Entities.Supplier", "AddressId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Address");
-                });
-
-            modelBuilder.Entity("Dispo.Shared.Core.Domain.Entities.User", b =>
-                {
-                    b.HasOne("Dispo.Shared.Core.Domain.Entities.Address", "Address")
-                        .WithOne("User")
-                        .HasForeignKey("Dispo.Shared.Core.Domain.Entities.User", "AddressId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Address");
-                });
-
-            modelBuilder.Entity("Dispo.Shared.Core.Domain.Entities.Warehouse", b =>
-                {
-                    b.HasOne("Dispo.Shared.Core.Domain.Entities.Address", "Address")
-                        .WithOne("Warehouse")
-                        .HasForeignKey("Dispo.Shared.Core.Domain.Entities.Warehouse", "AddressId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Address");
-                });
-
             modelBuilder.Entity("Dispo.Shared.Core.Domain.Entities.WarehouseAccount", b =>
                 {
                     b.HasOne("Dispo.Shared.Core.Domain.Entities.Account", "Account")
@@ -954,18 +885,6 @@ namespace Dispo.Infrastructure.Migrations
                     b.Navigation("Movements");
 
                     b.Navigation("WarehouseAccounts");
-                });
-
-            modelBuilder.Entity("Dispo.Shared.Core.Domain.Entities.Address", b =>
-                {
-                    b.Navigation("Supplier")
-                        .IsRequired();
-
-                    b.Navigation("User")
-                        .IsRequired();
-
-                    b.Navigation("Warehouse")
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Dispo.Shared.Core.Domain.Entities.Batch", b =>

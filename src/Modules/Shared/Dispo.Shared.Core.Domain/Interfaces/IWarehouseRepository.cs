@@ -13,6 +13,6 @@ namespace Dispo.Shared.Core.Domain.Interfaces
 
         string GetNameById(long id);
 
-        bool ExistsByAddressId(long addressId);
+        IEnumerable<WarehouseInfoDto> GetWarehousesByAccountId(long accountId);
     }
 }

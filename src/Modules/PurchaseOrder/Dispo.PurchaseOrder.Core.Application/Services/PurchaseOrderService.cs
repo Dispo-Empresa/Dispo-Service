@@ -82,10 +82,5 @@ namespace Dispo.PurchaseOrder.Core.Application.Services
 
             return purchaseOrderList;
         }
-
-        public List<PurschaseOrderDto> GetByProcuctId(long productId)
-        {
-            return _PurchaseOrderRepository.GetByProcuctId(productId);
-        }
     }
 }

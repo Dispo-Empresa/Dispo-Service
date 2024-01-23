@@ -3,6 +3,7 @@ using Dispo.Shared.Core.Domain.Interfaces;
 using Dispo.Shared.Infrastructure.Persistence;
 using Dispo.Shared.Infrastructure.Persistence.Context;
 using Dispo.Shared.Utils;
+using Dispo.Shared.Utils.Extensions;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
@@ -61,18 +62,35 @@ namespace Dispo.Infra.Infrastructure.Persistence.Repositories
                                      .ToLong();
 
         public UserInfoResponseDto GetUserInfoResponseDto(long id)
-            => _dispoContext.Accounts.Where(x => x.Id == id)
-                                     .Include(x => x.User)
-                                     .Select(s => new UserInfoResponseDto()
-                                     {
-                                         Email = s.Email,
-                                         FirstName = s.User.FirstName,
-                                         LastName = s.User.LastName,
-                                         CpfCnpj = s.User.Cpf,
-                                         Phone = s.User.Phone,
-                                         BirthDate = s.User.BirthDate
-                                     })
-                                     .SingleOrDefault() ?? new UserInfoResponseDto();
+        {
+            var userId = _dispoContext.Accounts.Where(x => x.Id == id).Select(s => s.UserId).FirstOrDefault();
+
+            if (userId.IsIdValid())
+            {
+                return _dispoContext.Accounts.Where(x => x.Id == id)
+                             .Include(x => x.User)
+                             .Select(s => new UserInfoResponseDto()
+                             {
+                                 Email = s.Email,
+                                 FirstName = s.User.FirstName,
+                                 LastName = s.User.LastName,
+                                 CpfCnpj = s.User.Cpf,
+                                 Phone = s.User.Phone.RemovePhoneCharacters(),
+                                 BirthDate = s.User.BirthDate
+                             })
+                             .SingleOrDefault() ?? new UserInfoResponseDto();
+            }
+            else
+            {
+                return _dispoContext.Accounts.Where(x => x.Id == id)
+                                             .Select(s => new UserInfoResponseDto()
+                                             {
+                                                 Email = s.Email,
+                                             })
+                                             .SingleOrDefault() ?? new UserInfoResponseDto();
+            }
+
+        }
 
         public string GetUserNameByAccountId(long id)
             => _dispoContext.Accounts.Where(x => x.Id == id)
@@ -86,16 +104,16 @@ namespace Dispo.Infra.Infrastructure.Persistence.Repositories
 
         public IList<AccountUserInfoDto> GetAccountsUserInfo()
             => _dispoContext.Accounts.Where(x => x.Ativo == true)
-                                                 //.Include(x => x.User)
-                                                 .Select(x => new AccountUserInfoDto()
-                                                 {
-                                                     AccountId = x.Id,
-                                                     Email = x.Email,
-                                                     RoleName = x.RoleId.ToString(),
-                                                     //FullName = x.UserId.IsIdValid() ? $"{x.User.FirstName} {x.User.LastName}" : string.Empty,
-                                                     //Phone = x.UserId.IsIdValid() ? x.User.Phone : string.Empty,
-                                                 })
-                                                 .ToList();
+                                     .Include(x => x.Role)
+                                     .Select(x => new AccountUserInfoDto()
+                                     {
+                                         AccountId = x.Id,
+                                         Email = x.Email,
+                                         RoleName = x.Role.Name,
+                                         //FullName = x.UserId.IsIdValid() ? $"{x.User.FirstName} {x.User.LastName}" : string.Empty,
+                                         //Phone = x.UserId.IsIdValid() ? x.User.Phone : string.Empty,
+                                     })
+                                     .ToList();
 
         public Shared.Core.Domain.Entities.Account? GetWithWarehousesById(long id)
         {
