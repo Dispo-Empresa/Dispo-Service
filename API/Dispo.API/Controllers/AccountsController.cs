@@ -1,8 +1,11 @@
 ﻿using Dispo.API.ResponseBuilder;
 using Dispo.Infra.Core.Application.Interfaces;
 using Dispo.Shared.Core.Domain;
+using Dispo.Shared.Core.Domain.Entities;
 using Dispo.Shared.Core.Domain.Exceptions;
 using Dispo.Shared.Core.Domain.Interfaces;
+using Dispo.Shared.Filter.Model;
+using Dispo.Shared.Filter.Services;
 using Dispo.Shared.Utils;
 using EscNet.Cryptography.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -19,13 +22,15 @@ namespace Dispo.API.Controllers
         private readonly IRijndaelCryptography _rijndaelCryptography;
         private readonly IAccountResolverService _accountResolverService;
         private readonly IAccountService _accountService;
+        private readonly IFilterService _filterService;
 
-        public AccountsController(IAccountRepository accountRepository, IRijndaelCryptography rijndaelCryptography, IAccountResolverService userResolverService, IAccountService accountService)
+        public AccountsController(IAccountRepository accountRepository, IRijndaelCryptography rijndaelCryptography, IAccountResolverService userResolverService, IAccountService accountService, IFilterService filterService)
         {
             _accountRepository = accountRepository;
             _rijndaelCryptography = rijndaelCryptography;
             _accountResolverService = userResolverService;
             _accountService = accountService;
+            _filterService = filterService;
         }
 
         [HttpGet("get-id")]
@@ -54,6 +59,25 @@ namespace Dispo.API.Controllers
                 _accountService.ChangeWarehouse(accountId, warehouseId);
 
                 return Ok(new ResponseModelBuilder().WithMessage("O depósito foi vinculado ao usuário.")
+                                                    .WithSuccess(true)
+                                                    .Build());
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ResponseModelBuilder().WithMessage(ex.Message)
+                                                            .WithSuccess(false)
+                                                            .Build()); ;
+            }
+        }
+
+        [AllowAnonymous]
+        [HttpPost("test-entity")]
+        public IActionResult TestEntity([FromBody] FilterModel filter)
+        {
+            try
+            {
+                var result = _filterService.Get<Account>(filter);
+                return Ok(new ResponseModelBuilder().WithData(result)
                                                     .WithSuccess(true)
                                                     .Build());
             }
