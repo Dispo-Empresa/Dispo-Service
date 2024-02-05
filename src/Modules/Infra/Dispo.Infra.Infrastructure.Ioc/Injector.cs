@@ -20,6 +20,8 @@ namespace Dispo.Infra.Infrastructure.Ioc
             serviceColletion.AddScoped<IRoleRepository, RoleRepository>();
             serviceColletion.AddScoped<IUserRepository, UserRepository>();
             serviceColletion.AddScoped<IWarehouseAccountRepository, WarehouseAccountRepository>();
+
+            serviceColletion.AddScoped<IDatatableRepository, DatatableRepository>();
         }
 
         private static void InjectServices(IServiceCollection serviceColletion)
