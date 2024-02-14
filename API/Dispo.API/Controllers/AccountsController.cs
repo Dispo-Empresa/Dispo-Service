@@ -10,6 +10,7 @@ using Dispo.Shared.Utils;
 using EscNet.Cryptography.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace Dispo.API.Controllers
 {
@@ -76,7 +77,19 @@ namespace Dispo.API.Controllers
         {
             try
             {
-                var result = _filterService.Get<Account>(filter);
+                var type = Type.GetType($"Dispo.Shared.Core.Domain.Entities.{filter.Entity}, Dispo.Shared.Core.Domain");
+                if (type is null)
+                {
+                    return BadRequest("Entidade inválida.");
+                }
+
+                var method = _filterService.GetType().GetMethod("Get");
+                if (method is null)
+                {
+                    return BadRequest($"Método 'Get' não implementado para a entidade '{filter.Entity}'");
+                }
+
+                var result = method.Invoke(_filterService, new object[] { filter });
                 return Ok(new ResponseModelBuilder().WithData(result)
                                                     .WithSuccess(true)
                                                     .Build());
