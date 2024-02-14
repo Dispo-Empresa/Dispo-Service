@@ -89,7 +89,9 @@ namespace Dispo.API.Controllers
                     return BadRequest($"Método 'Get' não implementado para a entidade '{filter.Entity}'");
                 }
 
-                var result = method.Invoke(_filterService, new object[] { filter });
+                var genericMethod = method.MakeGenericMethod(type);
+                var result = genericMethod.Invoke(_filterService, new object[] { filter });
+
                 return Ok(new ResponseModelBuilder().WithData(result)
                                                     .WithSuccess(true)
                                                     .Build());
