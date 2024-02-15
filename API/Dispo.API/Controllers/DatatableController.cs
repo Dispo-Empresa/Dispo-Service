@@ -52,6 +52,12 @@ namespace Dispo.API.Controllers
                                                 .WithAlert(AlertType.Success)
                                                 .Build());
         }
+
+        [HttpPost("get-by-filter")]
+        public IActionResult GetByFilter([FromBody] FilterModel filterModel)
+        {
+            return Ok();
+        }
     }
 
     public class PaginationFilter
@@ -70,5 +76,19 @@ namespace Dispo.API.Controllers
         //    this.PageNumber = pageNumber < 1 ? 1 : pageNumber;
         //    this.PageSize = pageSize > 10 ? 10 : pageSize;
         //}
+    }
+
+    public class FilterModel
+    {
+        public FilterPropertiesModel Properties { get; set; }
+        public PaginationFilter PaginationConfig { get; set; }
+    }
+
+    public class FilterPropertiesModel
+    {
+        public string Name { get; set; }
+        public string Type { get; set; }
+        public string Value { get; set; }
+
     }
 }

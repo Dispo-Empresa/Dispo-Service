@@ -7,8 +7,6 @@ namespace Dispo.Shared.Core.Domain.Interfaces
     {
         int GetTotalRecords();
         IEnumerable<EntityDatatableDto> GetToDatatable<TEntity>(int pageNumber, int pageSize) where TEntity : EntityBase;
-
-
         IEnumerable<ProductDatatableDto> GetToDatatableProduct(int pageNumber, int pageSize);
         IEnumerable<ManufacturerDatatableDto> GetToDatatableManufacturer(int pageNumber, int pageSize);
         IEnumerable<SupplierDatatableDto> GetToDatatableSupplier(int pageNumber, int pageSize);

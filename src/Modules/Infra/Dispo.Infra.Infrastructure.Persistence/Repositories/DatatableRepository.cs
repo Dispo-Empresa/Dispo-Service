@@ -45,13 +45,13 @@ namespace Dispo.Infra.Infrastructure.Persistence.Repositories
 
         public IEnumerable<ManufacturerDatatableDto> GetToDatatableManufacturer(int pageNumber, int pageSize)
             => _dispoContext.Set<Manufacturer>().Skip((pageNumber - 1) * pageSize)
-                                           .Take(pageSize)
-                                           .Select(manufacturer => new ManufacturerDatatableDto
-                                           {
-                                               Id = manufacturer.Id,
-                                               Name = manufacturer.Name,
-                                           })
-                                           .ToList();
+                                                .Take(pageSize)
+                                                .Select(manufacturer => new ManufacturerDatatableDto
+                                                {
+                                                    Id = manufacturer.Id,
+                                                    Name = manufacturer.Name,
+                                                })
+                                                .ToList();
 
         public IEnumerable<SupplierDatatableDto> GetToDatatableSupplier(int pageNumber, int pageSize)
             => _dispoContext.Set<Supplier>().Skip((pageNumber - 1) * pageSize)
