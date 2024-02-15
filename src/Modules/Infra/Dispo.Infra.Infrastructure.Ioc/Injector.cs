@@ -2,6 +2,7 @@
 using Dispo.Infra.Core.Application.Services;
 using Dispo.Infra.Infrastructure.Persistence.Repositories;
 using Dispo.Shared.Core.Domain.Interfaces;
+using Dispo.Shared.Filter.Services;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Dispo.Infra.Infrastructure.Ioc
@@ -31,6 +32,7 @@ namespace Dispo.Infra.Infrastructure.Ioc
             serviceColletion.AddScoped<IPasswordRecoveryService, PasswordRecoveryService>();
             serviceColletion.AddScoped<ITokenGeneratorService, TokenGeneratorService>();
             serviceColletion.AddScoped<IUserAccountService, UserAccountService>();
+            serviceColletion.AddScoped<IFilterService, FilterService>();
         }
     }
 }

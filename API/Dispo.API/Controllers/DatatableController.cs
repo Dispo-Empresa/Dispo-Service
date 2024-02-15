@@ -1,5 +1,7 @@
 ﻿using Dispo.API.ResponseBuilder;
 using Dispo.Shared.Core.Domain.Interfaces;
+using Dispo.Shared.Filter.Model;
+using Dispo.Shared.Filter.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,10 +13,12 @@ namespace Dispo.API.Controllers
     public class DatatableController : ControllerBase
     {
         private readonly IDatatableRepository _datatableRepository;
+        private readonly IFilterService _filterService;
 
-        public DatatableController(IDatatableRepository datatableRepository)
+        public DatatableController(IDatatableRepository datatableRepository, IFilterService filterService)
         {
             _datatableRepository = datatableRepository;
+            _filterService = filterService;
         }
 
         [HttpGet("get-count")]
@@ -54,41 +58,35 @@ namespace Dispo.API.Controllers
         }
 
         [HttpPost("get-by-filter")]
-        public IActionResult GetByFilter([FromBody] FilterModel filterModel)
+        public IActionResult GetByFilter([FromBody] FilterModel filter)
         {
-            return Ok();
+            try
+            {
+                var type = Type.GetType($"Dispo.Shared.Core.Domain.Entities.{filter.Entity}, Dispo.Shared.Core.Domain");
+                if (type is null)
+                {
+                    return BadRequest("Entidade inválida.");
+                }
+
+                var method = _filterService.GetType().GetMethod("Get");
+                if (method is null)
+                {
+                    return BadRequest($"Método 'Get' não implementado para a entidade '{filter.Entity}'");
+                }
+
+                var genericMethod = method.MakeGenericMethod(type);
+                var result = genericMethod.Invoke(_filterService, new object[] { filter });
+
+                return Ok(new ResponseModelBuilder().WithData(result)
+                                                    .WithSuccess(true)
+                                                    .Build());
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ResponseModelBuilder().WithMessage(ex.Message)
+                                                            .WithSuccess(false)
+                                                            .Build()); ;
+            }
         }
-    }
-
-    public class PaginationFilter
-    {
-        public string Entity { get; set; }
-        public int PageNumber { get; set; }
-        public int PageSize { get; set; }
-
-        //public PaginationFilter()
-        //{
-        //    this.PageNumber = 1;
-        //    this.PageSize = 10;
-        //}
-        //public PaginationFilter(int pageNumber, int pageSize)
-        //{
-        //    this.PageNumber = pageNumber < 1 ? 1 : pageNumber;
-        //    this.PageSize = pageSize > 10 ? 10 : pageSize;
-        //}
-    }
-
-    public class FilterModel
-    {
-        public FilterPropertiesModel Properties { get; set; }
-        public PaginationFilter PaginationConfig { get; set; }
-    }
-
-    public class FilterPropertiesModel
-    {
-        public string Name { get; set; }
-        public string Type { get; set; }
-        public string Value { get; set; }
-
     }
 }
