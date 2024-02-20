@@ -39,27 +39,27 @@ namespace Dispo.Shared.Filter.Services
                 else
                 {
                     constant = Expression.Constant(Convert.ToInt32(property.Value));
-                    switch (property.SearchType)
-                    {
-                        case SearchType.Equals:
-                            comparison = Expression.Equal(memberExpression, constant.Value);
-                            break;
-                        case SearchType.GreaterThan:
-                            comparison = Expression.GreaterThan(memberExpression, constant.Value);
-                            break;
-                        case SearchType.GreaterThanOrEqual:
-                            comparison = Expression.GreaterThanOrEqual(memberExpression, constant.Value);
-                            break;
-                        case SearchType.LessThan:
-                            comparison = Expression.LessThan(memberExpression, constant.Value);
-                            break;
-                        case SearchType.LessThanOrEqual:
-                            comparison = Expression.LessThanOrEqual(memberExpression, constant.Value);
-                            break;
-                        default:
-                            comparison = Expression.Equal(memberExpression, constant.Value);
-                            break;
-                    }
+                    //switch (property.SearchType)
+                    //{
+                    //    case SearchType.Equals:
+                    //        comparison = Expression.Equal(memberExpression, constant.Value);
+                    //        break;
+                    //    case SearchType.GreaterThan:
+                    //        comparison = Expression.GreaterThan(memberExpression, constant.Value);
+                    //        break;
+                    //    case SearchType.GreaterThanOrEqual:
+                    //        comparison = Expression.GreaterThanOrEqual(memberExpression, constant.Value);
+                    //        break;
+                    //    case SearchType.LessThan:
+                    //        comparison = Expression.LessThan(memberExpression, constant.Value);
+                    //        break;
+                    //    case SearchType.LessThanOrEqual:
+                    //        comparison = Expression.LessThanOrEqual(memberExpression, constant.Value);
+                    //        break;
+                    //    default:
+                    //        comparison = Expression.Equal(memberExpression, constant.Value);
+                    //        break;
+                    //}
                 }
 
                 filterExpression = filterExpression == null ? comparison : Expression.And(filterExpression, comparison);
