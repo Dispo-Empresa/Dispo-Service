@@ -4,6 +4,7 @@ using Dispo.Shared.Core.Domain.Interfaces;
 using Dispo.Shared.Infrastructure.Persistence;
 using Dispo.Shared.Infrastructure.Persistence.Context;
 using Dispo.Shared.Utils.Extensions;
+using Microsoft.EntityFrameworkCore;
 
 namespace Dispo.Infra.Infrastructure.Persistence.Repositories
 {
@@ -16,8 +17,10 @@ namespace Dispo.Infra.Infrastructure.Persistence.Repositories
             _dispoContext = dispoContext;
         }
 
-        public int GetTotalRecords()
-            => _dispoContext.Manufacturers.Count();
+        public int GetTotalRecords<T>() where T : EntityBase
+            => _dispoContext.Set<T>()
+                            .AsNoTracking()
+                            .Count();
 
         //public IEnumerable<ManufacturerInfoDto> GetToDatatable(int pageNumber, int pageSize)
         //    => _dispoContext.Manufacturers.Skip((pageNumber - 1) * pageSize)

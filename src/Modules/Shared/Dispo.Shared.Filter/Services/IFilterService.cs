@@ -5,6 +5,6 @@ namespace Dispo.Shared.Filter.Services
 {
     public interface IFilterService
     {
-        List<T> Get<T>(FilterModel filterModel) where T : EntityBase;
+        object Get<T>(FilterModel filterModel) where T : EntityBase;
     }
 }

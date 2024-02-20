@@ -1,6 +1,6 @@
 ﻿namespace Dispo.Shared.Filter.Model
 {
-    public class PaginationFilter
+    public class PaginationModel
     {
         public string Entity { get; set; }
         public int PageNumber { get; set; }

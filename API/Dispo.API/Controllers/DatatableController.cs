@@ -22,32 +22,45 @@ namespace Dispo.API.Controllers
         }
 
         [HttpGet("get-count")]
-        public IActionResult GetCount()
+        public IActionResult GetCount([FromQuery] string entity)
         {
-            var a = _datatableRepository.GetTotalRecords();
+            var type = Type.GetType($"Dispo.Shared.Core.Domain.Entities.{entity}, Dispo.Shared.Core.Domain");
+            if (type is null)
+            {
+                return BadRequest("Entidade inválida.");
+            }
 
-            return Ok(new ResponseModelBuilder().WithData(a)
+            var method = _datatableRepository.GetType().GetMethod("GetTotalRecords");
+            if (method is null)
+            {
+                return BadRequest($"Método 'GetTotalRecords' não implementado para a entidade '{entity}'");
+            }
+
+            var genericMethod = method.MakeGenericMethod(type);
+            var result = genericMethod.Invoke(_datatableRepository, new object[] {});
+
+            return Ok(new ResponseModelBuilder().WithData(result)
                         .WithSuccess(true)
                         .WithAlert(AlertType.Success)
                         .Build());
         }
 
         [HttpGet("get-all")]
-        public IActionResult Get([FromQuery] PaginationFilter paginationFilter)
+        public IActionResult Get([FromQuery] PaginationModel paginationModel)
         {
             dynamic datatableData = null;
 
-            if (paginationFilter.Entity == "manufacturer")
+            if (paginationModel.Entity == "manufacturer")
             {
-                datatableData = _datatableRepository.GetToDatatableManufacturer(paginationFilter.PageNumber, paginationFilter.PageSize).ToList();
+                datatableData = _datatableRepository.GetToDatatableManufacturer(paginationModel.PageNumber, paginationModel.PageSize).ToList();
             }
-            else if (paginationFilter.Entity == "product")
+            else if (paginationModel.Entity == "product")
             {
-                datatableData = _datatableRepository.GetToDatatableProduct(paginationFilter.PageNumber, paginationFilter.PageSize).ToList();
+                datatableData = _datatableRepository.GetToDatatableProduct(paginationModel.PageNumber, paginationModel.PageSize).ToList();
             }
-            else if (paginationFilter.Entity == "supplier")
+            else if (paginationModel.Entity == "supplier")
             {
-                datatableData = _datatableRepository.GetToDatatableSupplier(paginationFilter.PageNumber, paginationFilter.PageSize).ToList();
+                datatableData = _datatableRepository.GetToDatatableSupplier(paginationModel.PageNumber, paginationModel.PageSize).ToList();
             }
 
 

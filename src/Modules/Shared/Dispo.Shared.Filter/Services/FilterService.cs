@@ -15,12 +15,29 @@ namespace Dispo.Shared.Filter.Services
             _dispoContext = dispoContext;
         }
 
-        public List<T> Get<T>(FilterModel filterModel) where T : EntityBase
+        public object Get<T>(FilterModel filterModel) where T : EntityBase
         {
-            return _dispoContext.Set<T>()
+            var a = _dispoContext.Products.Where(x => x.Name.Contains("cola")).ToList();
+
+            var recordCount = _dispoContext.Set<T>()
                                 .AsNoTracking()
                                 .Where(BuildExpression<T>(filterModel))
+                                .Count();
+
+            var records = _dispoContext.Set<T>()
+                                .AsNoTracking()
+                                .Where(BuildExpression<T>(filterModel))
+                                .Skip((filterModel.PaginationConfig.PageNumber - 1) * filterModel.PaginationConfig.PageSize)
+                                .Take(filterModel.PaginationConfig.PageSize)
                                 .ToList();
+
+            var obj = new
+            {
+                RecordCount = recordCount,
+                Records = records
+            };
+
+            return obj;
         }
 
         private Func<T, bool> BuildExpression<T>(FilterModel filterModel)
@@ -35,11 +52,33 @@ namespace Dispo.Shared.Filter.Services
                 if (memberExpression.Type == typeof(string))
                 {
                     comparison = Expression.Call(memberExpression, "Contains", Type.EmptyTypes, constant);
+                    comparison = Expression.Call(memberExpression, property.SearchType.ToString(), Type.EmptyTypes, constant);
                 }
                 else
                 {
                     constant = Expression.Constant(Convert.ToInt32(property.Value));
                     comparison = Expression.Equal(memberExpression, constant);
+                    //switch (property.SearchType)
+                    //{
+                    //    case SearchType.Equals:
+                    //        comparison = Expression.Equal(memberExpression, constant.Value);
+                    //        break;
+                    //    case SearchType.GreaterThan:
+                    //        comparison = Expression.GreaterThan(memberExpression, constant.Value);
+                    //        break;
+                    //    case SearchType.GreaterThanOrEqual:
+                    //        comparison = Expression.GreaterThanOrEqual(memberExpression, constant.Value);
+                    //        break;
+                    //    case SearchType.LessThan:
+                    //        comparison = Expression.LessThan(memberExpression, constant.Value);
+                    //        break;
+                    //    case SearchType.LessThanOrEqual:
+                    //        comparison = Expression.LessThanOrEqual(memberExpression, constant.Value);
+                    //        break;
+                    //    default:
+                    //        comparison = Expression.Equal(memberExpression, constant.Value);
+                    //        break;
+                    //}
                 }
 
                 filterExpression = filterExpression == null ? comparison : Expression.And(filterExpression, comparison);
