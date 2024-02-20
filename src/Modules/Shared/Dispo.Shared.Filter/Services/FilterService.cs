@@ -39,6 +39,8 @@ namespace Dispo.Shared.Filter.Services
                 else
                 {
                     constant = Expression.Constant(Convert.ToInt32(property.Value));
+                    comparison = Expression.Equal(memberExpression, constant);
+
                     //switch (property.SearchType)
                     //{
                     //    case SearchType.Equals:
