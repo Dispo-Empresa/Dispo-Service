@@ -50,15 +50,15 @@ namespace Dispo.API.Controllers
         {
             dynamic datatableData = null;
 
-            if (paginationModel.Entity == "manufacturer")
+            if (paginationModel.Entity == "Manufacturer")
             {
                 datatableData = _datatableRepository.GetToDatatableManufacturer(paginationModel.PageNumber, paginationModel.PageSize).ToList();
             }
-            else if (paginationModel.Entity == "product")
+            else if (paginationModel.Entity == "Product")
             {
                 datatableData = _datatableRepository.GetToDatatableProduct(paginationModel.PageNumber, paginationModel.PageSize).ToList();
             }
-            else if (paginationModel.Entity == "supplier")
+            else if (paginationModel.Entity == "Supplier")
             {
                 datatableData = _datatableRepository.GetToDatatableSupplier(paginationModel.PageNumber, paginationModel.PageSize).ToList();
             }

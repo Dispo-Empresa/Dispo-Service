@@ -1,13 +1,17 @@
 ﻿using Dispo.Shared.Core.Domain.Entities;
+using Dispo.Shared.Core.Domain.Enums;
 using Dispo.Shared.Filter.Model;
 using Dispo.Shared.Infrastructure.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
+using System.Reflection.Metadata;
+using System.Text.Json;
 
 namespace Dispo.Shared.Filter.Services
 {
     public class FilterService : IFilterService
     {
+        private const string UnsupportedSearchTypeMessage = "Unsupported search type for property of type:";
         private readonly DispoContext _dispoContext;
 
         public FilterService(DispoContext dispoContext)
@@ -17,16 +21,21 @@ namespace Dispo.Shared.Filter.Services
 
         public object Get<T>(FilterModel filterModel) where T : EntityBase
         {
-            var a = _dispoContext.Products.Where(x => x.Name.Contains("cola")).ToList();
+            if (filterModel is null)
+            {
+                throw new ArgumentNullException(nameof(filterModel));
+            }
+
+            var buildExpression = BuildExpression<T>(filterModel);
 
             var recordCount = _dispoContext.Set<T>()
                                 .AsNoTracking()
-                                .Where(BuildExpression<T>(filterModel))
+                                .Where(buildExpression)
                                 .Count();
 
             var records = _dispoContext.Set<T>()
                                 .AsNoTracking()
-                                .Where(BuildExpression<T>(filterModel))
+                                .Where(buildExpression)
                                 .Skip((filterModel.PaginationConfig.PageNumber - 1) * filterModel.PaginationConfig.PageSize)
                                 .Take(filterModel.PaginationConfig.PageSize)
                                 .ToList();
@@ -46,45 +55,105 @@ namespace Dispo.Shared.Filter.Services
             Expression filterExpression = null;
             foreach (var property in filterModel.Properties)
             {
-                var memberExpression = Expression.Property(parameter, property.Name);
-                var constant = Expression.Constant(property.Value);
+                JsonElement jsonElementValue = property.Value;
+
+                var valueType = jsonElementValue.ValueKind;
                 Expression comparison;
-                if (memberExpression.Type == typeof(string))
+                var memberExpression = Expression.Property(parameter, property.Name);
+
+                if (valueType == JsonValueKind.String) // String
                 {
-                    comparison = Expression.Call(memberExpression, "Contains", Type.EmptyTypes, constant);
+                    var valor = jsonElementValue.GetString();
+                    var constant = Expression.Constant(valor);
+
                     comparison = Expression.Call(memberExpression, property.SearchType.ToString(), Type.EmptyTypes, constant);
+                }
+                else if (IsNumericType(memberExpression.Type, property.Value, out ConstantExpression convertedConstant) && valueType == JsonValueKind.Number) // Numerico
+                {
+                    comparison = GetGenericComparisonExpression(memberExpression, property, convertedConstant);
+                }
+                else if (valueType == JsonValueKind.Object) // Enum
+                {
+                    var valor = jsonElementValue.GetProperty("value").GetInt64();
+                    var convertedValue = Enum.Parse(memberExpression.Type, valor.ToString());
+                    var constant = Expression.Constant(convertedValue);
+                    comparison = Expression.Equal(memberExpression, constant);
+
+                }
+                else if (IsDateTimeType(memberExpression.Type, property.Value, out DateTime convertedDateTime))
+                {
+                    comparison = GetGenericComparisonExpression(memberExpression, property, Expression.Constant(convertedDateTime));
                 }
                 else
                 {
-                    constant = Expression.Constant(Convert.ToInt32(property.Value));
-                    comparison = Expression.Equal(memberExpression, constant);
-                    //switch (property.SearchType)
-                    //{
-                    //    case SearchType.Equals:
-                    //        comparison = Expression.Equal(memberExpression, constant.Value);
-                    //        break;
-                    //    case SearchType.GreaterThan:
-                    //        comparison = Expression.GreaterThan(memberExpression, constant.Value);
-                    //        break;
-                    //    case SearchType.GreaterThanOrEqual:
-                    //        comparison = Expression.GreaterThanOrEqual(memberExpression, constant.Value);
-                    //        break;
-                    //    case SearchType.LessThan:
-                    //        comparison = Expression.LessThan(memberExpression, constant.Value);
-                    //        break;
-                    //    case SearchType.LessThanOrEqual:
-                    //        comparison = Expression.LessThanOrEqual(memberExpression, constant.Value);
-                    //        break;
-                    //    default:
-                    //        comparison = Expression.Equal(memberExpression, constant.Value);
-                    //        break;
-                    //}
+                    throw new NotSupportedException($"{UnsupportedSearchTypeMessage} {property.SearchType}");
                 }
 
                 filterExpression = filterExpression == null ? comparison : Expression.And(filterExpression, comparison);
             }
 
-            return Expression.Lambda<Func<T, bool>>(filterExpression, parameter).Compile();
+            return Expression.Lambda<Func<T, bool>>(filterExpression ?? Expression.Constant(true), parameter).Compile();
         }
+
+        private Expression GetStringComparisonExpression(MemberExpression memberExpression, PropertyModel property)
+        {
+            string convertedValue = Convert.ToString(property.Value);
+            var constant = Expression.Constant(convertedValue);
+
+            // Ao enviar o SearchType.Equals está disparando uma exceção.
+            return Expression.Call(memberExpression, property.SearchType.ToString(), Type.EmptyTypes, constant);
+        }
+
+        private Expression GetGenericComparisonExpression(MemberExpression memberExpression, PropertyModel property, ConstantExpression convertedConstant)
+        {
+            switch (property.SearchType)
+            {
+                case SearchType.Equals:
+                    return Expression.Equal(memberExpression, convertedConstant);
+                case SearchType.GreaterThan:
+                    return Expression.GreaterThan(memberExpression, convertedConstant);
+                case SearchType.GreaterThanOrEqual:
+                    return Expression.GreaterThanOrEqual(memberExpression, convertedConstant);
+                case SearchType.LessThan:
+                    return Expression.LessThan(memberExpression, convertedConstant);
+                case SearchType.LessThanOrEqual:
+                    return Expression.LessThanOrEqual(memberExpression, convertedConstant);
+                default:
+                    throw new NotSupportedException($"{UnsupportedSearchTypeMessage} {property.SearchType}");
+            }
+        }
+
+        private bool IsNumericType(Type type, object value, out ConstantExpression convertedConstant)
+        {
+            convertedConstant = null;
+            if (NumericTypes.Contains(type))
+            {
+                try
+                {
+                    var convertedValue = Convert.ChangeType(Convert.ToString(value), type);
+                    convertedConstant = Expression.Constant(convertedValue);
+                    return true;
+                }
+                catch (InvalidCastException)
+                {
+                    return false;
+                }
+            }
+
+            return false;
+        }
+
+        private bool IsDateTimeType(Type type, object value, out DateTime convertedDateTime)
+        {
+            convertedDateTime = DateTime.MinValue;
+            return type == typeof(DateTime) && DateTime.TryParse(Convert.ToString(value), out convertedDateTime);
+        }
+
+        private static readonly HashSet<Type> NumericTypes = new HashSet<Type>
+        {
+            typeof(int), typeof(double), typeof(float), typeof(decimal),
+            typeof(long), typeof(short), typeof(byte), typeof(uint),
+            typeof(ulong), typeof(ushort), typeof(sbyte)
+        };
     }
 }
