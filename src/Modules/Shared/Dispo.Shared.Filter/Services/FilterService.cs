@@ -1,7 +1,7 @@
 ﻿using Dispo.Shared.Core.Domain.Entities;
+using Dispo.Shared.Filter.Extensions;
 using Dispo.Shared.Filter.Model;
 using Dispo.Shared.Infrastructure.Persistence.Context;
-using Dispo.Shared.Utils.Extensions;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 using System.Reflection;

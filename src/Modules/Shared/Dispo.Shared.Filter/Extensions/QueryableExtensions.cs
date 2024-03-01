@@ -1,7 +1,7 @@
 ﻿using Dispo.Shared.Core.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace Dispo.Shared.Utils.Extensions
+namespace Dispo.Shared.Filter.Extensions
 {
     public static class QueryableExtensions
     {

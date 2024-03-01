@@ -23,15 +23,13 @@ namespace Dispo.API.Controllers
         private readonly IRijndaelCryptography _rijndaelCryptography;
         private readonly IAccountResolverService _accountResolverService;
         private readonly IAccountService _accountService;
-        private readonly IFilterService _filterService;
 
-        public AccountsController(IAccountRepository accountRepository, IRijndaelCryptography rijndaelCryptography, IAccountResolverService userResolverService, IAccountService accountService, IFilterService filterService)
+        public AccountsController(IAccountRepository accountRepository, IRijndaelCryptography rijndaelCryptography, IAccountResolverService accountResolverService, IAccountService accountService)
         {
             _accountRepository = accountRepository;
             _rijndaelCryptography = rijndaelCryptography;
-            _accountResolverService = userResolverService;
+            _accountResolverService = accountResolverService;
             _accountService = accountService;
-            _filterService = filterService;
         }
 
         [HttpGet("get-id")]
@@ -60,39 +58,6 @@ namespace Dispo.API.Controllers
                 _accountService.ChangeWarehouse(accountId, warehouseId);
 
                 return Ok(new ResponseModelBuilder().WithMessage("O depósito foi vinculado ao usuário.")
-                                                    .WithSuccess(true)
-                                                    .Build());
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new ResponseModelBuilder().WithMessage(ex.Message)
-                                                            .WithSuccess(false)
-                                                            .Build()); ;
-            }
-        }
-
-        [AllowAnonymous]
-        [HttpPost("test-entity")]
-        public IActionResult TestEntity([FromBody] FilterModel filter)
-        {
-            try
-            {
-                var type = Type.GetType($"Dispo.Shared.Core.Domain.Entities.{filter.Entity}, Dispo.Shared.Core.Domain");
-                if (type is null)
-                {
-                    return BadRequest("Entidade inválida.");
-                }
-
-                var method = _filterService.GetType().GetMethod("Get");
-                if (method is null)
-                {
-                    return BadRequest($"Método 'Get' não implementado para a entidade '{filter.Entity}'");
-                }
-
-                var genericMethod = method.MakeGenericMethod(type);
-                var result = genericMethod.Invoke(_filterService, new object[] { filter });
-
-                return Ok(new ResponseModelBuilder().WithData(result)
                                                     .WithSuccess(true)
                                                     .Build());
             }
