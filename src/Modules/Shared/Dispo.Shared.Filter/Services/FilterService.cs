@@ -1,10 +1,10 @@
 ﻿using Dispo.Shared.Core.Domain.Entities;
 using Dispo.Shared.Filter.Model;
 using Dispo.Shared.Infrastructure.Persistence.Context;
+using Dispo.Shared.Utils.Extensions;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json.Linq;
 using System.Linq.Expressions;
-using System.Text.Json;
+using System.Reflection;
 
 namespace Dispo.Shared.Filter.Services
 {
@@ -26,6 +26,7 @@ namespace Dispo.Shared.Filter.Services
             }
 
             return _dispoContext.Set<T>()
+                                .IncludeAll(filterModel.Includes)
                                 .AsNoTracking()
                                 .Where(BuildExpression<T>(filterModel))
                                 .ToList();
@@ -65,10 +66,9 @@ namespace Dispo.Shared.Filter.Services
         private Expression GetStringComparisonExpression(MemberExpression memberExpression, PropertyModel property)
         {
             string convertedValue = Convert.ToString(property.Value);
-            var constant = Expression.Constant(convertedValue);
-
-            // Ao enviar o SearchType.Equals está disparando uma exceção.
-            return Expression.Call(memberExpression, property.SearchType.ToString(), Type.EmptyTypes, constant);
+            var constant = Expression.Constant(convertedValue, typeof(string));
+            MethodInfo equalsMethod = typeof(string).GetMethod(property.SearchType.ToString(), new[] { typeof(string) });
+            return Expression.Call(memberExpression, equalsMethod, constant);
         }
 
         private Expression GetGenericComparisonExpression(MemberExpression memberExpression, PropertyModel property, ConstantExpression convertedConstant)

@@ -4,5 +4,6 @@
     {
         public required string Entity { get; set; }
         public required List<PropertyModel> Properties { get; set; }
+        public required List<string> Includes { get; set; }
     }
 }
